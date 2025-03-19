@@ -1,0 +1,296 @@
+import { useForm } from 'react-hook-form'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import {
+  CRow,
+  CCol,
+  CCard,
+  CCardHeader,
+  CCardTitle,
+  CCardBody,
+  CForm,
+  CFormInput,
+  CFormTextarea,
+  CFormFeedback,
+  CButton,
+  CSpinner,
+} from '@coreui/react'
+import { getAllAppSettingApi, editAppSettingApi } from '../../../redux/api/api'
+import { useState, useEffect } from 'react'
+
+const Appsetting = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    register,
+    clearErrors,
+    setValue,
+  } = useForm()
+  const [appSetting, setAppSetting] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [logo, setLogo] = useState(null)
+  const [favicon, setFavicon] = useState(null)
+  const [footerLogo, setFooterLogo] = useState(null)
+  const fetchAppSetting = async () => {
+    try {
+      setLoading(true)
+      const res = await getAllAppSettingApi()
+      if (res.data.status === 200) {
+        setAppSetting(res.data.info)
+        setLogo(res.data.info.logo)
+        setFavicon(res.data.info.favicon)
+        setFooterLogo(res.data.info.footerlogo)
+        setValue('name', res.data.info.name)
+        setValue('currency', res.data.info.currency)
+        setValue('currency_symbol', res.data.info.currency_symbol)
+        setValue('workinghours', res.data.info.workinghours)
+        setValue('copyright', res.data.info.copyright)
+        setValue('facebook', res.data.info.facebook)
+        setValue('instagram', res.data.info.instagram)
+        setValue('twitter', res.data.info.twitter)
+        setValue('youtube', res.data.info.youtube)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  const handleSingleImgChange = (e, key) => {
+    const file = e.target.files[0]
+    if (file) {
+      const imageUrl = URL.createObjectURL(file)
+      if (key === 'logo') {
+        setLogo(imageUrl)
+      } else if (key === 'favicon') {
+        setFavicon(imageUrl)
+      } else if (key === 'footerlogo') {
+        setFooterLogo(imageUrl)
+      } else {
+        setLogo(imageUrl)
+      }
+      clearErrors(key)
+    } else {
+      setLogo(null)
+      setFavicon(null)
+      setFooterLogo(null)
+    }
+  }
+
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true)
+      const res = await editAppSettingApi(data)
+      if (res.data.status === 200) {
+        toast.success('App Setting Updated Successfully')
+        fetchAppSetting()
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error?.response?.data?.message || 'Something went wrong')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchAppSetting()
+  }, [])
+
+  return (
+    <div>
+      <ToastContainer />
+      <CRow>
+        <CCol lg={8} md={12} sm={12}>
+          <CCard>
+            <CCardHeader className="formcardheader">
+              <CCardTitle>App Setting</CCardTitle>
+            </CCardHeader>
+            <CCardBody>
+              <CForm className="row g-3" onSubmit={handleSubmit(onSubmit)}>
+                <CCol xl={6} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="App Name"
+                    name="appName"
+                    {...register('name', { required: 'App Name is required' })}
+                    invalid={!!errors.name}
+                  />
+                  {errors.name && (
+                    <CFormFeedback className="text-danger">{errors.name.message}</CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={3} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Currency"
+                    name="currency"
+                    {...register('currency', { required: 'Currency is required' })}
+                    invalid={!!errors.currency}
+                  />
+                  {errors.currency && (
+                    <CFormFeedback className="text-danger">{errors.currency.message}</CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={3} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Currency Symbol"
+                    name="currencySymbol"
+                    {...register('currency_symbol', { required: 'Currency Symbol is required' })}
+                    invalid={!!errors.currency_symbol}
+                  />
+                  {errors.currency_symbol && (
+                    <CFormFeedback className="text-danger">
+                      {errors.currency_symbol.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={12} md={12}>
+                  <CFormTextarea
+                    label="Working Hours"
+                    name="workingHours"
+                    {...register('workinghours', { required: 'Working Hours is required' })}
+                    invalid={!!errors.workinghours}
+                  />
+                  {errors.workinghours && (
+                    <CFormFeedback className="text-danger">
+                      {errors.workinghours.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={12} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Copyright"
+                    name="copyright"
+                    {...register('copyright', { required: 'Copyright is required' })}
+                    invalid={!!errors.copyright}
+                  />
+                  {errors.copyright && (
+                    <CFormFeedback className="text-danger">
+                      {errors.copyright.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={6} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Facebook"
+                    name="facebook"
+                    {...register('facebook', { required: 'Facebook is required' })}
+                    invalid={!!errors.facebook}
+                  />
+                  {errors.facebook && (
+                    <CFormFeedback className="text-danger">{errors.facebook.message}</CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={6} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Instagram"
+                    name="instagram"
+                    {...register('instagram', { required: 'Instagram is required' })}
+                    invalid={!!errors.instagram}
+                  />
+                  {errors.instagram && (
+                    <CFormFeedback className="text-danger">
+                      {errors.instagram.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={6} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Twitter"
+                    name="twitter"
+                    {...register('twitter', { required: 'Twitter is required' })}
+                    invalid={!!errors.twitter}
+                  />
+                  {errors.twitter && (
+                    <CFormFeedback className="text-danger">{errors.twitter.message}</CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={6} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Youtube"
+                    name="youtube"
+                    {...register('youtube', { required: 'Youtube is required' })}
+                    invalid={!!errors.youtube}
+                  />
+                  {errors.youtube && (
+                    <CFormFeedback className="text-danger">{errors.youtube.message}</CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={6} md={12}>
+                  <CFormInput
+                    type="file"
+                    label="Logo"
+                    name="logo"
+                    {...register(
+                      'logo',
+                      logo ? { required: false } : { required: 'Logo is required' },
+                    )}
+                    invalid={!!errors.logo}
+                    onChange={(e) => handleSingleImgChange(e, 'logo')}
+                  />
+                  {errors.logo && (
+                    <CFormFeedback className="text-danger">{errors.logo.message}</CFormFeedback>
+                  )}
+                  <img src={logo} alt="logo" className="img-fluid mt-2" />
+                </CCol>
+
+                <CCol xl={6} md={12}>
+                  <CFormInput
+                    type="file"
+                    label="Favicon"
+                    name="favicon"
+                    {...register(
+                      'favicon',
+                      favicon ? { required: false } : { required: 'Favicon is required' },
+                    )}
+                    invalid={!!errors.favicon}
+                    onChange={(e) => handleSingleImgChange(e, 'favicon')}
+                  />
+                  {errors.favicon && (
+                    <CFormFeedback className="text-danger">{errors.favicon.message}</CFormFeedback>
+                  )}
+                  <img src={favicon} alt="favicon" className="img-fluid mt-2" />
+                </CCol>
+
+                <CCol xl={6} md={12}>
+                  <CFormInput
+                    type="file"
+                    label="Footer Logo"
+                    name="footerLogo"
+                    {...register(
+                      'footerlogo',
+                      footerLogo ? { required: false } : { required: 'Footer Logo is required' },
+                    )}
+                    invalid={!!errors.footerlogo}
+                    onChange={(e) => handleSingleImgChange(e, 'footerlogo')}
+                  />
+                  {errors.footerlogo && (
+                    <CFormFeedback className="text-danger">
+                      {errors.footerlogo.message}
+                    </CFormFeedback>
+                  )}
+                  <img src={footerLogo} alt="footerLogo" className="img-fluid mt-2" />
+                </CCol>
+                <CCol xl={12} md={12} className="text-center">
+                  <CButton disabled={loading} type="submit" className="submit-button">
+                    {loading ? <CSpinner /> : 'Save'}
+                  </CButton>
+                </CCol>
+              </CForm>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+    </div>
+  )
+}
+
+export default Appsetting

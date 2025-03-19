@@ -1,0 +1,27 @@
+const express = require("express");
+const router = express.Router();
+const authRoutes = require("./auth.routes");
+const addressRoutes = require("./address.routes");
+const cartypeRoutes = require("./cartype.routes");
+const showcaseRoutes = require("./showcase.routes");
+const userRoutes = require("./user.routes");
+const serviceRoutes = require("./service.routes");
+const addonsRoutes = require("./addons.routes");
+const appSettingRoutes = require("./appsetting.routes");
+const faqRoutes = require("./faq.routes");
+const themeRoutes = require("./theme.routes");  
+const blogRoutes = require("./blog.routes");
+
+router.use("/auth", authRoutes);
+router.use("/address", addressRoutes);
+router.use("/cartype", cartypeRoutes);
+router.use("/showcase", showcaseRoutes);
+router.use("/user", userRoutes);
+router.use("/service", serviceRoutes);
+router.use("/addons", addonsRoutes);
+router.use("/appsetting", appSettingRoutes);
+router.use("/faq", faqRoutes);
+router.use("/theme", themeRoutes);
+router.use("/blog", blogRoutes);
+
+module.exports = router;
