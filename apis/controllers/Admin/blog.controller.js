@@ -201,72 +201,72 @@ const deleteBlog = async (req, res, next) => {
   }
 };
 
-// const getAllBlog = async (req, res, next) => {
-//   try {
-//     const baseUrl = `${req.protocol}://${req.get("host")}${
-//       process.env.BLOG_IMAGE_PATH
-//     }`;
-//     const blogs = await Blog.find();
-//     const updatedBlogs = blogs.map((blog) => {
-//       let updatedContent = blog.content;
-//       updatedContent = updatedContent.replace(
-//         /<img>\s*src="(.*?)"/g,
-//         (match, p1) => {
-//           return `<img src="${baseUrl}${p1}">`;
-//         }
-//       );
-
-//       updatedContent = updatedContent.replace(
-//         /<img src="(?!http)(.*?)"/g,
-//         (match, p1) => {
-//           return `<img src="${baseUrl}${p1}"`;
-//         }
-//       );
-//       return {
-//         ...blog._doc,
-//         image: `${baseUrl}${blog.image}`,
-//         content: updatedContent,
-//       };
-//     });
-//     successResponse(res, updatedBlogs);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 const getAllBlog = async (req, res, next) => {
   try {
-    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
-
+    const baseUrl = `${req.protocol}://${req.get("host")}${
+      process.env.BLOG_IMAGE_PATH
+    }`;
     const blogs = await Blog.find();
-
     const updatedBlogs = blogs.map((blog) => {
       let updatedContent = blog.content;
-
-      // Ensure all local images have the full base URL
       updatedContent = updatedContent.replace(
-        /<img src="(?!http)(.*?)"/g,
+        /<img>\s*src="(.*?)"/g,
         (match, p1) => {
-          // Skip adding base URL if it already exists
-          if (p1.startsWith(baseUrl)) {
-            return match;
-          }
-          return `<img src="${baseUrl}/${p1.split('/').pop()}"`;
+          return `<img src="${baseUrl}${p1}">`;
         }
       );
 
+      updatedContent = updatedContent.replace(
+        /<img src="(?!http)(.*?)"/g,
+        (match, p1) => {
+          return `<img src="${baseUrl}${p1}"`;
+        }
+      );
       return {
         ...blog._doc,
-        image: blog.image ? `${baseUrl}/${blog.image}` : null,
+        image: `${baseUrl}${blog.image}`,
         content: updatedContent,
       };
     });
-
     successResponse(res, updatedBlogs);
   } catch (error) {
     next(error);
   }
 };
+
+// const getAllBlog = async (req, res, next) => {
+//   try {
+//     const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
+
+//     const blogs = await Blog.find();
+
+//     const updatedBlogs = blogs.map((blog) => {
+//       let updatedContent = blog.content;
+
+//       // Ensure all local images have the full base URL
+//       updatedContent = updatedContent.replace(
+//         /<img src="(?!http)(.*?)"/g,
+//         (match, p1) => {
+//           // Skip adding base URL if it already exists
+//           if (p1.startsWith(baseUrl)) {
+//             return match;
+//           }
+//           return `<img src="${baseUrl}/${p1.split('/').pop()}"`;
+//         }
+//       );
+
+//       return {
+//         ...blog._doc,
+//         image: blog.image ? `${baseUrl}/${blog.image}` : null,
+//         content: updatedContent,
+//       };
+//     });
+
+//     successResponse(res, updatedBlogs);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 
 const getBlogById = async (req, res, next) => {

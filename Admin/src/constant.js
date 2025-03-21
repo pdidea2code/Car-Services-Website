@@ -53,3 +53,20 @@ export const UPDATE_BLOG_API = '/api/admin/blog/updateblog'
 export const GET_ALL_BLOG_API = '/api/admin/blog/getallblog'
 export const UPDATE_BLOG_STATUS_API = '/api/admin/blog/updatestatus'
 export const DELETE_BLOG_API = '/api/admin/blog/deleteblog'
+/* ---------------------------- END Blog API ---------------------------- */
+/* ---------------------------- Address API ---------------------------- */
+export const GET_ALL_ADDRESS_API = '/api/admin/address/getalladdress'
+export const ADD_ADDRESS_API = '/api/admin/address/addaddress'
+export const EDIT_ADDRESS_API = '/api/admin/address/editaddress'
+export const DELETE_ADDRESS_API = '/api/admin/address/deleteaddress'
+/* ---------------------------- END Address API ---------------------------- */
+/* ---------------------------- Business Hour API ---------------------------- */
+export const GET_ALL_BUSINESS_HOUR_API = '/api/admin/businesshour/getallbusinesshour'
+export const EDIT_BUSINESS_HOUR_API = '/api/admin/businesshour/updatebusinesshour'
+export const DELETE_BUSINESS_HOUR_API = '/api/admin/businesshour/deletebusinesshour'
+/* ---------------------------- END Business Hour API ---------------------------- */
+/* ---------------------------- User Theme API ---------------------------- */
+export const GET_ALL_USER_THEME_API = '/api/admin/usertheme/getallusertheme'
+export const SET_ACTIVE_USER_THEME_API = '/api/admin/usertheme/setactiveusertheme'
+export const ADD_USER_THEME_API = '/api/admin/usertheme/addusertheme'
+/* ---------------------------- END User Theme API ---------------------------- */

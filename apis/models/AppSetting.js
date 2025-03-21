@@ -22,6 +22,7 @@ const appSettingSchema = new mongoose.Schema({
   twitter: { type: String, required: false },
   youtube: { type: String, required: false },
   copyright: { type: String, required: false },
+  google_map_api_key: { type: String, required: false },
 });
 
 const AppSetting = mongoose.model("AppSetting", appSettingSchema);

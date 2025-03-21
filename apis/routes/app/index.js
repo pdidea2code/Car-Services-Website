@@ -1,7 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const authRoutes = require("./auth.routes");
-
+const bannerRoutes = require("./banner.routes");
+const serviceRoutes = require("./service.routes");
+const blogRoutes = require("./blog.routes");
+const faqRoutes = require("./faq.routes");
 router.use("/auth", authRoutes);
-
+router.use("/banner", bannerRoutes);
+router.use("/service", serviceRoutes);
+router.use("/blog", blogRoutes);
+router.use("/faq", faqRoutes);
 module.exports = router;
+    

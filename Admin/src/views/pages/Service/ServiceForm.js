@@ -254,9 +254,9 @@ const ServiceForm = () => {
                   )}
                 </CCol>
                 <CCol xl={12} md={12}>
+                  <CFormLabel>Service Icon<span className="text-danger">*only svg allowed</span></CFormLabel>
                   <CFormInput
                     type="file"
-                    label="Service Icon"
                     placeholder="Service Icon"
                     {...register(
                       'iconimage',

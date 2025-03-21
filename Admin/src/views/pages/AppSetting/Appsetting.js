@@ -50,6 +50,7 @@ const Appsetting = () => {
         setValue('instagram', res.data.info.instagram)
         setValue('twitter', res.data.info.twitter)
         setValue('youtube', res.data.info.youtube)
+        setValue('google_map_api_key', res.data.info.google_map_api_key)
       }
     } catch (error) {
       console.log(error)
@@ -222,6 +223,20 @@ const Appsetting = () => {
                   />
                   {errors.youtube && (
                     <CFormFeedback className="text-danger">{errors.youtube.message}</CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={12} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Google Map API Key"
+                    name="google_map_api_key"
+                    {...register('google_map_api_key', { required: 'Google Map API Key is required' })}
+                    invalid={!!errors.google_map_api_key}
+                  />
+                  {errors.google_map_api_key && (
+                    <CFormFeedback className="text-danger">
+                      {errors.google_map_api_key.message}
+                    </CFormFeedback>
                   )}
                 </CCol>
                 <CCol xl={6} md={12}>

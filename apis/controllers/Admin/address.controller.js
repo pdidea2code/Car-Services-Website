@@ -24,9 +24,10 @@ const createAddress = async (req, res, next) => {
 const editAddress = async (req, res, next) => {
   try {
     const { id, city, address, zipCode, country, phone, email, latitude, longitude } = req.body;
+ 
     const getAddress = await Address.findById(id);
-
-    if (!address) {
+   
+    if (!getAddress) {
       return queryErrorRelatedResponse(res, 404, "Address not found");
     }
 

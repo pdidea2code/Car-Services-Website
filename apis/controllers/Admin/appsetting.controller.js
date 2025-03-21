@@ -17,6 +17,7 @@ const addAppSetting = async (req, res, next) => {
       twitter: req.body.twitter,
       youtube: req.body.youtube,
       copyright: req.body.copyright,
+      google_map_api_key: req.body.google_map_api_key,
     });
     successResponse(res, appSetting);
   } catch (error) {
@@ -39,7 +40,7 @@ const editAppSetting = async (req, res, next) => {
     appSetting.twitter = req.body.twitter ? req.body.twitter : appSetting.twitter;
     appSetting.youtube = req.body.youtube ? req.body.youtube : appSetting.youtube;
     appSetting.copyright = req.body.copyright ? req.body.copyright : appSetting.copyright;
-
+    appSetting.google_map_api_key = req.body.google_map_api_key ? req.body.google_map_api_key : appSetting.google_map_api_key;
 
     if (req?.files?.logo && req?.files?.logo[0]?.filename) {
       if (appSetting.logo) {

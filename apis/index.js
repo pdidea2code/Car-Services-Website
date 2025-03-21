@@ -46,7 +46,7 @@ app.use("/serviceimg", express.static(path.join(__dirname, "./public/serviceimg/
 app.use("/addonsimg", express.static(path.join(__dirname, "./public/addonsimg/")));
 app.use("/appsettingimg", express.static(path.join(__dirname, "./public/appsettingimg/")));
 app.use("/blogimg", express.static(path.join(__dirname, "./public/blogimg/")));
-
+app.use("/userthemeimg", express.static(path.join(__dirname, "./public/userthemeimg/")));
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection Error"));
 db.once("open", function () {

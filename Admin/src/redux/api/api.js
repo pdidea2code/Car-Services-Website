@@ -33,7 +33,17 @@ import {
   UPDATE_BLOG_API,
   GET_ALL_BLOG_API,
   UPDATE_BLOG_STATUS_API,
-  DELETE_BLOG_API
+  DELETE_BLOG_API,
+  GET_ALL_ADDRESS_API,
+  ADD_ADDRESS_API,
+  EDIT_ADDRESS_API,
+  DELETE_ADDRESS_API,
+  GET_ALL_BUSINESS_HOUR_API,
+  EDIT_BUSINESS_HOUR_API,
+  DELETE_BUSINESS_HOUR_API,
+  GET_ALL_USER_THEME_API,
+  SET_ACTIVE_USER_THEME_API,
+  ADD_USER_THEME_API,
 } from '../../constant'
 import Cookies from 'js-cookie'
 axios.interceptors.response.use(
@@ -296,3 +306,72 @@ export const deleteBlogApi = async (data) =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+/* ---------------------------- END Blog API ---------------------------- */
+/* ---------------------------- Address API ---------------------------- */
+export const getAllAddressApi = async () =>
+  axios.get(MAIN_URL + GET_ALL_ADDRESS_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const addAddressApi = async (data) =>
+  axios.post(MAIN_URL + ADD_ADDRESS_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const editAddressApi = async (data) =>
+  axios.post(MAIN_URL + EDIT_ADDRESS_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deleteAddressApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_ADDRESS_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+/* ---------------------------- END Address API ---------------------------- */
+/* ---------------------------- Business Hour API ---------------------------- */
+export const getAllBusinessHourApi = async () =>
+  axios.get(MAIN_URL + GET_ALL_BUSINESS_HOUR_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+
+export const editBusinessHourApi = async (data) =>
+  axios.post(MAIN_URL + EDIT_BUSINESS_HOUR_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+
+export const deleteBusinessHourApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_BUSINESS_HOUR_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+/* ---------------------------- END Business Hour API ---------------------------- */
+/* ---------------------------- User Theme API ---------------------------- */
+export const getAllUserThemeApi = async () =>
+  axios.get(MAIN_URL + GET_ALL_USER_THEME_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const setActiveUserThemeApi = async (data) =>
+  axios.post(MAIN_URL + SET_ACTIVE_USER_THEME_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const addUserThemeApi = async (data) =>
+  axios.post(MAIN_URL + ADD_USER_THEME_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+/* ---------------------------- END User Theme API ---------------------------- */

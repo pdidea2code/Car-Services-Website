@@ -61,6 +61,12 @@ const _nav = [
     icon: <Icons.AddRounded className="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'Address',
+    to: '/address',
+    icon: <Icons.LocationOnRounded className="nav-icon" />,
+  },
+  {
     component: CNavGroup,
     name: 'Setting',
     to: '/appsetting',
@@ -76,7 +82,12 @@ const _nav = [
         component: CNavItem,
         name: 'App Setting',
         to: '/appsetting',
-        
+
+      },
+      {
+        component: CNavItem,
+        name: 'Business Hour',
+        to: '/businesshour',
       },
     ],
   },
@@ -91,11 +102,11 @@ const _nav = [
         name: 'Admin Theme',
         to: '/admin-theme',
       },
-      // {
-      //   component: CNavItem,
-      //   name: 'User Theme',
-      //   to: '/user-theme',
-      // },
+      {
+        component: CNavItem,
+        name: 'User Theme',
+        to: '/usertheme',
+      },
     ],
   },
   {

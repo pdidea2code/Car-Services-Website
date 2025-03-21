@@ -14,7 +14,7 @@ router.post(
     {
       name: "iconimage",
       maxCount: 1,
-      allowedMimes: ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/svg", "image/svg+xml"],
+      allowedMimes: ["image/svg", "image/svg+xml"],
     },
     {
       name: "whyChooseqImage",
@@ -36,7 +36,7 @@ router.post(
     {
       name: "iconimage",
       maxCount: 1,
-      allowedMimes: ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/svg", "image/svg+xml"],
+      allowedMimes: ["image/svg", "image/svg+xml"],
     },
     {
       name: "whyChooseqImage",

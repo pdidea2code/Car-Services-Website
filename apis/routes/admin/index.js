@@ -11,7 +11,8 @@ const appSettingRoutes = require("./appsetting.routes");
 const faqRoutes = require("./faq.routes");
 const themeRoutes = require("./theme.routes");  
 const blogRoutes = require("./blog.routes");
-
+const businessHourRoutes = require("./bushour.routes");
+const userThemeRoutes = require("./usertheme.routes");
 router.use("/auth", authRoutes);
 router.use("/address", addressRoutes);
 router.use("/cartype", cartypeRoutes);
@@ -23,5 +24,6 @@ router.use("/appsetting", appSettingRoutes);
 router.use("/faq", faqRoutes);
 router.use("/theme", themeRoutes);
 router.use("/blog", blogRoutes);
-
+router.use("/businesshour", businessHourRoutes);
+router.use("/usertheme", userThemeRoutes);
 module.exports = router;

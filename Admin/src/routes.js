@@ -16,7 +16,12 @@ const FaqForm = React.lazy(() => import('./views/pages/Faq/FaqForm'))
 const AdminTheme = React.lazy(() => import('./views/pages/Theme/AdminTheme'))
 const Blog = React.lazy(() => import('./views/pages/Blog/Blog'))
 const BlogForm = React.lazy(() => import('./views/pages/Blog/BlogForm'))
-
+const Address = React.lazy(() => import('./views/pages/Contect/Address'))
+const AddressForm = React.lazy(() => import('./views/pages/Contect/AddresssForm'))
+const BusinessHour = React.lazy(() => import('./views/pages/AppSetting/Businesshour'))
+const Businesshourfrom = React.lazy(() => import('./views/pages/AppSetting/Businesshourfrom'))
+const UserTheme = React.lazy(() => import('./views/pages/Theme/UserTheme'))
+const UserThemeForm = React.lazy(() => import('./views/pages/Theme/UserThemeForm'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -84,7 +89,13 @@ const routes = [
   { path: '/admin-theme', name: 'Admin Theme', element: AdminTheme },
   { path: '/blog', name: 'Blog', element: Blog },
   { path: '/blog/form', name: 'Blog Form', element: BlogForm },
-
+  { path: '/address', name: 'Address', element: Address },
+  { path: '/address/form', name: 'Address Form', element: AddressForm },
+  { path: '/businesshour', name: 'Business Hour', element: BusinessHour },
+  { path: '/businesshour/form', name: 'Business Hour Form', element: Businesshourfrom },
+  { path: '/usertheme', name: 'User Theme', element: UserTheme },
+  { path: '/usertheme/form', name: 'User Theme Form', element: UserThemeForm },
+  
   // { path: '/theme', na me: 'Theme', element: Colors, exact: true },
   // { path: '/theme/colors', name: 'Colors', element: Colors },
   // { path: '/theme/typography', name: 'Typography', element: Typography },

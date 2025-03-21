@@ -93,6 +93,7 @@ const AddonsForm = () => {
       setValue('price', state.price)
       setValue('time', state.time)
       setValue('serviceid', state.serviceid._id)
+      
       setImage(state.image)
     }
   }, [state])
