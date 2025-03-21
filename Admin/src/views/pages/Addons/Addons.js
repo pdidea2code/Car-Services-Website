@@ -24,7 +24,7 @@ const Addons = () => {
         
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message || 'Error fetching addons')
     } finally {
       setIsLoading(false)
@@ -42,7 +42,7 @@ const Addons = () => {
         setAddons(response.data.info)
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message || 'Error fetching addons')
     } finally {
       setIsLoading(false)
@@ -60,7 +60,7 @@ const Addons = () => {
         setAddons(addons.map(addon => addon._id === data.id ? { ...addon, status: data.status } : addon))
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message || 'Error changing status')
     }
   }
@@ -73,7 +73,7 @@ const Addons = () => {
         setAddons(addons.filter(addon => addon._id !== id))
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message || 'Error deleting addon')
     }   
   }

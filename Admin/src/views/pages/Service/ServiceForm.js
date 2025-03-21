@@ -123,9 +123,8 @@ const ServiceForm = () => {
         navigate('/service')
       }
 
-      console.log(data)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message)
     } finally {
       setIsLoading(false)
@@ -400,7 +399,6 @@ const ServiceForm = () => {
                         type="text"
                         {...register(`whyChooseqinclude.${index}`)}
                         onChange={(e) => {
-                          console.log(e.target.value)
                           if (e.target.value.trim() === '') {
                             setError(`whyChooseqinclude.${index}`, {
                               type: 'manual',

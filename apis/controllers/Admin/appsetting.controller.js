@@ -18,6 +18,9 @@ const addAppSetting = async (req, res, next) => {
       youtube: req.body.youtube,
       copyright: req.body.copyright,
       google_map_api_key: req.body.google_map_api_key,
+      smtp_mail: req.body.smtp_mail,
+      smtp_password: req.body.smtp_password,
+      smtp_service: req.body.smtp_service,
     });
     successResponse(res, appSetting);
   } catch (error) {
@@ -41,6 +44,9 @@ const editAppSetting = async (req, res, next) => {
     appSetting.youtube = req.body.youtube ? req.body.youtube : appSetting.youtube;
     appSetting.copyright = req.body.copyright ? req.body.copyright : appSetting.copyright;
     appSetting.google_map_api_key = req.body.google_map_api_key ? req.body.google_map_api_key : appSetting.google_map_api_key;
+    appSetting.smtp_mail = req.body.smtp_mail ? req.body.smtp_mail : appSetting.smtp_mail;  
+    appSetting.smtp_password = req.body.smtp_password ? req.body.smtp_password : appSetting.smtp_password;  
+    appSetting.smtp_service = req.body.smtp_service ? req.body.smtp_service : appSetting.smtp_service;  
 
     if (req?.files?.logo && req?.files?.logo[0]?.filename) {
       if (appSetting.logo) {

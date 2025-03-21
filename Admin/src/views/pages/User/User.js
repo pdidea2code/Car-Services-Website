@@ -33,7 +33,7 @@ const User = () => {
         status: data.status,
       }
       const response = await updateUserApi(req)
-      console.log(response)
+     
       if (response.status === 200) {
         setUser((prevState) =>
           prevState.map((item) =>

@@ -72,7 +72,7 @@ axios.interceptors.response.use(
 
         return axios(originalRequest)
       } catch (refresherr) {
-        console.log('err refreshing token:', refresherr)
+        console.error('err refreshing token:', refresherr)
         // Cookies.remove('refreshToken')
         // Cookies.remove('token')
         // Cookies.remove('admin')

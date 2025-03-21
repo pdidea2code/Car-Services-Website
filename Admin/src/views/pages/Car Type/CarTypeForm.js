@@ -28,7 +28,6 @@ const CarTypeForm = () => {
   } = useForm()
   const onSubmit = async (data) => {
     try {
-      console.log(data)
       const request = {
         name: data.name,
       }
@@ -41,7 +40,7 @@ const CarTypeForm = () => {
         navigate('/cartype')
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message)
     }
   }

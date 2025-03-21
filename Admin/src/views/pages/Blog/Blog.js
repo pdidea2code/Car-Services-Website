@@ -22,7 +22,7 @@ const Blog = () => {
       }
 
     } catch (error) {
-      console.log(error)
+      console.error(error)    
       toast.error(error?.response?.data?.message||'Something went wrong')
     } finally {
       setIsLoading(false)
@@ -40,7 +40,7 @@ const Blog = () => {
         setBlog(blog.filter((item) => item._id !== data._id))
       }
     } catch (error) {
-      console.log(error)
+        console.error(error)
       toast.error(error?.response?.data?.message||'Something went wrong')
     } finally {
       setIsLoading(false)
@@ -59,7 +59,7 @@ const Blog = () => {
         setBlog(blog.map((item) => (item._id === data.id ? { ...item, status: data.status } : item)))
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message||'Something went wrong')
     } finally {
       setIsLoading(false)

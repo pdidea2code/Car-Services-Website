@@ -68,7 +68,7 @@ const AddonsForm = () => {
         navigate('/addons')
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message || 'Error submitting addons')
     } finally {
       setIsLoading(false)
@@ -82,7 +82,7 @@ const AddonsForm = () => {
         setService(response.data.info)
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message || 'Error fetching service')
     }
   }

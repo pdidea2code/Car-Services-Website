@@ -52,7 +52,6 @@ const Service = () => {
         id: id,
         status,
       }
-      console.log(data)
       const response = await editServiceApi(requestData)
       if (response.status === 200) {
         toast.success('Status changed successfully')

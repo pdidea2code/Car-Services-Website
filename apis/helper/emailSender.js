@@ -2,20 +2,21 @@ var nodemailer = require("nodemailer");
 var fs = require("fs");
 var handlebars = require("handlebars");
 require("dotenv").config();
+const AppSetting = require("../models/AppSetting");
 const { queryErrorRelatedResponse, successResponse } = require("./sendResponse");
 
 const sendMail = async (data, req, res) => {
-  // const mail = await Generalsetting.findOne();
+  const mail = await AppSetting.findOne();
   var transporter = nodemailer.createTransport({
-    service: process.env.SMTP_SERVICE,
+    service: mail.smtp_service,
     secure: true,
     // auth: {
     //   user: mail.email,
     //   pass: mail.password,
     // },
     auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD,
+      user: mail.smtp_mail,
+      pass: mail.smtp_password,
     },
   });
 

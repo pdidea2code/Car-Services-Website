@@ -51,9 +51,12 @@ const Appsetting = () => {
         setValue('twitter', res.data.info.twitter)
         setValue('youtube', res.data.info.youtube)
         setValue('google_map_api_key', res.data.info.google_map_api_key)
+        setValue('smtp_mail', res.data.info.smtp_mail)
+        setValue('smtp_password', res.data.info.smtp_password)
+        setValue('smtp_service', res.data.info.smtp_service)
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     } finally {
       setLoading(false)
     }
@@ -88,7 +91,7 @@ const Appsetting = () => {
         fetchAppSetting()
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setLoading(false)
@@ -236,6 +239,48 @@ const Appsetting = () => {
                   {errors.google_map_api_key && (
                     <CFormFeedback className="text-danger">
                       {errors.google_map_api_key.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={4} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="SMTP Mail"
+                    name="smtp_mail"
+                    {...register('smtp_mail', { required: 'SMTP Mail is required' })}
+                    invalid={!!errors.smtp_mail}
+                  />
+                  {errors.smtp_mail && (
+                    <CFormFeedback className="text-danger">
+                      {errors.smtp_mail.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={4} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="SMTP Password"
+                    name="smtp_password"
+                    {...register('smtp_password', { required: 'SMTP Password is required' })} 
+                    invalid={!!errors.smtp_password}
+                  />
+                  {errors.smtp_password && (
+                    <CFormFeedback className="text-danger">
+                      {errors.smtp_password.message}
+                    </CFormFeedback>
+                  )}    
+                </CCol>
+                <CCol xl={4} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="SMTP Service"
+                    name="smtp_service"
+                    {...register('smtp_service', { required: 'SMTP Service is required' })}
+                    invalid={!!errors.smtp_service}
+                  />
+                  {errors.smtp_service && (
+                    <CFormFeedback className="text-danger">
+                      {errors.smtp_service.message}
                     </CFormFeedback>
                   )}
                 </CCol>

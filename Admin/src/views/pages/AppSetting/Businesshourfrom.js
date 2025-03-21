@@ -24,7 +24,6 @@ const Businesshourform = () => {
                 close: data.close
             }
             const response = await editBusinessHourApi(newData)
-            console.log('Response:', response)
             if (response.status === 200) {
                 toast.success('Business hour updated successfully')
                 navigate('/businesshour')

@@ -40,7 +40,7 @@ const Faq = () => {
         setFaq(faq.map((item) => item._id === data.id ? {...item, status: data.status} : item)) 
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)    
       toast.error(error?.response?.data?.message||"Something went wrong")
     } finally {
       setIsLoading(false)
@@ -58,7 +58,7 @@ const Faq = () => {
         setFaq(faq.filter((item) => item._id !== id))   
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message||"Something went wrong")
     } finally {
       setIsLoading(false)

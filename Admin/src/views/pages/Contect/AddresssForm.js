@@ -68,7 +68,7 @@ const AddressForm = () => {
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Something went wrong')
-      console.log(error)
+      console.error(error)
     } finally {
       setIsLoading(false)
     }
@@ -103,7 +103,7 @@ const AddressForm = () => {
       }
 
     } catch (error) {
-      console.log(error)
+      console.error(error)  
       toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setIsLoading(false)

@@ -17,8 +17,7 @@ const BusinessHour = () => {
     try {
       const response = await getAllBusinessHourApi()
       if (response.status === 200) {    
-        console.log(response.data.info)
-        setBusinessHour(response.data.info)
+            setBusinessHour(response.data.info)
       }
     } catch (error) {
       console.error('Error fetching business hour:', error)

@@ -30,7 +30,7 @@ const FaqForm = () => {
         navigate('/faq')
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)  
       toast.error(error?.response?.data?.message)
     } finally {
       setIsLoading(false)

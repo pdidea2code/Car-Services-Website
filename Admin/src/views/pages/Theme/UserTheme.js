@@ -45,11 +45,10 @@ const UserTheme = () => {
           }
         })
 
-        console.log(response.data.info)
       }
       setIsLoading(false)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       setIsLoading(false)
     }
     
@@ -66,7 +65,7 @@ const UserTheme = () => {
         fetchAllUserTheme()
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       setIsSubmitLoading(false)
       toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {

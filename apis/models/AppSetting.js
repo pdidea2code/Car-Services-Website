@@ -23,6 +23,9 @@ const appSettingSchema = new mongoose.Schema({
   youtube: { type: String, required: false },
   copyright: { type: String, required: false },
   google_map_api_key: { type: String, required: false },
+  smtp_mail: { type: String, required: false },
+  smtp_password: { type: String, required: false },
+  smtp_service: { type: String, required: false },
 });
 
 const AppSetting = mongoose.model("AppSetting", appSettingSchema);

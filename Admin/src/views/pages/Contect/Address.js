@@ -22,7 +22,7 @@ const Address = () => {
       }
       setIsLoading(false)
     } catch (error) {
-      console.log(error)
+      console.error(error)  
       toast.error(error?.response?.data?.message||'Something went wrong')
     } finally {
       setIsLoading(false)
@@ -41,7 +41,7 @@ const Address = () => {
         setAddress(address.map((item) => (item._id === id ? { ...item, status } : item)))
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message||'Something went wrong')
     }
   }
@@ -56,7 +56,7 @@ const Address = () => {
         setAddress(address.filter((item) => item._id !== id))
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error?.response?.data?.message||'Something went wrong')
     }
   }
