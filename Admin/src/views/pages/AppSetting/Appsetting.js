@@ -85,7 +85,19 @@ const Appsetting = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true)
-      const res = await editAppSettingApi(data)
+      const formData = new FormData()
+      Object.keys(data).forEach((key) => {
+        if (key === 'logo') {
+          formData.append(key, data[key][0])
+        } else if (key === 'favicon') {
+          formData.append(key, data[key][0])
+        } else if (key === 'footerlogo') {
+          formData.append(key, data[key][0])
+        } else {
+          formData.append(key, data[key])
+        }
+      })
+      const res = await editAppSettingApi(formData)
       if (res.data.status === 200) {
         toast.success('App Setting Updated Successfully')
         fetchAppSetting()

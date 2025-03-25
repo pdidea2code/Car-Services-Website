@@ -28,6 +28,7 @@ const appSettingSchema = new mongoose.Schema({
   smtp_service: { type: String, required: false },
 });
 
+
 const AppSetting = mongoose.model("AppSetting", appSettingSchema);
 
 module.exports = AppSetting;

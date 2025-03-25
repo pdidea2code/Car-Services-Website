@@ -1,0 +1,26 @@
+.profile-icon path {
+  fill: var(--color2);
+}
+
+.menu-icon path {
+  fill: var(--color3);
+}
+
+.social-icon path {
+  fill: var(--color3);
+  transition: all 0.3s ease;
+}
+
+.footer-social-icon-item:hover .social-icon path {
+  fill: var(--color2);
+}
+
+.deshline-icon {
+  stroke: var(--color2);
+}
+.UpRightArrowIconinhomepage path{
+  fill: var(--color3);
+}
+.SafetyGuaranteeIcon path{
+  fill: var(--color2);
+}

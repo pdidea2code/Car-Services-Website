@@ -5,10 +5,11 @@ const bannerRoutes = require("./banner.routes");
 const serviceRoutes = require("./service.routes");
 const blogRoutes = require("./blog.routes");
 const faqRoutes = require("./faq.routes");
+const appSettingRoutes = require("./appsetting.routes");
 router.use("/auth", authRoutes);
 router.use("/banner", bannerRoutes);
 router.use("/service", serviceRoutes);
 router.use("/blog", blogRoutes);
 router.use("/faq", faqRoutes);
+router.use("/appsetting", appSettingRoutes);
 module.exports = router;
-    

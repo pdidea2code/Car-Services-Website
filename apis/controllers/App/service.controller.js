@@ -7,6 +7,7 @@ const getAllService = async (req, res, next) => {
     const serviceData = service.map((item) => {
       return {
         _id: item._id,
+        name:item.name,
         title: item.title,
         description: item.description,
         image: item.image ? baseUrl + item.image : null,

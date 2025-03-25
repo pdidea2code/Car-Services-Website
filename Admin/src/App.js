@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import MinimalLayout from './layout/MinimalLayout'
 import { CSpinner } from '@coreui/react'
+import { getAllAppSettingApi } from './redux/api/api'
 const loading = (
   <div className="pt-3 text-center">
     <CSpinner className="spinner-color" />
@@ -48,8 +49,32 @@ const App = () => {
       document.documentElement.style.setProperty('--color-three', data.color3);
     }
   }
+  const setFavicon = (iconUrl) => {
+    const link = document.querySelector("link[rel='icon']") || document.createElement('link')
+    link.type = 'image/x-icon'
+    link.rel = 'icon'
+    link.href = iconUrl
+
+    // If the <link> doesn't exist, add it to the <head>
+    if (!document.querySelector("link[rel='icon']")) {
+      document.head.appendChild(link)
+    }
+  }
   useEffect(() => {
     fetchAdminTheme()
+    
+    const appsetting=async()=>{
+      try {
+        const response = await getAllAppSettingApi()
+        if (response.status === 200) {
+          const data = response.data.info
+          setFavicon(data.favicon)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    appsetting()
   }, [])
   return (
     <BrowserRouter>
