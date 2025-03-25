@@ -2,7 +2,7 @@ const { successResponse, queryErrorRelatedResponse } = require("../../helper/sen
 const Service = require("../../models/Service");
 const getAllService = async (req, res, next) => {
   try {
-    const service = await Service.find({status: true});
+    const service = await Service.find({status: true}).sort({createdAt: -1});
     const baseUrl = req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
     const serviceData = service.map((item) => {
       return {

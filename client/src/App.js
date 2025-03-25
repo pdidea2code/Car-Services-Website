@@ -9,6 +9,7 @@ import AppRoutes from "./routes/AppRoutes";
 import "bootstrap/scss/bootstrap.scss";
 import "./custom.scss";
 import "./icon.css";
+
 function App() {
   const loading = useSelector((state) => state.loading.loading);  
  
@@ -67,6 +68,8 @@ function App() {
   }, [dispatch]);
 
   return (
+    <>
+   
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
         <div>
@@ -83,6 +86,7 @@ function App() {
         </div>
       </Suspense>
     </BrowserRouter>
+    </>
   );
 }
 

@@ -44,7 +44,7 @@ const ChooseUs = () => {
         
             <Col xl={4} lg={12} md={12} className="choose-us-points-container ">
             <Row className="choose-us-points-row">
-            <Col xl={12} lg={6} md={12} className="choose-us-point" >
+            <Col xl={12} lg={6} md={12} className="choose-us-point" data-aos="fade-up">
                 <div className="choose-us-point-icon">
                     <SafetyGuaranteeIcon className="SafetyGuaranteeIcon" />
                 </div>
@@ -57,7 +57,7 @@ const ChooseUs = () => {
                     </span>
                 </div>
             </Col>
-            <Col xl={12} lg={6} md={12} className="choose-us-point" delay={100}>
+            <Col xl={12} lg={6} md={12} className="choose-us-point" data-aos="fade-up" data-aos-delay="100">
                 <div className="choose-us-point-icon">
                     <SkilledProfessionalsIcon className="SafetyGuaranteeIcon" />
                 </div>
@@ -70,7 +70,7 @@ const ChooseUs = () => {
                     </span>
                 </div>
             </Col>
-            <Col xl={12} lg={6} md={12} className="choose-us-point" delay={200}>
+            <Col xl={12} lg={6} md={12} className="choose-us-point" data-aos="fade-up" data-aos-delay="200">
                 <div className="choose-us-point-icon">
                     <ClearPricingIcon className="SafetyGuaranteeIcon" />
                 </div>
@@ -83,7 +83,7 @@ const ChooseUs = () => {
                     </span>
                 </div>
             </Col>
-            <Col xl={12} lg={6} md={12} className="choose-us-point" delay={300} >
+              <Col xl={12} lg={6} md={12} className="choose-us-point" data-aos="fade-up" data-aos-delay="300">
                 <div className="choose-us-point-icon">
                     <ClientAssistanceIcon className="SafetyGuaranteeIcon" />
                 </div>

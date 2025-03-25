@@ -7,6 +7,7 @@ const RouteList = () => {
     const appSetting = useSelector((state) => state.appSetting.appSetting); 
     const location = useLocation();
     useEffect(() => {
+     
         const routeTitles = {
           "/": `Home - ${appSetting?.name}`,
           "/services": `Service - ${appSetting?.name}`,
@@ -29,7 +30,7 @@ const RouteList = () => {
           }
         }
         document.title = title;
-    }, [location.pathname]);
+    }, [location.pathname,appSetting]);
     
   return (
     <Routes>

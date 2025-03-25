@@ -6,7 +6,7 @@ const getAllBlog = async (req, res, next) => {
       const baseUrl = `${req.protocol}://${req.get("host")}${
         process.env.BLOG_IMAGE_PATH
       }`;
-      const blogs = await Blog.find({status: true});
+      const blogs = await Blog.find({status: true}).sort({createdAt: -1});
       const updatedBlogs = blogs.map((blog) => {
         let updatedContent = blog.content;
         updatedContent = updatedContent.replace(

@@ -2,6 +2,11 @@ import Mainsection from "./Mainsection";
 import Excellence from "./Excellence";
 import Services from "./Services";
 import ChooseUs from "./ChooseUs";
+import Offer from "./Offer";  
+import Blog from "./Blog";
+import Faq from "./Faq";
+import Showcase from "../../components/showcase/Showcase";
+
 const Home = () => {
     return (
         <div>
@@ -9,6 +14,10 @@ const Home = () => {
           <Excellence />
           <Services />
           <ChooseUs />
+          <Offer />
+          <Blog />
+          <Faq />
+          <Showcase />
         </div>
     )
 }

@@ -19,11 +19,10 @@ $container-max-widths: (
     padding: 30px !important;
 }
 // Colors
-$red: #E1332D;
-$white: #fff;
+
 
 .btn-4 {
-  border: 0px solid $white;
+  border: 0px solid white;
   
   display: inline-block;
 
@@ -55,7 +54,7 @@ $white: #fff;
   }
 
   &:hover {
-    color:var(--color3); // Text color changes on hover
+    
 
     &:after {
       left: 120%;
@@ -64,6 +63,47 @@ $white: #fff;
   }
 }
 
+.btn-3 {
+  border: 0px solid white;
+  
+  display: inline-block;
+
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  span {
+    position: relative;
+    z-index: 2;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: -75px;
+    width: 50px;
+    height: 155px;
+    background: var(--color2);
+    opacity: 0.2;
+    transform: rotate(35deg);
+    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 1;
+  }
+
+  &:hover {
+    
+
+    &:after {
+      left: 120%;
+      transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+    }
+  }
+}
 
 
 @media (max-width: 992px) {

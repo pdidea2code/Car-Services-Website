@@ -16,7 +16,7 @@
 }
 
 .k2d {
-  font-family: 'k2d', cursive;
+  font-family: 'k2d', cursive !important;
 }
 
 html body{

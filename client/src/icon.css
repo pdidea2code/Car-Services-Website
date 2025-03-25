@@ -24,3 +24,11 @@
 .SafetyGuaranteeIcon path{
   fill: var(--color2);
 }
+
+.RoundArrowIcon path{
+  fill: var(--color1);
+}
+
+.RoundArrowIcon.active path{
+  fill: var(--color3);
+}

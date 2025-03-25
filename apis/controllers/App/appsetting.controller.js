@@ -2,6 +2,7 @@ const AppSetting = require("../../models/AppSetting");
 const UserTheme = require("../../models/UserTheme");
 const BusinessHour = require("../../models/BusinessHour");
 const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
+const Showcase = require("../../models/Showcase");
 
 const getAppSetting = async (req, res, next) => {
   try {
@@ -55,4 +56,16 @@ const getBusinessHour=async(req,res,next)=>{
   }
 }
 
-module.exports = { getAppSetting, themeSetting, getBusinessHour };
+const  getBanner=async(req,res,next)=>{
+  try {
+    const banner=await Showcase.find({status: true});
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.SHOWCASE_PATH;
+    banner.forEach(item => {
+      item.image = baseUrl + "/" + item.image;
+    });
+    successResponse(res, banner);
+  } catch (error) {
+    next(error);
+  }
+}
+module.exports = { getAppSetting, themeSetting, getBusinessHour, getBanner };

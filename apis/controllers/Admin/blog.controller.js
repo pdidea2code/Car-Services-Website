@@ -34,7 +34,7 @@ const createBlog = async (req, res, next) => {
     const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
 
     // Get uploaded image filenames
-    const imageUrls = req?.files?.images?.map((file) => `${baseUrl}/${file.filename}`) || [];
+    const imageUrls = req?.files?.images?.map((file) => `${file.filename}`) || [];
 
     // Replace base64 images with uploaded image URLs
     let updatedContent = content;
@@ -55,7 +55,7 @@ const createBlog = async (req, res, next) => {
       description,
       content: updatedContent,
       image: req?.files?.mainimage?.[0]?.filename 
-        ? `${baseUrl}/${req.files.mainimage[0].filename}`
+        ? `${req.files.mainimage[0].filename}`
         : null,
     });
 
