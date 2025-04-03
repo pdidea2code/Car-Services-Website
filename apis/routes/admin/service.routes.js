@@ -1,5 +1,10 @@
 const router = require("express").Router();
-const { addService, editService, getAllService } = require("../../controllers/Admin/service.controller");
+const {
+  addService,
+  editService,
+  getAllService,
+  softDeleteService,
+} = require("../../controllers/Admin/service.controller");
 const { multiDiffFileUpload } = require("../../helper/imageUpload");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
 router.post(
@@ -47,4 +52,5 @@ router.post(
   editService
 );
 router.get("/allservice", verifyAdminToken, getAllService);
+router.post("/softdeleteservice", verifyAdminToken, softDeleteService);
 module.exports = router;

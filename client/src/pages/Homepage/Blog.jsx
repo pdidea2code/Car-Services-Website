@@ -6,18 +6,21 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useNavigate } from "react-router-dom";
 const Blog = () => {
   const [blog, setBlog] = useState([]);
+  const navigate = useNavigate();
   const fetchBlog = async () => {
     try {
-      const response = await getAllBlog();
-      console.log(response.data.info);
+      const request = {
+        page: 1,
+      };
+      const response = await getAllBlog(request);
       if (response.data.status === 200) {
-        console.log(response.data.info);
-        setBlog(response.data.info);
+        setBlog(response.data.info.updatedBlogs);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {
@@ -26,13 +29,13 @@ const Blog = () => {
 
   useEffect(() => {
     AOS.init({
-        disable: function () {
-            return window.innerWidth < 992;
-          },
-          disable: "mobile",
+      disable: function () {
+        return window.innerWidth < 992;
+      },
+      disable: "mobile",
     });
   }, [blog.length > 0]);
-  
+
   return (
     <div className="blog-container">
       <Container>
@@ -61,7 +64,10 @@ const Blog = () => {
             />
           </Col>
           <Col lg={12} style={{ maxWidth: "272px" }} className="blog-col3">
-            <button className="blog-button btn-4 zen-dots">
+            <button
+              className="blog-button btn-4 zen-dots"
+              onClick={() => navigate("/blog")}
+            >
               View All Blog
             </button>
           </Col>
@@ -88,10 +94,15 @@ const Blog = () => {
               <span className="blog-description2 k2d">
                 {blog[0]?.description}
               </span>
-              <button className="blog-button btn-4 zen-dots">Read More</button>
+              <button
+                className="blog-button btn-4 zen-dots"
+                onClick={() => navigate(`/blog/${blog[0]?._id}`)}
+              >
+                Read More
+              </button>
             </div>
           </Col>
-                <Col xl={6} lg={6} md={12} className="blog-row2-col2">
+          <Col xl={6} lg={6} md={12} className="blog-row2-col2">
             <div className="blog-row2-col2-d12 blog-row2-col2-d1">
               <img
                 className="blog-row2-col2-d1-img"
@@ -108,12 +119,19 @@ const Blog = () => {
                 <span className="blog-row2-col2-d1-detail-description k2d">
                   {blog[0]?.description}
                 </span>
-                <button className="blog-row2-col2-d1-detail-button btn-4 zen-dots">
+                <button
+                  className="blog-row2-col2-d1-detail-button btn-4 zen-dots"
+                  onClick={() => navigate(`/blog/${blog[0]?._id}`)}
+                >
                   Read More
                 </button>
               </div>
             </div>
-            <div className="blog-row2-col2-d1" data-aos="fade-up" data-aos-delay="100">
+            <div
+              className="blog-row2-col2-d1"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
               <img
                 className="blog-row2-col2-d1-img"
                 src={`${blog[1]?.image}`}
@@ -129,12 +147,19 @@ const Blog = () => {
                 <span className="blog-row2-col2-d1-detail-description k2d">
                   {blog[1]?.description}
                 </span>
-                <button className="blog-row2-col2-d1-detail-button btn-4 zen-dots">
+                <button
+                  className="blog-row2-col2-d1-detail-button btn-4 zen-dots"
+                  onClick={() => navigate(`/blog/${blog[1]?._id}`)}
+                >
                   Read More
                 </button>
               </div>
             </div>
-            <div className="blog-row2-col2-d1" data-aos="fade-up" data-aos-delay="200">
+            <div
+              className="blog-row2-col2-d1"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
               <img
                 className="blog-row2-col2-d1-img"
                 src={`${blog[2]?.image}`}
@@ -150,7 +175,10 @@ const Blog = () => {
                 <span className="blog-row2-col2-d1-detail-description k2d">
                   {blog[2]?.description}
                 </span>
-                <button className="blog-row2-col2-d1-detail-button btn-4 zen-dots">
+                <button
+                  className="blog-row2-col2-d1-detail-button btn-4 zen-dots"
+                  onClick={() => navigate(`/blog/${blog[2]?._id}`)}
+                >
                   Read More
                 </button>
               </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getAllServiceApi, deleteServiceApi, editServiceApi } from 'src/redux/api/api'
+import { getAllServiceApi, softDeleteServiceApi, editServiceApi } from 'src/redux/api/api'
 import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -22,7 +22,7 @@ const Service = () => {
         setService(response.data.info)
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message||'Something went wrong')
+      toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setIsLoading(false)
     }
@@ -34,13 +34,13 @@ const Service = () => {
       const requestData = {
         id: _id,
       }
-      //   const response = await deleteServiceApi(requestData)
+      const response = await softDeleteServiceApi(requestData)
       if (response.status === 200) {
         toast.success('Service deleted successfully')
         setService(service.filter((item) => item._id !== _id))
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message||'Something went wrong')
+      toast.error(error?.response?.data?.message || 'Something went wrong')
     }
   }
 
@@ -58,7 +58,7 @@ const Service = () => {
         setService(service.map((item) => (item._id === id ? { ...item, status } : item)))
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message||'Something went wrong')
+      toast.error(error?.response?.data?.message || 'Something went wrong')
     }
   }
   useEffect(() => {
@@ -137,12 +137,12 @@ const Service = () => {
                 <Icons.EditRounded />
               </Button>
               <Tooltip title="Addons">
-              <Button
-                className="editButton w-fit"
-                onClick={() => navigate('/addons', { state: data })}
-              >
-                <Icons.AddRounded />
-              </Button>
+                <Button
+                  className="editButton w-fit"
+                  onClick={() => navigate('/addons', { state: data })}
+                >
+                  <Icons.AddRounded />
+                </Button>
               </Tooltip>
             </div>
           )

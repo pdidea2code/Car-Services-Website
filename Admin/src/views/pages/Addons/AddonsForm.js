@@ -93,7 +93,7 @@ const AddonsForm = () => {
       setValue('price', state.price)
       setValue('time', state.time)
       setValue('serviceid', state.serviceid._id)
-      
+
       setImage(state.image)
     }
   }, [state])
@@ -164,9 +164,7 @@ const AddonsForm = () => {
                     invalid={!!errors.serviceid}
                     value={watch('serviceid')}
                   >
-                    <option value="">
-                      Select Service
-                    </option>
+                    <option value="">Select Service</option>
                     {service.map((item, index) => (
                       <option key={index} value={item._id}>
                         {item.name}
@@ -197,7 +195,12 @@ const AddonsForm = () => {
                 </CCol>
                 {image && (
                   <CCol xl={6} md={12}>
-                    <img src={image} alt="addon" className="img-fluid mt-2" style={{ maxWidth: '100%' }} />
+                    <img
+                      src={image}
+                      alt="addon"
+                      className="img-fluid mt-2"
+                      style={{ maxWidth: '100%' }}
+                    />
                   </CCol>
                 )}
                 <CCol xl={12} md={12} className="text-center">

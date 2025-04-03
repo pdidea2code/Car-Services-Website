@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState  } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { getAdminThemeApi } from './redux/api/api'
 import './scss/style.scss'
@@ -8,15 +8,14 @@ import { Navigate } from 'react-router-dom'
 import MinimalLayout from './layout/MinimalLayout'
 import { CSpinner } from '@coreui/react'
 import { getAllAppSettingApi } from './redux/api/api'
+
 const loading = (
   <div className="pt-3 text-center">
     <CSpinner className="spinner-color" />
   </div>
 )
 
-
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
-
 
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
@@ -43,10 +42,10 @@ const App = () => {
   const fetchAdminTheme = async () => {
     const response = await getAdminThemeApi()
     if (response.status === 200) {
-      const data = response.data.info      
-      document.documentElement.style.setProperty('--color-one', data.color1);
-      document.documentElement.style.setProperty('--color-two', data.color2);
-      document.documentElement.style.setProperty('--color-three', data.color3);
+      const data = response.data.info
+      document.documentElement.style.setProperty('--color-one', data.color1)
+      document.documentElement.style.setProperty('--color-two', data.color2)
+      document.documentElement.style.setProperty('--color-three', data.color3)
     }
   }
   const setFavicon = (iconUrl) => {
@@ -62,8 +61,8 @@ const App = () => {
   }
   useEffect(() => {
     fetchAdminTheme()
-    
-    const appsetting=async()=>{
+
+    const appsetting = async () => {
       try {
         const response = await getAllAppSettingApi()
         if (response.status === 200) {
@@ -84,8 +83,10 @@ const App = () => {
             <Route exact path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Route>
+
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />
+
           <Route path="/" element={<PrivateRoute />}>
             <Route path="*" element={<DefaultLayout />} />
           </Route>

@@ -11,19 +11,17 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: [true, "Please enter an email"],
-      unique: [true, "An account with that email address already exists. Please log in to continue."],
+      unique: [
+        true,
+        "An account with that email address already exists. Please log in to continue.",
+      ],
       lowercase: true,
       trim: true,
       match: [/.+@.+\..+/, "Please enter a valid email"],
     },
     google_id: {
       type: String,
-
       sparse: true,
-      default: null,
-    },
-    used_referral_code: {
-      type: String,
       default: null,
     },
     otp: {
@@ -77,7 +75,9 @@ userSchema.methods.generateAuthToken = function (data) {
   const user = this;
   const id = { _id: user._id };
   data = { ...data, ...id };
-  const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1000m" });
+  const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "1000m",
+  });
   // const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
   return token;
 };

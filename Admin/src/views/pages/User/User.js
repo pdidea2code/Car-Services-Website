@@ -33,7 +33,7 @@ const User = () => {
         status: data.status,
       }
       const response = await updateUserApi(req)
-     
+
       if (response.status === 200) {
         setUser((prevState) =>
           prevState.map((item) =>
@@ -71,15 +71,32 @@ const User = () => {
         filter: false,
         customBodyRender: (value) => {
           return (
-            <img
-              src={value}
-              alt="user"
-              style={{ width: '50px', height: '50px' }}
-              onClick={() => {
-                setImage(value)
-                setVisible(true)
-              }}
-            />
+            value && (
+              <img
+                src={value}
+                alt="user"
+                style={{ width: '50px', height: '50px' }}
+                onClick={() => {
+                  setImage(value)
+                  setVisible(true)
+                }}
+              />
+            )
+          )
+        },
+      },
+    },
+    {
+      name: 'isverified',
+      label: 'Verified',
+      options: {
+        sort: false,
+        filter: false,
+        customBodyRender: (value) => {
+          return (
+            <span className={`badge bg-${value ? 'success' : 'danger'}`}>
+              {value ? 'Verified' : 'Not Verified'}
+            </span>
           )
         },
       },

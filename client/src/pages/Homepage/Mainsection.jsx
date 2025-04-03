@@ -4,9 +4,11 @@ import SplitText from "../../components/SplitText";
 import { useSpring, animated } from "@react-spring/web";
 import "./mainsection.css";
 import Fade from "../../components/animation";
+import { useNavigate } from "react-router-dom";
 const Mainsection = () => {
+  const navigate = useNavigate();
   const appSetting = useSelector((state) => state.theme.theme);
-  
+
   return (
     <div
       className="mainsection"
@@ -41,7 +43,10 @@ const Mainsection = () => {
         </div>
         <div className="mainsection-button">
           <Fade>
-          <button className="mainsection-button-services zen-dots btn-4">
+            <button
+              onClick={() => navigate("/services")}
+              className="mainsection-button-services no-select zen-dots btn-4"
+            >
               <span>SERVICES</span>
             </button>
           </Fade>

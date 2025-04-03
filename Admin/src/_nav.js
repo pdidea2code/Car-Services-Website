@@ -76,13 +76,11 @@ const _nav = [
         component: CNavItem,
         name: 'Faq',
         to: '/faq',
-        
       },
       {
         component: CNavItem,
         name: 'App Setting',
         to: '/appsetting',
-
       },
       {
         component: CNavItem,

@@ -11,11 +11,16 @@ module.exports = async function (req, res, next) {
   if (!token) return queryErrorRelatedResponse(res, 402, "Access Denied.");
   try {
     const verified = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    
     let user = await User.findOne({ _id: verified._id });
-    
     if (!user) {
       return queryErrorRelatedResponse(res, 402, "Access Denied.");
+    }
+    if (user.status === false) {
+      return queryErrorRelatedResponse(
+        res,
+        403,
+        "User is blocked please contact admin"
+      );
     }
     req.user = user;
     req.token = token;

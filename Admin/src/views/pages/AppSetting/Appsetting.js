@@ -54,6 +54,7 @@ const Appsetting = () => {
         setValue('smtp_mail', res.data.info.smtp_mail)
         setValue('smtp_password', res.data.info.smtp_password)
         setValue('smtp_service', res.data.info.smtp_service)
+        setValue('google_client_id', res.data.info.google_client_id)
       }
     } catch (error) {
       console.error(error)
@@ -245,12 +246,28 @@ const Appsetting = () => {
                     type="text"
                     label="Google Map API Key"
                     name="google_map_api_key"
-                    {...register('google_map_api_key', { required: 'Google Map API Key is required' })}
+                    {...register('google_map_api_key', {
+                      required: 'Google Map API Key is required',
+                    })}
                     invalid={!!errors.google_map_api_key}
                   />
                   {errors.google_map_api_key && (
                     <CFormFeedback className="text-danger">
                       {errors.google_map_api_key.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={12} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Google Client ID"
+                    name="google_client_id"
+                    {...register('google_client_id', { required: 'Google Client ID is required' })}
+                    invalid={!!errors.google_client_id}
+                  />
+                  {errors.google_client_id && (
+                    <CFormFeedback className="text-danger">
+                      {errors.google_client_id.message}
                     </CFormFeedback>
                   )}
                 </CCol>
@@ -273,14 +290,14 @@ const Appsetting = () => {
                     type="text"
                     label="SMTP Password"
                     name="smtp_password"
-                    {...register('smtp_password', { required: 'SMTP Password is required' })} 
+                    {...register('smtp_password', { required: 'SMTP Password is required' })}
                     invalid={!!errors.smtp_password}
                   />
                   {errors.smtp_password && (
                     <CFormFeedback className="text-danger">
                       {errors.smtp_password.message}
                     </CFormFeedback>
-                  )}    
+                  )}
                 </CCol>
                 <CCol xl={4} md={12}>
                   <CFormInput

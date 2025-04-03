@@ -1,5 +1,8 @@
 const AppSetting = require("../../models/AppSetting");
-const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
+const {
+  successResponse,
+  queryErrorRelatedResponse,
+} = require("../../helper/sendResponse");
 const deleteFiles = require("../../helper/deleteFiles");
 
 const addAppSetting = async (req, res, next) => {
@@ -21,6 +24,7 @@ const addAppSetting = async (req, res, next) => {
       smtp_mail: req.body.smtp_mail,
       smtp_password: req.body.smtp_password,
       smtp_service: req.body.smtp_service,
+      google_client_id: req.body.google_client_id,
     });
     successResponse(res, appSetting);
   } catch (error) {
@@ -35,18 +39,45 @@ const editAppSetting = async (req, res, next) => {
       return queryErrorRelatedResponse(res, 404, "App setting not found");
     }
     appSetting.name = req.body.name ? req.body.name : appSetting.name;
-    appSetting.currency = req.body.currency ? req.body.currency : appSetting.currency;
-    appSetting.currency_symbol = req.body.currency_symbol ? req.body.currency_symbol : appSetting.currency_symbol;
-    appSetting.workinghours = req.body.workinghours ? req.body.workinghours : appSetting.workinghours;
-    appSetting.facebook = req.body.facebook ? req.body.facebook : appSetting.facebook;
-    appSetting.instagram = req.body.instagram ? req.body.instagram : appSetting.instagram;
-    appSetting.twitter = req.body.twitter ? req.body.twitter : appSetting.twitter;
-    appSetting.youtube = req.body.youtube ? req.body.youtube : appSetting.youtube;
-    appSetting.copyright = req.body.copyright ? req.body.copyright : appSetting.copyright;
-    appSetting.google_map_api_key = req.body.google_map_api_key ? req.body.google_map_api_key : appSetting.google_map_api_key;
-    appSetting.smtp_mail = req.body.smtp_mail ? req.body.smtp_mail : appSetting.smtp_mail;  
-    appSetting.smtp_password = req.body.smtp_password ? req.body.smtp_password : appSetting.smtp_password;  
-    appSetting.smtp_service = req.body.smtp_service ? req.body.smtp_service : appSetting.smtp_service;  
+    appSetting.currency = req.body.currency
+      ? req.body.currency
+      : appSetting.currency;
+    appSetting.currency_symbol = req.body.currency_symbol
+      ? req.body.currency_symbol
+      : appSetting.currency_symbol;
+    appSetting.workinghours = req.body.workinghours
+      ? req.body.workinghours
+      : appSetting.workinghours;
+    appSetting.facebook = req.body.facebook
+      ? req.body.facebook
+      : appSetting.facebook;
+    appSetting.instagram = req.body.instagram
+      ? req.body.instagram
+      : appSetting.instagram;
+    appSetting.twitter = req.body.twitter
+      ? req.body.twitter
+      : appSetting.twitter;
+    appSetting.youtube = req.body.youtube
+      ? req.body.youtube
+      : appSetting.youtube;
+    appSetting.copyright = req.body.copyright
+      ? req.body.copyright
+      : appSetting.copyright;
+    appSetting.google_map_api_key = req.body.google_map_api_key
+      ? req.body.google_map_api_key
+      : appSetting.google_map_api_key;
+    appSetting.smtp_mail = req.body.smtp_mail
+      ? req.body.smtp_mail
+      : appSetting.smtp_mail;
+    appSetting.smtp_password = req.body.smtp_password
+      ? req.body.smtp_password
+      : appSetting.smtp_password;
+    appSetting.smtp_service = req.body.smtp_service
+      ? req.body.smtp_service
+      : appSetting.smtp_service;
+    appSetting.google_client_id = req.body.google_client_id
+      ? req.body.google_client_id
+      : appSetting.google_client_id;
 
     if (req?.files?.logo && req?.files?.logo[0]?.filename) {
       if (appSetting.logo) {
@@ -79,12 +110,14 @@ const getAppSetting = async (req, res, next) => {
     if (!appSetting) {
       return queryErrorRelatedResponse(res, 404, "App setting not found");
     }
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.APPSETTING_IMAGE_URL;
+    const protocol = req.headers["x-forwarded-proto"] || req.protocol;
+
+    const baseUrl =
+      protocol + "://" + req.get("host") + process.env.APPSETTING_IMAGE_URL;
     appSetting.logo = baseUrl + "/" + appSetting.logo;
     appSetting.footerlogo = baseUrl + "/" + appSetting.footerlogo;
     appSetting.favicon = baseUrl + "/" + appSetting.favicon;
     successResponse(res, appSetting);
-
   } catch (error) {
     next(error);
   }

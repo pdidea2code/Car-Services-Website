@@ -4,17 +4,16 @@ import 'react-quill/dist/quill.snow.css'
 import { useForm, Controller } from 'react-hook-form'
 
 const base64ToBlob = (base64, mimeType = 'image/jpeg') => {
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length);
-    
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-  
-    const byteArray = new Uint8Array(byteNumbers);
-    return new Blob([byteArray], { type: mimeType });
-  };
-  
+  const byteCharacters = atob(base64)
+  const byteNumbers = new Array(byteCharacters.length)
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i)
+  }
+
+  const byteArray = new Uint8Array(byteNumbers)
+  return new Blob([byteArray], { type: mimeType })
+}
 
 const BlogForm = () => {
   const { register, handleSubmit, control, reset, setValue } = useForm()
@@ -38,20 +37,23 @@ const BlogForm = () => {
   }
 
   const toolbarOptions = [
-    [{ 'header': [1, 2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],  
-    ['blockquote', 'code-block'],  
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }],  
-    [{ 'script': 'sub' }, { 'script': 'super' }],  
-    [{ 'indent': '-1' }, { 'indent': '+1' }],  
-    [{ 'direction': 'rtl' }],  
-    [{ 'size': ['small', false, 'large', 'huge'] }],  
-    [{ 'color': ['#0E0821','#A120FE','#F7F5FC'] }, { 'background': ['#0E0821','#A120FE','#F7F5FC'] }],  
-    [{ 'font': [] }],  
-    [{ 'align': [] }],  
-    ['link', 'image', 'video'],  // Enable image and video upload
-    ['clean']  
-  ];
+    [{ header: [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote', 'code-block'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ script: 'sub' }, { script: 'super' }],
+    [{ indent: '-1' }, { indent: '+1' }],
+    [{ direction: 'rtl' }],
+    [{ size: ['small', false, 'large', 'huge'] }],
+    [
+      { color: ['#0E0821', '#A120FE', '#F7F5FC'] },
+      { background: ['#0E0821', '#A120FE', '#F7F5FC'] },
+    ],
+    [{ font: [] }],
+    [{ align: [] }],
+    ['link', 'image', 'video'], // Enable image and video upload
+    ['clean'],
+  ]
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,21 +70,21 @@ const BlogForm = () => {
         <div className="mb-4">
           <label className="block font-bold">Content</label>
           <div className="mb-4">
-          <label className="block font-bold">Content</label>
-          <Controller
-            name="content"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <ReactQuill
-                {...field}
-                theme="snow"
-                onChange={field.onChange}
-                modules={{ toolbar: toolbarOptions }}
-              />
-            )}
-          />
-        </div>
+            <label className="block font-bold">Content</label>
+            <Controller
+              name="content"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  theme="snow"
+                  onChange={field.onChange}
+                  modules={{ toolbar: toolbarOptions }}
+                />
+              )}
+            />
+          </div>
         </div>
 
         <button

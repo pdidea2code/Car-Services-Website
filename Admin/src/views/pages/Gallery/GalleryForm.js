@@ -67,7 +67,7 @@ const GalleryForm = () => {
         navigate('/gallery')
       }
     } catch (error) {
-      console.error(error)    
+      console.error(error)
       toast.error(error?.response?.data?.message)
     }
   }

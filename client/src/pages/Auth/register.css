@@ -1,0 +1,171 @@
+.register-page {
+  background-image: url("../../assets/image/background.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 555px;
+  margin-top: 60px;
+  margin-bottom: 60px;
+  background-color: var(--color1);
+  padding: 30px 20px 20px 20px;
+}
+
+.register-page-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color3);
+}
+
+.register-page-description {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color3);
+}
+.register-page-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 30px !important;
+}
+
+.register-page-form-input {
+  border-radius: 0px !important;
+  border: 0px solid var(--color3) !important;
+  padding: 15px 15px !important;
+  /* margin-bottom: 15px !important; */
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  background-color: var(--color3) !important;
+  color: var(--color1) !important;
+}
+
+.register-page-form-input:focus {
+  box-shadow: none !important;
+  border: 0px solid var(--color3) !important;
+}
+
+.register-page-form-input::placeholder {
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  background-color: var(--color3) !important;
+  color: var(--color1) !important;
+}
+
+.register-page-form-input-icon {
+  background-color: var(--color3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  /* margin-bottom: 15px; */
+  padding: 10px;
+}
+
+.register-page-form-button {
+  background-color: var(--color3);
+  color: var(--color1);
+  border: 0px solid var(--color3);
+  margin-top: 25px;
+  width: 220px;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 400;
+  background-color: var(--color2);
+  color: var(--color3);
+  border: 0px solid var(--color2);
+}
+
+.register-page-form-button-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color3);
+  margin-top: 10px;
+}
+
+.register-page-form-button-text-link {
+  color: var(--color2);
+  cursor: pointer;
+}
+
+.otp-verify-form {
+  margin-top: 30px;
+}
+.ant-otp-input::-webkit-inner-spin-button,
+.ant-otp-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ant-otp-input {
+  -moz-appearance: textfield;
+}
+
+.ant-otp-input {
+  background-color: var(--color2) !important;
+  color: var(--color3) !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  font-family: "k2d" !important;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 0px !important;
+  border: 0px solid var(--color2) !important;
+  margin-right: 20px !important;
+}
+.ant-otp-input:focus {
+  background-color: var(--color3) !important;
+  color: var(--color1) !important;
+  border: 1px solid var(--color2) !important;
+}
+
+.otp-countdown {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color3);
+  margin-top: 10px;
+  width: 100%;
+  text-align: end;
+  margin-right: 48%;
+}
+
+.otp-verify-button {
+  background-color: var(--color3);
+  color: var(--color1);
+  border: 0px solid var(--color3);
+  margin-top: 50px;
+  width: 220px;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 400;
+  background-color: var(--color2);
+  color: var(--color3);
+}
+
+@media (max-width: 576px) {
+  .register-page-container {
+    padding: 30px 5px 15px 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .register-page-title {
+    font-size: 18px;
+  }
+  .register-page-description {
+    font-size: 12px;
+  }
+  .register-page-form-button {
+    margin-top: 15px;
+  }
+}

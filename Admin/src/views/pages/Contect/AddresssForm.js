@@ -30,7 +30,7 @@ const AddressForm = () => {
     handleSubmit,
     formState: { errors },
     setValue,
-    watch
+    watch,
   } = useForm()
 
   const [map, setMap] = useState(null)
@@ -86,7 +86,7 @@ const AddressForm = () => {
         phone: data.phone,
         email: data.email,
         latitude: data.latitude,
-        longitude: data.longitude
+        longitude: data.longitude,
       }
 
       if (state) {
@@ -101,9 +101,8 @@ const AddressForm = () => {
       if (response.status === 200) {
         navigate('/address')
       }
-
     } catch (error) {
-      console.error(error)  
+      console.error(error)
       toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setIsLoading(false)
@@ -276,15 +275,17 @@ const AddressForm = () => {
                 </CCol>
 
                 <CCol xl={12} md={12}>
-                  {isLoading ? <CSpinner /> : (
+                  {isLoading ? (
+                    <CSpinner />
+                  ) : (
                     <LoadScriptNext googleMapsApiKey={googleMapApiKey}>
                       <GoogleMap
                         mapContainerStyle={mapContainerStyle}
                         center={marker || { lat: 0, lng: 0 }}
                         zoom={12}
                         onClick={handleMapClick}
-                      onLoad={onMapLoad}
-                    >
+                        onLoad={onMapLoad}
+                      >
                         {marker && <Marker position={marker} />}
                       </GoogleMap>
                     </LoadScriptNext>
@@ -292,7 +293,7 @@ const AddressForm = () => {
                 </CCol>
 
                 <CCol xl={12} md={12} className="text-center">
-                  <CButton disabled={isLoading} className='submit-button' type="submit">
+                  <CButton disabled={isLoading} className="submit-button" type="submit">
                     {isLoading ? <CSpinner /> : 'Submit'}
                   </CButton>
                 </CCol>

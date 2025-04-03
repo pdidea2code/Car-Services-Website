@@ -1,0 +1,108 @@
+import { Spinner } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import { getCartype } from "../../../API/Api";
+import { DropArrowIcon } from "../../../assets/icon/icons";
+const Cartype = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const {
+    serviceid,
+    cartype,
+    setCartype,
+    selectedDate,
+    selectedTime,
+    cartypeError,
+    setCartypeError,
+    setErrors,
+  } = useOutletContext();
+  const [cartypes, setCartypes] = useState([]);
+  const [showCartype, setShowCartype] = useState(false);
+  const [selectedCartype, setSelectedCartype] = useState(cartype);
+  const fetchCartype = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getCartype();
+      if (response.data.status === 200) {
+        setCartypes(response.data.info);
+      }
+    } catch (error) {
+      console.error("Failed to fetch cartype:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!selectedDate || !selectedTime) {
+      navigate("/booking/datetime");
+    }
+    if (!serviceid?.id) {
+      navigate("/booking/service");
+    }
+    fetchCartype();
+  }, []);
+
+  const handleCartypeClick = (cartype) => {
+    setSelectedCartype({ id: cartype._id, name: cartype.name });
+    setCartype({ id: cartype._id, name: cartype.name });
+    setShowCartype(false);
+    setErrors(null);
+    setCartypeError(null);
+  };
+
+  return (
+    <>
+      {isLoading ? (
+        <div className="d-flex justify-content-center align-items-center py-5">
+          <Spinner animation="border" style={{ color: "var(--color2)" }} />
+        </div>
+      ) : (
+        <>
+          <div className="booking-service-title zen-dots">Select Car Type</div>
+          <div
+            className="booking-service-drop-container d-flex justify-content-between"
+            onClick={() => setShowCartype(!showCartype)}
+          >
+            <span className="k2d zen-dots">
+              {selectedCartype?.name || "Car Type"}
+            </span>
+            <div className={`drop-arrow-icon ${showCartype ? "active" : ""}`}>
+              <DropArrowIcon className="DropArrowIcon" />
+            </div>
+          </div>{" "}
+          {showCartype && (
+            <div className="time-slots-dropdown">
+              {cartypes.length > 0 ? (
+                cartypes.map((item, index) => (
+                  <div
+                    key={index}
+                    className="time-slot-item"
+                    onClick={() => handleCartypeClick(item)}
+                    style={{ padding: "10px", cursor: "pointer" }}
+                  >
+                    {item.name}
+                    <div className="time-slot-item-icon">
+                      {selectedCartype?.id === item._id && (
+                        <div className="time-slot-item-icon-check"></div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div style={{ padding: "10px" }}>Car Type not found</div>
+              )}
+            </div>
+          )}
+          {cartypeError && (
+            <div className="d-flex justify-content-center align-items-center">
+              <span className="text-danger k2d">{cartypeError}</span>
+            </div>
+          )}
+        </>
+      )}
+    </>
+  );
+};
+
+export default Cartype;

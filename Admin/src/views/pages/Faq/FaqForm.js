@@ -2,21 +2,38 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { CRow, CCol, CCard, CCardHeader, CCardTitle, CCardBody, CForm, CFormInput, CFormFeedback, CFormTextarea, CButton, CSpinner } from '@coreui/react'
-import { useEffect, useState } from 'react'   
+import {
+  CRow,
+  CCol,
+  CCard,
+  CCardHeader,
+  CCardTitle,
+  CCardBody,
+  CForm,
+  CFormInput,
+  CFormFeedback,
+  CFormTextarea,
+  CButton,
+  CSpinner,
+} from '@coreui/react'
+import { useEffect, useState } from 'react'
 import { addFaqApi, editFaqApi } from '../../../redux/api/api'
 
 const FaqForm = () => {
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm()
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const { state } = useLocation()
- 
+
   const onSubmit = async (data) => {
     try {
       setIsLoading(true)
       const requestData = {
-      
         question: data.question,
         answer: data.answer,
       }
@@ -30,11 +47,11 @@ const FaqForm = () => {
         navigate('/faq')
       }
     } catch (error) {
-      console.error(error)  
+      console.error(error)
       toast.error(error?.response?.data?.message)
     } finally {
       setIsLoading(false)
-            }
+    }
   }
   useEffect(() => {
     if (state) {
@@ -66,7 +83,7 @@ const FaqForm = () => {
                       {errors.question.message}
                     </CFormFeedback>
                   )}
-                </CCol> 
+                </CCol>
                 <CCol xl={12} md={12}>
                   <CFormTextarea
                     type="text"
@@ -81,7 +98,7 @@ const FaqForm = () => {
                       {errors.answer.message}
                     </CFormFeedback>
                   )}
-                </CCol> 
+                </CCol>
                 <CCol xl={12} md={12} className="text-center">
                   <CButton type="submit" className="submit-button">
                     {isLoading ? <CSpinner /> : 'Submit'}

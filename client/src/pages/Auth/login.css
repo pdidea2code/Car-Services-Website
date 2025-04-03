@@ -1,0 +1,123 @@
+.login-page-container {
+  background-image: url("../../assets/image/background.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.login-page {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color1);
+  max-width: 555px;
+  width: 100%;
+  margin: 60px 0;
+  padding: 30px 20px 20px 20px;
+}
+.login-page-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color3);
+  text-align: center;
+}
+.login-page-description {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color3);
+  text-align: center;
+}
+
+.login-page-form {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-remember .form-check-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color3);
+}
+
+.login-remember .form-check-input {
+  width: 15px !important;
+  height: 15px !important;
+  background-color: var(--color3) !important;
+  border-radius: 0px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.login-remember .form-check-input:checked {
+  background-color: var(--color2) !important;
+  border-color: var(--color2) !important;
+}
+
+.login-forgot-password {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  color: var(--color2);
+  cursor: pointer;
+}
+
+.login-page-google-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 220px !important;
+  background-color: var(--color1) !important;
+  color: var(--color3);
+  border: 1px solid var(--color2) !important;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.login-page-google-button-container {
+  display: flex;
+  align-items: center;
+  margin-top: 60px;
+  justify-content: center;
+  gap: 17px;
+  width: 100%;
+  flex-direction: column;
+}
+
+.login-button-or {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color3);
+  text-align: center;
+  width: 100%;
+  max-width: 220px;
+  background-color: var(--color2);
+  border: 1px solid var(--color2);
+  padding: 15px 20px;
+  cursor: pointer;
+}
+
+.login-button-or-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color3);
+  text-align: center;
+}
+
+.login-page-register-link {
+  color: var(--color2);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .login-page {
+    margin: 20px 0;
+    padding: 30px 10px 15px 10px;
+  }
+  .login-page-google-button-container {
+    margin-top: 50px;
+  }
+}

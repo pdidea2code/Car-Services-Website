@@ -11,19 +11,18 @@ const Faq = () => {
   const [faq, setFaq] = useState([]);
   const handleClick = (id) => {
     setActive(id);
-    if(id === active){
+    if (id === active) {
       setActive("");
     }
   };
   const fetchFaq = async () => {
     try {
       const response = await getAllFaq();
-      if(response.status === 200){
-        console.log(response.data.info);
+      if (response.status === 200) {
         setFaq(response.data.info);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -53,27 +52,46 @@ const Faq = () => {
         <Row className="faq-row2">
           <Col className="d-flex justify-content-center align-items-center">
             <div className="accordion-items">
-                {faq.map((item,index) => (
-              <div className={`accordion-item-div ${active === index ? "active" : ""}`} onClick={() => handleClick(index)}>
-                <div className="accordion-item-div-inner">
-                  <div className={`accordion-item-header ${active === index ? "active" : ""}`}>
-                        <span className="zen-dots">{item.question}</span>
-                  </div>
-                  <div className={`accordion-item-body ${active === index ? "active" : ""}`}>
-                    
+              {faq.map((item, index) => (
+                <div
+                  className={`accordion-item-div ${
+                    active === index ? "active" : ""
+                  }`}
+                  onClick={() => handleClick(index)}
+                >
+                  <div className="accordion-item-div-inner">
+                    <div
+                      className={`accordion-item-header ${
+                        active === index ? "active" : ""
+                      }`}
+                    >
+                      <span className="zen-dots">{item.question}</span>
+                    </div>
+                    <div
+                      className={`accordion-item-body ${
+                        active === index ? "active" : ""
+                      }`}
+                    >
                       <span className="accordion-item-answer k2d">
                         {item.answer}
                       </span>
-                    
+                    </div>
+                  </div>
+                  <div className="accordion-item-icon">
+                    <div
+                      className={`accordion-item-icon-div ${
+                        active === index ? "active" : ""
+                      }`}
+                    >
+                      <RoundArrowIcon
+                        className={`RoundArrowIcon ${
+                          active === index ? "active" : ""
+                        }`}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="accordion-item-icon">
-                  <div className={`accordion-item-icon-div ${active === index ? "active" : ""}`}>
-                    <RoundArrowIcon className={`RoundArrowIcon ${active === index ? "active" : ""}`} />
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
             </div>
           </Col>
         </Row>

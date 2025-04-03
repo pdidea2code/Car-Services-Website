@@ -1,25 +1,30 @@
 @font-face {
-  font-family: 'Zen Dots';
-  src: url('./assets/fonts/ZenDots-Regular.ttf') format('truetype');
+  font-family: "Zen Dots";
+  src: url("./assets/fonts/ZenDots-Regular.ttf") format("truetype");
   font-weight: normal;
 }
 
 @font-face {
-  font-family: 'k2d';
-  src: url('./assets/fonts/K2D-Regular.ttf') format('truetype');
+  font-family: "k2d";
+  src: url("./assets/fonts/K2D-Regular.ttf") format("truetype");
   font-weight: normal;
 }
 
-
 .zen-dots {
-  font-family: 'Zen Dots', cursive !important;
+  font-family: "Zen Dots", cursive !important;
 }
 
 .k2d {
-  font-family: 'k2d', cursive !important;
+  font-family: "k2d", cursive !important;
+}
+.no-select {
+  user-select: none; /* Standard */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
 }
 
-html body{
+html body {
   margin: 0;
   padding: 0;
 }

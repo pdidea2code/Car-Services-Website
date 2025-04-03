@@ -121,17 +121,23 @@
   gap: 30px;
 }
 .blog-row2-col2-d1{
-  border: 1px solid var(--color2);
+  border: 1px solid var(--color1);
   height: 262px;
   display: flex;
   flex-direction: row;
-  
-
+  transition: all 0.3s ease;
+}
+.blog-row2-col2-d1:hover{
+  border: 1px solid var(--color2);
 }
 
 .blog-row2-col2-d2{
   height: 262px;
   border: 1px solid var(--color2);  
+  transition: all 0.3s ease;
+}
+.blog-row2-col2-d2:hover{
+  border: 1px solid var(--color1);
 }
 
 .blog-row2-col2-d1-img{

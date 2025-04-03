@@ -1,4 +1,4 @@
-export const MAIN_URL = 'http://localhost:5800'
+export const MAIN_URL = process.env.REACT_APP_API_URL
 /* ---------------------------- ALL Auth API ---------------------------- */
 
 export const LOGIN_API = '/api/admin/auth/login'
@@ -24,6 +24,7 @@ export const DELETE_SHOWCASE_API = '/api/admin/showcase/deleteshowcase'
 export const GET_ALL_SERVICE_API = '/api/admin/service/allservice'
 export const ADD_SERVICE_API = '/api/admin/service/addservice'
 export const EDIT_SERVICE_API = '/api/admin/service/editservice'
+export const SOFT_DELETE_SERVICE_API = '/api/admin/service/softdeleteservice'
 /* ---------------------------- END Service API ---------------------------- */
 /* ---------------------------- Addons API ---------------------------- */
 export const GET_ALL_ADDONS_API = '/api/admin/addons/getalladdons'

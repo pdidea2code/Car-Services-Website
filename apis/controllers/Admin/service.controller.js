@@ -1,6 +1,10 @@
 const Service = require("../../models/Service");
-const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
+const {
+  successResponse,
+  queryErrorRelatedResponse,
+} = require("../../helper/sendResponse");
 const deleteFiles = require("../../helper/deleteFiles");
+const Addon = require("../../models/Addons");
 
 const addService = async (req, res, next) => {
   try {
@@ -32,15 +36,21 @@ const editService = async (req, res, next) => {
     }
     service.name = req.body.name ? req.body.name : service.name;
     service.title = req.body.title ? req.body.title : service.title;
-    service.description = req.body.description ? req.body.description : service.description;
+    service.description = req.body.description
+      ? req.body.description
+      : service.description;
     service.price = req.body.price ? req.body.price : service.price;
     service.time = req.body.time ? req.body.time : service.time;
     service.include = req.body.include ? req.body.include : service.include;
-    service.whyChooseqTitle = req.body.whyChooseqTitle ? req.body.whyChooseqTitle : service.whyChooseqTitle;
+    service.whyChooseqTitle = req.body.whyChooseqTitle
+      ? req.body.whyChooseqTitle
+      : service.whyChooseqTitle;
     service.whyChooseqDescription = req.body.whyChooseqDescription
       ? req.body.whyChooseqDescription
       : service.whyChooseqDescription;
-    service.whyChooseqinclude = req.body.whyChooseqinclude ? req.body.whyChooseqinclude : service.whyChooseqinclude;
+    service.whyChooseqinclude = req.body.whyChooseqinclude
+      ? req.body.whyChooseqinclude
+      : service.whyChooseqinclude;
     if (req.files?.image && req.files?.image[0]?.filename) {
       if (service.image) {
         deleteFiles(process.env.SERVICE_PATH + service.image);
@@ -71,12 +81,15 @@ const editService = async (req, res, next) => {
 const getAllService = async (req, res, next) => {
   try {
     const service = await Service.find();
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
+    const baseUrl =
+      req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
     const serviceData = service.map((item) => {
       return {
         ...item.toObject(),
         image: item.image ? baseUrl + item.image : null,
-        whyChooseqImage: item.whyChooseqImage ? baseUrl + item.whyChooseqImage : null,
+        whyChooseqImage: item.whyChooseqImage
+          ? baseUrl + item.whyChooseqImage
+          : null,
         iconimage: item.iconimage ? baseUrl + item.iconimage : null,
       };
     });
@@ -86,4 +99,30 @@ const getAllService = async (req, res, next) => {
   }
 };
 
-module.exports = { addService, editService, getAllService };
+const softDeleteService = async (req, res, next) => {
+  try {
+    const service = await Service.findOne({ _id: req.body.id });
+    if (!service) {
+      return queryErrorRelatedResponse(res, "Service not found");
+    }
+    const addons = await Addon.find({ serviceid: service._id });
+    if (addons.length > 0) {
+      await Promise.all(
+        addons.map(async (addon) => {
+          await Addon.softDelete(addon._id);
+        })
+      );
+    }
+    await Service.softDelete(req.body.id);
+    successResponse(res, "Service deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  addService,
+  editService,
+  getAllService,
+  softDeleteService,
+};

@@ -44,21 +44,19 @@ const UserTheme = () => {
             setValue('theme', theme._id)
           }
         })
-
       }
       setIsLoading(false)
     } catch (error) {
       console.error(error)
       setIsLoading(false)
     }
-    
   }
   const onSubmit = async (data) => {
     setIsSubmitLoading(true)
     try {
-        const req={
-            id:data.theme,
-        }
+      const req = {
+        id: data.theme,
+      }
       const response = await setActiveUserThemeApi(req)
       if (response.status === 200) {
         toast.success('Theme updated successfully')
@@ -77,63 +75,86 @@ const UserTheme = () => {
   }, [])
   return (
     <div>
-        <ToastContainer />
+      <ToastContainer />
       {isLoading ? (
         <CSpinner />
       ) : (
         <>
-          
           <CRow>
-        <CCol lg={12} md={12} sm={12}>
-          <CCard>
-            <CCardHeader>
-              <CCardTitle>User Theme</CCardTitle>
-            </CCardHeader>
-            <CCardBody>
-            <div className="right-text">
-            <Button
-              className="add-button"
-              variant="contained"
-              onClick={() => navigate('/usertheme/form')}
-            >
-              Add Theme
-            </Button>
-          </div>
-              <CForm className="row g-3" onSubmit={handleSubmit(onSubmit)}>
-                {userTheme.map((theme) => (
-                  <CCol
-                    lg={4}
-                    md={12}
-                    sm={12}
-                    style={{ backgroundColor: watch('theme') === theme._id ? '#dcdcde' : '#fff', padding: '10px' }}
-                    onClick={() => setValue('theme', theme._id)}
-                  >
-                    <CFormCheck
-                      type="radio"
-                      name="theme"
-                      label={theme.name}
-                      value={theme._id}
-                      {...register('theme')}
-                      checked={theme._id === watch('theme')}
-                    />
-                    <div className="d-flex align-items-center">
-                      <div style={{ backgroundColor: theme.color1, borderRadius: '10px 0 0 10px', height: '50px', width: '33%' }}></div>
-                      <div style={{ backgroundColor: theme.color2, borderRadius: '0', height: '50px', width: '33%' }}></div>
-                      <div style={{ backgroundColor: theme.color3, borderRadius: '0 10px 10px 0', height: '50px', width: '33%' }}></div>
-                    </div>
-                  </CCol>
-                ))}
-                <CCol lg={12} md={12} sm={12} className="text-center">
-                  <CButton disabled={isSubmitLoading} type="submit" className="submit-button">
-                    {isSubmitLoading ? <CSpinner size="sm" /> : 'Submit'}
-                  </CButton>
-                </CCol>
-              </CForm>
-            </CCardBody>
-          </CCard>
+            <CCol lg={12} md={12} sm={12}>
+              <CCard>
+                <CCardHeader>
+                  <CCardTitle>User Theme</CCardTitle>
+                </CCardHeader>
+                <CCardBody>
+                  <div className="right-text">
+                    <Button
+                      className="add-button"
+                      variant="contained"
+                      onClick={() => navigate('/usertheme/form')}
+                    >
+                      Add Theme
+                    </Button>
+                  </div>
+                  <CForm className="row g-3" onSubmit={handleSubmit(onSubmit)}>
+                    {userTheme.map((theme, index) => (
+                      <CCol
+                        key={index}
+                        lg={4}
+                        md={12}
+                        sm={12}
+                        style={{
+                          backgroundColor: watch('theme') === theme._id ? '#dcdcde' : '#fff',
+                          padding: '10px',
+                        }}
+                        onClick={() => setValue('theme', theme._id)}
+                      >
+                        <CFormCheck
+                          type="radio"
+                          name="theme"
+                          label={theme.name}
+                          value={theme._id}
+                          {...register('theme')}
+                          checked={theme._id === watch('theme')}
+                        />
+                        <div className="d-flex align-items-center">
+                          <div
+                            style={{
+                              backgroundColor: theme.color1,
+                              borderRadius: '10px 0 0 10px',
+                              height: '50px',
+                              width: '33%',
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              backgroundColor: theme.color2,
+                              borderRadius: '0',
+                              height: '50px',
+                              width: '33%',
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              backgroundColor: theme.color3,
+                              borderRadius: '0 10px 10px 0',
+                              height: '50px',
+                              width: '33%',
+                            }}
+                          ></div>
+                        </div>
+                      </CCol>
+                    ))}
+                    <CCol lg={12} md={12} sm={12} className="text-center">
+                      <CButton disabled={isSubmitLoading} type="submit" className="submit-button">
+                        {isSubmitLoading ? <CSpinner size="sm" /> : 'Submit'}
+                      </CButton>
+                    </CCol>
+                  </CForm>
+                </CCardBody>
+              </CCard>
             </CCol>
           </CRow>
-                
         </>
       )}
     </div>

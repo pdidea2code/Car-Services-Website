@@ -85,6 +85,7 @@ const ServiceForm = () => {
         return
       }
       const filteredWhyChoose = data.whyChooseqinclude.filter((item) => item.trim() !== '')
+
       if (filteredWhyChoose.length === 0) {
         setError('whyChooseqinclude', {
           type: 'manual',
@@ -101,11 +102,11 @@ const ServiceForm = () => {
         } else if (key === 'whyChooseqImage') {
           formData.append(key, data[key][0])
         } else if (key === 'include') {
-          data[key].forEach((item) => {
+          filteredIncludes.forEach((item) => {
             formData.append(`include`, item)
           })
         } else if (key === 'whyChooseqinclude') {
-          data[key].forEach((item) => {
+          filteredWhyChoose.forEach((item) => {
             formData.append(`whyChooseqinclude`, item)
           })
         } else {
@@ -122,7 +123,6 @@ const ServiceForm = () => {
       if (response.status === 200) {
         navigate('/service')
       }
-
     } catch (error) {
       console.error(error)
       toast.error(error?.response?.data?.message)
@@ -253,7 +253,9 @@ const ServiceForm = () => {
                   )}
                 </CCol>
                 <CCol xl={12} md={12}>
-                  <CFormLabel>Service Icon<span className="text-danger">*only svg allowed</span></CFormLabel>
+                  <CFormLabel>
+                    Service Icon<span className="text-danger">*only svg allowed</span>
+                  </CFormLabel>
                   <CFormInput
                     type="file"
                     placeholder="Service Icon"

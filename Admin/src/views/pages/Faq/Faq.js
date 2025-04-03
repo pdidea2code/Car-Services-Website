@@ -29,19 +29,18 @@ const Faq = () => {
   }
   const handleChangeStatus = async (data) => {
     try {
-    
       const requestData = {
         id: data.id,
         status: data.status,
       }
       const res = await editFaqApi(requestData)
       if (res.status === 200) {
-        toast.success("Status updated successfully")
-        setFaq(faq.map((item) => item._id === data.id ? {...item, status: data.status} : item)) 
+        toast.success('Status updated successfully')
+        setFaq(faq.map((item) => (item._id === data.id ? { ...item, status: data.status } : item)))
       }
     } catch (error) {
-      console.error(error)    
-      toast.error(error?.response?.data?.message||"Something went wrong")
+      console.error(error)
+      toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setIsLoading(false)
     }
@@ -54,12 +53,12 @@ const Faq = () => {
       }
       const res = await deleteFaqApi(requestData)
       if (res.status === 200) {
-        toast.success("Faq deleted successfully")
-        setFaq(faq.filter((item) => item._id !== id))   
+        toast.success('Faq deleted successfully')
+        setFaq(faq.filter((item) => item._id !== id))
       }
     } catch (error) {
       console.error(error)
-      toast.error(error?.response?.data?.message||"Something went wrong")
+      toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setIsLoading(false)
     }
@@ -81,8 +80,13 @@ const Faq = () => {
       label: 'Status',
       options: {
         customBodyRender: (value, { rowIndex }) => {
-            const {status, _id} = faq[rowIndex]
-            return <Switch checked={status} onChange={(e) => handleChangeStatus({id: _id, status: !status})} />
+          const { status, _id } = faq[rowIndex]
+          return (
+            <Switch
+              checked={status}
+              onChange={(e) => handleChangeStatus({ id: _id, status: !status })}
+            />
+          )
         },
       },
     },
@@ -94,22 +98,28 @@ const Faq = () => {
         filter: false,
         customBodyRender: (value, { rowIndex }) => {
           const data = faq[rowIndex]
-          return(
+          return (
             <div className="d-flex gap-2">
-              <Button color="error" onClick={async () => {
-                const confirm = await swal({
-                  title: 'Are you sure?',
-                  text: 'You want to delete this faq?',
-                  icon: 'warning',
-                  buttons: true,
-                  dangerMode: true,
-                })  
-                if (confirm) {
-                  await handleDelete(data._id)
-                }
-              }}><Icons.DeleteRounded /></Button>
-              <Button className="editButton" onClick={() => navigate(`/faq/form`, {state: data})}><Icons.EditRounded /></Button>
-
+              <Button
+                color="error"
+                onClick={async () => {
+                  const confirm = await swal({
+                    title: 'Are you sure?',
+                    text: 'You want to delete this faq?',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  if (confirm) {
+                    await handleDelete(data._id)
+                  }
+                }}
+              >
+                <Icons.DeleteRounded />
+              </Button>
+              <Button className="editButton" onClick={() => navigate(`/faq/form`, { state: data })}>
+                <Icons.EditRounded />
+              </Button>
             </div>
           )
         },
@@ -117,31 +127,29 @@ const Faq = () => {
     },
   ]
   const options = {
- 
     selectableRows: 'none',
-   
   }
   return (
     <>
-    {isLoading ? (
-      <div className="d-flex justify-content-center">
-        <CSpinner className="theme-spinner-color" />
-      </div>
-    ) : (
-      <div>
-        <div className="right-text">
-          <Button
-            className="add-button"
-            variant="contained"
-            onClick={() => navigate('/faq/form')}
-          >
-            Add Faq
-          </Button>
+      {isLoading ? (
+        <div className="d-flex justify-content-center">
+          <CSpinner className="theme-spinner-color" />
         </div>
-        <ToastContainer />
-        <MUIDataTable title={'Faq'} data={faq} columns={columns} options={options} />
-      </div>
-    )}  
+      ) : (
+        <div>
+          <div className="right-text">
+            <Button
+              className="add-button"
+              variant="contained"
+              onClick={() => navigate('/faq/form')}
+            >
+              Add Faq
+            </Button>
+          </div>
+          <ToastContainer />
+          <MUIDataTable title={'Faq'} data={faq} columns={columns} options={options} />
+        </div>
+      )}
     </>
   )
 }

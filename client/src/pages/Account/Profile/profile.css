@@ -1,0 +1,103 @@
+.profile-page {
+  max-width: 555px;
+  margin: 0 auto;
+  padding: 30px 0;
+  background-color: var(--color1);
+  border-radius: 0px;
+  margin-top: 20px;
+}
+
+.profile-page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.profile-page-content-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color3);
+  text-align: center;
+}
+
+.profile-page-content-image {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+.profile-page-content-image-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-page-content-name-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color3);
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-page-content-email-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color3);
+  text-align: center;
+  margin-top: 5px;
+}
+
+.profile-page-content-button {
+  background-color: var(--color2);
+  color: var(--color3);
+  margin-top: 60px;
+  padding: 15px 20px;
+  border-radius: 0px;
+  border: none;
+  width: 100%;
+  max-width: 220px;
+  cursor: pointer;
+}
+
+.profile-page-edit-content-image {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  margin: 15px auto;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.profile-page-edit-content-image-button {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: var(--color3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid var(--color1);
+}
+
+.profile-page-edit-content-input {
+  width: 100%;
+  padding: 15px 15px !important;
+  border-radius: 0px !important;
+  border: 1px solid var(--color1) !important;
+  background-color: var(--color3) !important;
+  color: var(--color1) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.profile-page-edit-content-input::placeholder {
+  color: var(--color1) !important;
+}

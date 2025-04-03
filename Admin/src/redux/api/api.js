@@ -44,6 +44,7 @@ import {
   GET_ALL_USER_THEME_API,
   SET_ACTIVE_USER_THEME_API,
   ADD_USER_THEME_API,
+  SOFT_DELETE_SERVICE_API,
 } from '../../constant'
 import Cookies from 'js-cookie'
 axios.interceptors.response.use(
@@ -181,6 +182,12 @@ export const editServiceApi = async (data) =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+export const softDeleteServiceApi = async (data) =>
+  axios.post(MAIN_URL + SOFT_DELETE_SERVICE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
 /* ---------------------------- END Service API ---------------------------- */
 /* ---------------------------- Addons API ---------------------------- */
 export const getAllAddonsApi = async () =>
@@ -276,7 +283,7 @@ export const addBlogApi = async (data) =>
     },
   })
 export const getBlogByIdApi = async (data) =>
-  axios.post(MAIN_URL + GET_BLOG_BY_ID_API,data, {
+  axios.post(MAIN_URL + GET_BLOG_BY_ID_API, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },

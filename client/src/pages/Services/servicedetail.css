@@ -1,0 +1,235 @@
+.service-detail-page {
+  background: var(--color3);
+}
+.service-detail-row1 {
+  margin-top: 60px !important;
+}
+.service-detail-row2 {
+  gap: 30px;
+}
+.service-detail-title {
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--color1);
+}
+
+.service-detail-col1 {
+  flex: 0 0 auto;
+  height: 100%;
+  max-width: 750px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-detail-col2 {
+  flex: 0 0 auto;
+  height: 100%;
+  max-width: 360px !important;
+}
+
+.service-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-top: 20px;
+}
+
+.service-detail-title {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 20px;
+  color: var(--color1);
+}
+
+.service-detail-description {
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 10px;
+  color: var(--color1);
+}
+
+.service-detail-price-duration {
+  background-color: var(--color2);
+  color: var(--color3);
+  margin-top: 30px;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.service-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.service-detail-includes {
+  background-color: #0e082105;
+  color: var(--color1);
+
+  padding: 10px 15px;
+}
+
+.service-detail-includes-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color1);
+  margin-top: 20px;
+}
+.service-detail-includes-row {
+  display: flex;
+  margin-top: 20px !important;
+  padding-bottom: 30px;
+}
+
+.service-detail-includes-item-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px !important;
+}
+
+.service-detail-includes-item {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color1);
+}
+
+.service-detail-WhyChoose-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color1);
+  margin-top: 20px;
+}
+
+.service-detail-WhyChoose-description {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color1);
+  margin-top: 10px;
+}
+
+.service-detail-WhyChoose-row {
+  margin-top: 20px !important;
+}
+
+.service-detail-WhyChoose-image {
+  width: 100%;
+  object-fit: cover;
+}
+
+.service-detail-WhyChoose-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.service-detail-WhyChoose-item-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color1);
+}
+.service-detail-booking-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+  background-color: #0e082105;
+  padding: 20px;
+}
+
+.service-detail-booking-item1 {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color2);
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.service-detail-booking-item2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.service-detail-booking-item-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.service-detail-booking-button {
+  background-color: var(--color2);
+  color: var(--color3);
+  padding: 16px 20px;
+  border-radius: 0px;
+  max-width: 220px;
+  border: none;
+}
+
+.service-detail-col2-row1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  background-color: #0e082105;
+  padding: 18px;
+  cursor: pointer;
+}
+.service-detail-col2-row1-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color1);
+}
+
+.service-detail-col2-row1.active {
+  background-color: var(--color2);
+}
+.service-detail-col2-row1-title.active {
+  color: var(--color3);
+}
+
+.UpRightArrowIconinhomepageblack.active path {
+  fill: var(--color3);
+}
+
+@media (max-width: 992px) {
+  .service-detail-col1 {
+    max-width: 100% !important;
+  }
+  .service-detail-col2 {
+    max-width: 100% !important;
+  }
+  .service-detail-WhyChoose-image {
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-detail-row1 {
+    margin-top: 20px !important;
+  }
+  .service-detail-image {
+    margin-top: 10px;
+  }
+  .service-detail-price-duration {
+    margin-top: 15px;
+  }
+  .service-detail-includes-row {
+    padding-bottom: 20px;
+  }
+  .service-detail-WhyChoose-row {
+    margin-top: 15px !important;
+  }
+  .service-detail-booking-row {
+    margin-top: 0px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .service-detail-col2-row1 {
+    margin-top: 20px;
+  }
+}

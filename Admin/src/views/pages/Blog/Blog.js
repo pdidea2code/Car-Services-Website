@@ -1,9 +1,9 @@
-  import { getAllBlogApi,updateBlogStatusApi,deleteBlogApi } from "../../../redux/api/api"
-import { useState, useEffect } from "react"
-import { toast, ToastContainer } from "react-toastify"
+import { getAllBlogApi, updateBlogStatusApi, deleteBlogApi } from '../../../redux/api/api'
+import { useState, useEffect } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MUIDataTable from 'mui-datatables'
-import { Button,Switch,Tooltip } from "@mui/material"
+import { Button, Switch, Tooltip } from '@mui/material'
 import * as Icons from '@mui/icons-material'
 import swal from 'sweetalert'
 import { CSpinner } from '@coreui/react'
@@ -20,19 +20,18 @@ const Blog = () => {
       if (response.status === 200) {
         setBlog(response.data.info)
       }
-
     } catch (error) {
-      console.error(error)    
-      toast.error(error?.response?.data?.message||'Something went wrong')
+      console.error(error)
+      toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setIsLoading(false)
     }
-  } 
+  }
   const handleDeleteBlog = async (data) => {
     try {
       setIsLoading(true)
       const request = {
-        id: data._id
+        id: data._id,
       }
       const response = await deleteBlogApi(request)
       if (response.status === 200) {
@@ -40,27 +39,28 @@ const Blog = () => {
         setBlog(blog.filter((item) => item._id !== data._id))
       }
     } catch (error) {
-        console.error(error)
-      toast.error(error?.response?.data?.message||'Something went wrong')
+      console.error(error)
+      toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setIsLoading(false)
     }
   }
   const handleChangeStatus = async (data) => {
     try {
-  
-     const request={
-      id:data.id,
-      status:data.status
-     }
+      const request = {
+        id: data.id,
+        status: data.status,
+      }
       const response = await updateBlogStatusApi(request)
       if (response.status === 200) {
         toast.success('Status updated successfully')
-        setBlog(blog.map((item) => (item._id === data.id ? { ...item, status: data.status } : item)))
+        setBlog(
+          blog.map((item) => (item._id === data.id ? { ...item, status: data.status } : item)),
+        )
       }
     } catch (error) {
       console.error(error)
-      toast.error(error?.response?.data?.message||'Something went wrong')
+      toast.error(error?.response?.data?.message || 'Something went wrong')
     } finally {
       setIsLoading(false)
     }
@@ -83,8 +83,8 @@ const Blog = () => {
       options: {
         customBodyRender: (value) => {
           return <img src={value} alt="Blog" style={{ width: '100px', height: '100px' }} />
-        }
-      }
+        },
+      },
     },
     {
       name: 'createdAt',
@@ -92,18 +92,23 @@ const Blog = () => {
       options: {
         customBodyRender: (value) => {
           return <span>{new Date(value).toLocaleDateString()}</span>
-        }
-      }
+        },
+      },
     },
     {
       name: 'status',
       label: 'Status',
       options: {
-        customBodyRender: (value,{rowIndex}) => {
-          const {status,_id} = blog[rowIndex]
-          return <Switch checked={status} onChange={() => handleChangeStatus({id:_id,status:!status})} />
-        }
-      }
+        customBodyRender: (value, { rowIndex }) => {
+          const { status, _id } = blog[rowIndex]
+          return (
+            <Switch
+              checked={status}
+              onChange={() => handleChangeStatus({ id: _id, status: !status })}
+            />
+          )
+        },
+      },
     },
     {
       name: 'action',
@@ -111,32 +116,45 @@ const Blog = () => {
       options: {
         filter: false,
         sort: false,
-        customBodyRender: (value,{rowIndex}) => {
+        customBodyRender: (value, { rowIndex }) => {
           const data = blog[rowIndex]
-          return <div className="d-flex gap-2">
-            <Button className="w-fit" color="error" onClick={async () => {
-              const confirm = await swal({
-                title: 'Are you sure?',
-                text: 'You want to delete this blog?',
-                icon: 'warning',
-                buttons: true,
-                dangerMode: true,
-              })
-              if (confirm) {
-                await handleDeleteBlog(data)
-              }
-            }}><Icons.DeleteRounded /></Button>
-            <Button className="editButton" onClick={() => navigate('/blog/form', { state: data })}><Icons.EditRounded /></Button>
-          </div>
-        }
-      }
-    }
+          return (
+            <div className="d-flex gap-2">
+              <Button
+                className="w-fit"
+                color="error"
+                onClick={async () => {
+                  const confirm = await swal({
+                    title: 'Are you sure?',
+                    text: 'You want to delete this blog?',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  if (confirm) {
+                    await handleDeleteBlog(data)
+                  }
+                }}
+              >
+                <Icons.DeleteRounded />
+              </Button>
+              <Button
+                className="editButton"
+                onClick={() => navigate('/blog/form', { state: data })}
+              >
+                <Icons.EditRounded />
+              </Button>
+            </div>
+          )
+        },
+      },
+    },
   ]
 
   const options = {
     selectableRows: 'none',
   }
-  
+
   return (
     <>
       {isLoading ? (

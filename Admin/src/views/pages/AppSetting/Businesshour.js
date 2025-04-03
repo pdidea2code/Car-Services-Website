@@ -12,12 +12,12 @@ const BusinessHour = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [businessHour, setBusinessHour] = useState([])
   const navigate = useNavigate()
-  
+
   const fetchBusinessHour = async () => {
     try {
       const response = await getAllBusinessHourApi()
-      if (response.status === 200) {    
-            setBusinessHour(response.data.info)
+      if (response.status === 200) {
+        setBusinessHour(response.data.info)
       }
     } catch (error) {
       console.error('Error fetching business hour:', error)
@@ -60,13 +60,20 @@ const BusinessHour = () => {
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const businessHours = businessHour[rowIndex]
-          return <span>
-            <Button className='editButton' onClick={() => navigate(`/businesshour/form`, { state: businessHours })}> <Icons.EditRounded /></Button>
-          </span>
+          return (
+            <span>
+              <Button
+                className="editButton"
+                onClick={() => navigate(`/businesshour/form`, { state: businessHours })}
+              >
+                {' '}
+                <Icons.EditRounded />
+              </Button>
+            </span>
+          )
         },
       },
     },
-    
   ]
   const options = {
     selectableRows: 'none',
@@ -79,7 +86,6 @@ const BusinessHour = () => {
         </div>
       ) : (
         <div>
-          
           <ToastContainer />
           <MUIDataTable
             title={'Business Hour'}
