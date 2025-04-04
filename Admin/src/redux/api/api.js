@@ -45,6 +45,12 @@ import {
   SET_ACTIVE_USER_THEME_API,
   ADD_USER_THEME_API,
   SOFT_DELETE_SERVICE_API,
+  GET_ALL_PROMOCODE_API,
+  ADD_PROMOCODE_API,
+  EDIT_PROMOCODE_API,
+  DELETE_PROMOCODE_API,
+  GET_ALL_ORDER_API,
+  UPDATE_ORDER_STATUS_API,
 } from '../../constant'
 import Cookies from 'js-cookie'
 axios.interceptors.response.use(
@@ -382,3 +388,43 @@ export const addUserThemeApi = async (data) =>
     },
   })
 /* ---------------------------- END User Theme API ---------------------------- */
+/* ---------------------------- Promocode API ---------------------------- */
+export const getAllPromocodeApi = async () =>
+  axios.get(MAIN_URL + GET_ALL_PROMOCODE_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const addPromocodeApi = async (data) =>
+  axios.post(MAIN_URL + ADD_PROMOCODE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const editPromocodeApi = async (data) =>
+  axios.post(MAIN_URL + EDIT_PROMOCODE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deletePromocodeApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_PROMOCODE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+/* ---------------------------- END Promocode API ---------------------------- */
+/* ---------------------------- Order API ---------------------------- */
+export const getAllOrdersApi = async () =>
+  axios.get(MAIN_URL + GET_ALL_ORDER_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const updateOrderStatusApi = async (data) =>
+  axios.post(MAIN_URL + UPDATE_ORDER_STATUS_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+/* ---------------------------- END Order API ---------------------------- */

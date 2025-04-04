@@ -22,7 +22,10 @@ const BusinessHour = React.lazy(() => import('./views/pages/AppSetting/Businessh
 const Businesshourfrom = React.lazy(() => import('./views/pages/AppSetting/Businesshourfrom'))
 const UserTheme = React.lazy(() => import('./views/pages/Theme/UserTheme'))
 const UserThemeForm = React.lazy(() => import('./views/pages/Theme/UserThemeForm'))
-
+const Promocode = React.lazy(() => import('./views/pages/Promocode/Promocode'))
+const PromocodeForm = React.lazy(() => import('./views/pages/Promocode/PromocodeFrom'))
+const Order = React.lazy(() => import('./views/pages/Order/Order'))
+const OrderView = React.lazy(() => import('./views/pages/Order/Orderview'))
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 // const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -97,7 +100,10 @@ const routes = [
   { path: '/businesshour/form', name: 'Business Hour Form', element: Businesshourfrom },
   { path: '/usertheme', name: 'User Theme', element: UserTheme },
   { path: '/usertheme/form', name: 'User Theme Form', element: UserThemeForm },
-
+  { path: '/promocode', name: 'Promocode', element: Promocode },
+  { path: '/promocode/form', name: 'Promocode Form', element: PromocodeForm },
+  { path: '/order', name: 'Order', element: Order },
+  { path: '/order/view', name: 'Order View', element: OrderView },
   // { path: '/theme', na me: 'Theme', element: Colors, exact: true },
   // { path: '/theme/colors', name: 'Colors', element: Colors },
   // { path: '/theme/typography', name: 'Typography', element: Typography },

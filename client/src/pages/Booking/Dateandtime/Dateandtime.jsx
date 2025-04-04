@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Spinner, Row, Col } from "react-bootstrap";
 import { CalendarIcon, DropArrowIcon } from "../../../assets/icon/icons";
 import Calendar from "react-calendar";
@@ -6,6 +6,9 @@ import "react-calendar/dist/Calendar.css";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import "./Dateandtime.css";
 import { getBusinessHour } from "../../../API/Api";
+import { memo } from "react";
+
+const cache = new Map();
 
 // Helper function to generate time slots
 const generateTimeSlots = (open, close, duration, isClosed) => {
@@ -41,9 +44,9 @@ const Dateandtime = () => {
   const {
     serviceid,
     selectedDate,
-    setSelectedDate, // From context
+    setSelectedDate,
     selectedTime,
-    setSelectedTime, // From context
+    setSelectedTime,
     setErrors,
   } = useOutletContext();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -53,20 +56,30 @@ const Dateandtime = () => {
   const [businessHour, setBusinessHour] = useState([]);
   const [error, setError] = useState({ time: null, date: null });
 
-  const fetchBusinessHour = async () => {
+  const fetchBusinessHour = useCallback(async () => {
+    setIsLoading(true);
     try {
-      const response = await getBusinessHour();
-      if (response.data.status === 200) {
-        setBusinessHour(response.data.info);
+      if (cache.has("businessHours")) {
+        setBusinessHour(cache.get("businessHours"));
+      } else {
+        const response = await getBusinessHour();
+        if (response.data.status === 200) {
+          setBusinessHour(response.data.info);
+          cache.set("businessHours", response.data.info);
+        } else {
+          throw new Error("Failed to fetch business hours");
+        }
       }
     } catch (error) {
-      console.error("Error fetching business hour:", error);
+      setError({ date: error.message || "Error fetching business hours" });
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchBusinessHour();
-  }, []);
+  }, [fetchBusinessHour]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -103,35 +116,56 @@ const Dateandtime = () => {
     }
   }, [selectedDateInfo, businessHour]);
 
-  const toggleCalendar = () => {
-    setIsCalendarOpen(!isCalendarOpen);
-  };
+  const toggleCalendar = useCallback(() => {
+    setIsCalendarOpen((prev) => !prev);
+  }, []);
 
-  const handleDateChange = (date) => {
-    const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
-    setSelectedDate(date); // Update parent state
-    setSelectedDateInfo({ date, dayName });
-    setSelectedTime(null); // Reset time when date changes
-    setIsCalendarOpen(false);
-    setError({ date: null, time: null });
-    setErrors(null);
-  };
+  const handleDateChange = useCallback(
+    (date) => {
+      try {
+        const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+        setSelectedDate(date);
+        setSelectedDateInfo({ date, dayName });
+        setSelectedTime(null);
+        setIsCalendarOpen(false);
+        setError({ date: null, time: null });
+        setErrors(null);
+      } catch (error) {
+        setError({ date: "Error selecting date" });
+      }
+    },
+    [setSelectedDate, setSelectedTime, setErrors]
+  );
 
-  const handleTimeSlotClick = (time) => {
-    setSelectedTime(time); // Update parent state
-    setError({ date: null, time: null });
-    setErrors(null);
-  };
+  const handleTimeSlotClick = useCallback(
+    (time) => {
+      try {
+        setSelectedTime(time);
+        setError({ date: null, time: null });
+        setErrors(null);
+      } catch (error) {
+        setError({ time: "Error selecting time" });
+      }
+    },
+    [setSelectedTime, setErrors]
+  );
 
-  const handleNext = () => {
-    if (!selectedDate) {
-      setError({ date: "Please select a date" });
-    } else if (!selectedTime) {
-      setError({ time: "Please select a time" });
-    } else {
+  const handleNext = useCallback(() => {
+    try {
+      if (!selectedDate) {
+        throw new Error("Please select a date");
+      }
+      if (!selectedTime) {
+        throw new Error("Please select a time");
+      }
       navigate("/booking/cartype");
+    } catch (error) {
+      setError({
+        date: error.message.includes("date") ? error.message : null,
+        time: error.message.includes("time") ? error.message : null,
+      });
     }
-  };
+  }, [selectedDate, selectedTime, navigate]);
 
   useEffect(() => {
     if (selectedDate && selectedTime) {
@@ -141,9 +175,8 @@ const Dateandtime = () => {
       });
       setIsCalendarOpen(false);
       setShowTime(false);
-      setSelectedTime(selectedTime);
     }
-  }, [selectedDate, selectedTime, navigate]);
+  }, [selectedDate, selectedTime]);
 
   return (
     <>
@@ -246,4 +279,4 @@ const Dateandtime = () => {
   );
 };
 
-export default Dateandtime;
+export default memo(Dateandtime);

@@ -14,6 +14,9 @@ import {
   CFormFeedback,
   CButton,
   CSpinner,
+  CInputGroup,
+  CInputGroupText,
+  CFormLabel,
 } from '@coreui/react'
 import { getAllAppSettingApi, editAppSettingApi } from '../../../redux/api/api'
 import { useState, useEffect } from 'react'
@@ -44,7 +47,7 @@ const Appsetting = () => {
         setValue('name', res.data.info.name)
         setValue('currency', res.data.info.currency)
         setValue('currency_symbol', res.data.info.currency_symbol)
-        setValue('workinghours', res.data.info.workinghours)
+        // setValue('workinghours', res.data.info.workinghours)
         setValue('copyright', res.data.info.copyright)
         setValue('facebook', res.data.info.facebook)
         setValue('instagram', res.data.info.instagram)
@@ -55,6 +58,7 @@ const Appsetting = () => {
         setValue('smtp_password', res.data.info.smtp_password)
         setValue('smtp_service', res.data.info.smtp_service)
         setValue('google_client_id', res.data.info.google_client_id)
+        setValue('service_tax', res.data.info.service_tax)
       }
     } catch (error) {
       console.error(error)
@@ -164,7 +168,24 @@ const Appsetting = () => {
                     </CFormFeedback>
                   )}
                 </CCol>
-                <CCol xl={12} md={12}>
+                <CCol xl={6} md={12}>
+                  <CFormLabel>Service Tax</CFormLabel>
+                  <CInputGroup>
+                    <CFormInput
+                      type="number"
+                      name="service_tax"
+                      {...register('service_tax', { required: 'Service Tax is required' })}
+                      invalid={!!errors.service_tax}
+                    />
+                    <CInputGroupText>%</CInputGroupText>
+                  </CInputGroup>
+                  {errors.service_tax && (
+                    <CFormFeedback className="text-danger">
+                      {errors.service_tax.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                {/* <CCol xl={12} md={12}>
                   <CFormTextarea
                     label="Working Hours"
                     name="workingHours"
@@ -176,7 +197,7 @@ const Appsetting = () => {
                       {errors.workinghours.message}
                     </CFormFeedback>
                   )}
-                </CCol>
+                </CCol>*/}
                 <CCol xl={12} md={12}>
                   <CFormInput
                     type="text"

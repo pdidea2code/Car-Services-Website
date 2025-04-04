@@ -86,7 +86,7 @@
   color: var(--color1);
   padding: 17px 8px !important;
   background-color: var(--color3);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 500;
 }
 .order-form-checkbox .form-check-input {
@@ -120,5 +120,8 @@
   }
   .booking-container-row {
     gap: 20px;
+  }
+  .order-form-title {
+    font-size: 18px;
   }
 }

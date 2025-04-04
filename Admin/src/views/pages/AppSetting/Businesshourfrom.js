@@ -20,6 +20,7 @@ import {
 } from '@coreui/react'
 import { useForm } from 'react-hook-form'
 import { editBusinessHourApi } from '../../../redux/api/api'
+
 const Businesshourform = () => {
   const { state } = useLocation()
   const navigate = useNavigate()
@@ -30,7 +31,14 @@ const Businesshourform = () => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      day: '',
+      status: '',
+      open: '',
+      close: '',
+    },
+  })
 
   const onSubmit = async (data) => {
     setIsLoading(true)
@@ -49,7 +57,10 @@ const Businesshourform = () => {
       }
     } catch (error) {
       console.error('Error:', error)
-      toast.error(error?.response?.data?.message || 'Failed to add business hour')
+      const errorMessage =
+        error?.response?.data?.message ||
+        (error.request ? 'Network error occurred' : 'An unexpected error occurred')
+      toast.error(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -62,13 +73,14 @@ const Businesshourform = () => {
       setValue('open', state.open)
       setValue('close', state.close)
     }
-  }, [state, setValue]) // Added setValue in the dependency array
+  }, [state, setValue])
 
   useEffect(() => {
     if (!state) {
       navigate(-1)
     }
-  }, [])
+  }, [state, navigate])
+
   return (
     <div>
       <ToastContainer />
@@ -85,9 +97,12 @@ const Businesshourform = () => {
                     type="text"
                     label="Day"
                     placeholder="Day"
-                    {...register('day')}
+                    {...register('day', { required: 'Day is required' })}
                     disabled
                   />
+                  {errors.day && (
+                    <CFormText className="text-danger">{errors.day.message}</CFormText>
+                  )}
                 </CCol>
 
                 <CCol xl={6} md={12}>
@@ -99,7 +114,7 @@ const Businesshourform = () => {
                       label="Closed"
                       value="true"
                       checked={watch('status') === 'true'}
-                      {...register('status')}
+                      {...register('status', { required: 'Status is required' })}
                     />
                     <CFormCheck
                       type="radio"
@@ -111,7 +126,7 @@ const Businesshourform = () => {
                     />
                   </div>
                   {errors.status && (
-                    <CFormText className="text-danger">{errors.status?.message}</CFormText>
+                    <CFormText className="text-danger">{errors.status.message}</CFormText>
                   )}
                 </CCol>
                 {watch('status') === 'false' && (
@@ -121,9 +136,18 @@ const Businesshourform = () => {
                         type="time"
                         label="Open"
                         placeholder="Open Time"
-                        {...register('open')}
+                        {...register('open', {
+                          required: watch('status') === 'false' ? 'Open time is required' : false,
+                          validate: (value) =>
+                            watch('status') === 'false' && value >= watch('close')
+                              ? 'Open time must be before close time'
+                              : true,
+                        })}
                         max={watch('close')}
                       />
+                      {errors.open && (
+                        <CFormText className="text-danger">{errors.open.message}</CFormText>
+                      )}
                     </CCol>
 
                     <CCol xl={6} md={12}>
@@ -131,9 +155,18 @@ const Businesshourform = () => {
                         type="time"
                         label="Close"
                         placeholder="Close Time"
-                        {...register('close')}
+                        {...register('close', {
+                          required: watch('status') === 'false' ? 'Close time is required' : false,
+                          validate: (value) =>
+                            watch('status') === 'false' && value <= watch('open')
+                              ? 'Close time must be after open time'
+                              : true,
+                        })}
                         min={watch('open')}
                       />
+                      {errors.close && (
+                        <CFormText className="text-danger">{errors.close.message}</CFormText>
+                      )}
                     </CCol>
                   </>
                 )}

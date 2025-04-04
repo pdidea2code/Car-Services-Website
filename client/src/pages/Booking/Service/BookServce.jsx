@@ -5,6 +5,7 @@ import { Spinner, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import "./bookservce.css";
+import { memo } from "react";
 import {
   DropArrowIcon,
   AddIcon,
@@ -12,6 +13,8 @@ import {
   WalletIcon,
   ClockIcon,
 } from "../../../assets/icon/icons";
+
+const cache = new Map();
 
 const BookServce = () => {
   const navigate = useNavigate();
@@ -26,57 +29,62 @@ const BookServce = () => {
   const appSetting = useSelector((state) => state.appSetting.appSetting);
 
   const fetchService = useCallback(async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await getAllService();
-      if (response.data.status === 200) {
-        setServices(response.data.info);
+      if (cache.has("services")) {
+        setServices(cache.get("services"));
+      } else {
+        const response = await getAllService();
+        if (response.data.status === 200) {
+          setServices(response.data.info);
+          cache.set("services", response.data.info);
+        } else {
+          throw new Error("Failed to fetch services");
+        }
       }
     } catch (error) {
-      console.error("Failed to fetch services:", error);
+      setError(error.message || "Error fetching services");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    fetchService();
-  }, [fetchService]);
+  const handleServiceSelect = useCallback(
+    (service) => {
+      try {
+        setError(null);
+        setSelectedService(service);
+        setServiceid(service);
+        setAddon([]);
+        updateTotals(service.price, service.time, []);
+        setShowService(false);
+      } catch (error) {
+        setError("Error selecting service");
+      }
+    },
+    [setServiceid, setAddon, updateTotals]
+  );
 
   useEffect(() => {
+    fetchService();
     if (state?.serviceid) {
-      setSelectedService({
+      const service = {
         id: state.serviceid,
         name: state.servicename,
         price: state.serviceprice,
         time: state.servicetime,
-      });
-      handleServiceSelect({
-        id: state.serviceid,
-        name: state.servicename,
-        price: state.serviceprice,
-        time: state.servicetime,
-      });
+      };
+      handleServiceSelect(service);
     }
-  }, [state]);
+  }, [fetchService, state, handleServiceSelect]);
+
   useEffect(() => {
-    if (serviceid.id) {
-      setSelectedService(serviceid);
-    }
+    if (serviceid.id) setSelectedService(serviceid);
   }, [serviceid]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const handleServiceSelect = (service) => {
-    setError(null);
-    setSelectedService(service);
-    setServiceid(service);
-    setAddon([]); // Reset addons when a new service is selected
-    updateTotals(service.price, service.time, []);
-    setShowService(false);
-  };
 
   return (
     <>
@@ -98,7 +106,6 @@ const BookServce = () => {
               <DropArrowIcon className="DropArrowIcon" />
             </div>
           </div>
-
           <div
             className={`booking-service-dwon-container ${
               showService ? "active" : ""
@@ -138,7 +145,8 @@ const BookServce = () => {
                       <div>
                         <span
                           className="booking-service-detail-title zen-dots"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             navigate(`/services/${item._id}`);
                           }}
                         >
@@ -180,7 +188,7 @@ const BookServce = () => {
             </Row>
           </div>
           {error && (
-            <div className="d-flex justify-content-center align-items-center">
+            <div className="d-flex justify-content-center align-items-center py-5">
               <span className="text-danger k2d">{error}</span>
             </div>
           )}
@@ -189,8 +197,7 @@ const BookServce = () => {
               onClick={() => {
                 if (!selectedService) {
                   setError("Please select a service");
-                }
-                if (selectedService) {
+                } else {
                   navigate("/booking/addons");
                   setErrors(null);
                 }
@@ -206,4 +213,4 @@ const BookServce = () => {
   );
 };
 
-export default BookServce;
+export default memo(BookServce);

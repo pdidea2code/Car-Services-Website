@@ -43,3 +43,9 @@ export const GET_PROFILE = "/api/user/auth/getprofile";
 export const GET_ADDRESS = "/api/user/contectus/getaddress";
 export const ADD_CONTENT = "/api/user/contectus/addcontent";
 /*----------------------------------- End Contact Us    -----------------------------------*/
+
+/*-----------------------------------   Booking    -----------------------------------*/
+export const VERIFY_PROMOCODE = "/api/user/booking/verifypromocode";
+export const CREATE_ORDER = "/api/user/booking/createorder";
+export const GET_ORDER = "/api/user/booking/getorder";
+/*----------------------------------- End Booking    -----------------------------------*/

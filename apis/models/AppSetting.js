@@ -27,6 +27,7 @@ const appSettingSchema = new mongoose.Schema({
   smtp_mail: { type: String, required: false },
   smtp_password: { type: String, required: false },
   smtp_service: { type: String, required: false },
+  service_tax: { type: Number, required: false },
 });
 const AppSetting = mongoose.model("AppSetting", appSettingSchema);
 

@@ -67,6 +67,18 @@ const _nav = [
     icon: <Icons.LocationOnRounded className="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'Promocode',
+    to: '/promocode',
+    icon: <Icons.LocalOfferRounded className="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Order',
+    to: '/order',
+    icon: <Icons.LocalOfferRounded className="nav-icon" />,
+  },
+  {
     component: CNavGroup,
     name: 'Setting',
     to: '/appsetting',

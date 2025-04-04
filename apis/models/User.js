@@ -75,9 +75,13 @@ userSchema.methods.generateAuthToken = function (data) {
   const user = this;
   const id = { _id: user._id };
   data = { ...data, ...id };
-  const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1000m",
-  });
+  const token = jwt.sign(
+    data,
+    process.env.ACCESS_TOKEN_SECRET
+    //    {
+    //   expiresIn: "1000m",
+    // }
+  );
   // const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
   return token;
 };

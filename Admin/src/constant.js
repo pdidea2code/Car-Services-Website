@@ -71,3 +71,13 @@ export const GET_ALL_USER_THEME_API = '/api/admin/usertheme/getallusertheme'
 export const SET_ACTIVE_USER_THEME_API = '/api/admin/usertheme/setactiveusertheme'
 export const ADD_USER_THEME_API = '/api/admin/usertheme/addusertheme'
 /* ---------------------------- END User Theme API ---------------------------- */
+/* ---------------------------- Promocode API ---------------------------- */
+export const ADD_PROMOCODE_API = '/api/admin/promocode/addpromocode'
+export const GET_ALL_PROMOCODE_API = '/api/admin/promocode/getallpromocode'
+export const EDIT_PROMOCODE_API = '/api/admin/promocode/editpromocode'
+export const DELETE_PROMOCODE_API = '/api/admin/promocode/deletepromocode'
+/* ---------------------------- END Promocode API ---------------------------- */
+/* ---------------------------- Order API ---------------------------- */
+export const GET_ALL_ORDER_API = '/api/admin/booking/getorder'
+export const UPDATE_ORDER_STATUS_API = '/api/admin/booking/updateOrderStatus'
+/* ---------------------------- END Order API ---------------------------- */

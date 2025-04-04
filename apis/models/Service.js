@@ -15,7 +15,7 @@ const serviceSchema = new mongoose.Schema(
     whyChooseqDescription: { type: String, required: true },
     whyChooseqinclude: { type: [String], required: true },
     status: { type: Boolean, default: true },
-    isDeleted: { type: Boolean, default: false, select: false },
+    isDeleted: { type: Boolean, default: false },
     deletedAt: { type: Date, default: null, select: false },
   },
   { timestamps: true, versionKey: false }

@@ -25,6 +25,7 @@ const addAppSetting = async (req, res, next) => {
       smtp_password: req.body.smtp_password,
       smtp_service: req.body.smtp_service,
       google_client_id: req.body.google_client_id,
+      service_tax: req.body.service_tax,
     });
     successResponse(res, appSetting);
   } catch (error) {
@@ -78,6 +79,9 @@ const editAppSetting = async (req, res, next) => {
     appSetting.google_client_id = req.body.google_client_id
       ? req.body.google_client_id
       : appSetting.google_client_id;
+    appSetting.service_tax = req.body.service_tax
+      ? req.body.service_tax
+      : appSetting.service_tax;
 
     if (req?.files?.logo && req?.files?.logo[0]?.filename) {
       if (appSetting.logo) {

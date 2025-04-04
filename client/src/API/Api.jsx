@@ -25,6 +25,9 @@ import {
   ADD_CONTENT,
   GET_ADDON_BY_SERVICE_ID,
   GET_CARTYPE,
+  VERIFY_PROMOCODE,
+  CREATE_ORDER,
+  GET_ORDER,
 } from "./Apilist";
 
 /*-----------------------------------   AppSetting    -----------------------------------*/
@@ -97,3 +100,24 @@ export const getAddress = () => axios.get(MAIN_URL + GET_ADDRESS);
 export const addContent = (request) =>
   axios.post(MAIN_URL + ADD_CONTENT, request);
 /*----------------------------------- End Contact Us    -----------------------------------*/
+
+/*-----------------------------------   Booking    -----------------------------------*/
+export const verifyPromocode = (request) =>
+  axios.post(MAIN_URL + VERIFY_PROMOCODE, request, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+export const createOrder = (request) =>
+  axios.post(MAIN_URL + CREATE_ORDER, request, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+export const getOrder = () =>
+  axios.get(MAIN_URL + GET_ORDER, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+/*----------------------------------- End Booking    -----------------------------------*/

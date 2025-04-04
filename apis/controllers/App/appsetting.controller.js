@@ -33,6 +33,7 @@ const getAppSetting = async (req, res, next) => {
       currency_symbol: appSetting.currency_symbol,
       currency: appSetting.currency,
       google_client_id: appSetting.google_client_id,
+      service_tax: appSetting.service_tax,
     };
     successResponse(res, data);
   } catch (error) {

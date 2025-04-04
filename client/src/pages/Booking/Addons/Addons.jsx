@@ -1,8 +1,9 @@
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getAddonByServiceId } from "../../../API/Api";
 import { Spinner, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { memo } from "react";
 import {
   DropArrowIcon,
   WalletIcon,
@@ -10,6 +11,8 @@ import {
   RemoveIcon,
   AddIcon,
 } from "../../../assets/icon/icons";
+
+const cache = new Map();
 
 const Addons = () => {
   const appSetting = useSelector((state) => state.appSetting.appSetting);
@@ -19,35 +22,48 @@ const Addons = () => {
   const [addons, setAddons] = useState([]);
   const [showAddons, setShowAddons] = useState(false);
   const [selectedAddons, setSelectedAddons] = useState([]);
+  const [error, setError] = useState(null);
 
-  const fetchAddon = async () => {
+  const fetchAddon = useCallback(async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const response = await getAddonByServiceId({ serviceid: serviceid.id });
-      setAddons(response.data.info);
+      const cacheKey = `addons_${serviceid.id}`;
+      if (cache.has(cacheKey)) {
+        setAddons(cache.get(cacheKey));
+      } else {
+        const response = await getAddonByServiceId({ serviceid: serviceid.id });
+        if (response.data.status === 200) {
+          setAddons(response.data.info);
+          cache.set(cacheKey, response.data.info);
+        } else {
+          throw new Error("Failed to fetch addons");
+        }
+      }
     } catch (error) {
-      console.log(error);
+      setError(error.message || "Error fetching addons");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [serviceid.id]);
 
-  const handleAddonToggle = (item) => {
+  const handleAddonToggle = useCallback((item) => {
     setSelectedAddons((prev) => {
       const exists = prev.some((addon) => addon._id === item._id);
-      if (exists) {
-        return prev.filter((addon) => addon._id !== item._id);
-      } else {
-        return [...prev, item];
-      }
+      return exists
+        ? prev.filter((addon) => addon._id !== item._id)
+        : [...prev, item];
     });
-  };
+  }, []);
 
-  const handleNext = () => {
-    setAddon(selectedAddons);
-    updateTotals(serviceid.price, serviceid.time, selectedAddons);
-    navigate("/booking/datetime");
-  };
+  const handleNext = useCallback(() => {
+    try {
+      setAddon(selectedAddons);
+      updateTotals(serviceid.price, serviceid.time, selectedAddons);
+      navigate("/booking/datetime");
+    } catch (error) {
+      setError("Error proceeding to next step");
+    }
+  }, [selectedAddons, setAddon, updateTotals, serviceid, navigate]);
 
   useEffect(() => {
     if (!serviceid.id) {
@@ -56,15 +72,21 @@ const Addons = () => {
       fetchAddon();
     }
     window.scrollTo(0, 0);
-  }, [serviceid, navigate]);
+  }, [serviceid, navigate, fetchAddon]);
+
   useEffect(() => {
     setSelectedAddons(addon);
   }, [addon]);
+
   return (
     <>
       {isLoading ? (
         <div className="d-flex justify-content-center align-items-center py-5">
           <Spinner animation="border" style={{ color: "var(--color2)" }} />
+        </div>
+      ) : error ? (
+        <div className="d-flex justify-content-center align-items-center py-5">
+          <span className="text-danger k2d">{error}</span>
         </div>
       ) : (
         <>
@@ -156,7 +178,7 @@ const Addons = () => {
               ) : (
                 <Col>
                   <div className="d-flex justify-content-center align-items-center">
-                    <span className=" k2d">No addons found</span>
+                    <span className="k2d">No addons found</span>
                   </div>
                 </Col>
               )}
@@ -176,4 +198,4 @@ const Addons = () => {
   );
 };
 
-export default Addons;
+export default memo(Addons);

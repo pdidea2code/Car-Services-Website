@@ -1,12 +1,14 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import "./booking.css";
-import Showcase from "../../components/showcase/Showcase";
-import Header from "../../components/Header/index";
+import { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useSelector } from "react-redux";
+import Header from "../../components/Header/index";
+import Showcase from "../../components/showcase/Showcase";
+import "./booking.css";
+import { memo } from "react";
 import {
   ServiceTypeIcon,
   AddonsIcon,
@@ -15,162 +17,174 @@ import {
   PriceTagIcon,
   Carrigttolefticon,
 } from "../../assets/icon/icons";
-import { useForm } from "react-hook-form";
+
 const Booking = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const appSetting = useSelector((state) => state.appSetting.appSetting);
-  const [serviceid, setServiceid] = useState({});
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [totalTime, setTotalTime] = useState(0);
-  const [addon, setAddon] = useState([]);
-  const [cartype, setCartype] = useState({});
-  const [selectedDate, setSelectedDate] = useState(null); // New state for date
-  const [selectedTime, setSelectedTime] = useState(null); // New state for time
-  const { register, handleSubmit } = useForm();
-  const [cartypeError, setCartypeError] = useState(null);
-  const [errors, setErrors] = useState();
+  const [state, setState] = useState({
+    serviceid: {},
+    totalPrice: 0,
+    totalTime: 0,
+    addon: [],
+    cartype: {},
+    selectedDate: null,
+    selectedTime: null,
+    cartypeError: null,
+    errors: null,
+  });
 
-  const path = location.pathname.split("/");
-  let currentPath = "";
-  switch (path[2]) {
-    case "service":
-      currentPath = "Service";
-      break;
-    case "addons":
-      currentPath = "Addons";
-      break;
-    case "datetime":
-      currentPath = "Date & Time";
-      break;
-    case "cartype":
-      currentPath = "Car Type";
-
-      break;
-  }
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const pickupDrop = watch("pickupDrop");
+  const onSiteService = watch("onSiteService");
+  const path = location.pathname.split("/")[2];
+  const currentPath =
+    {
+      service: "Service",
+      addons: "Addons",
+      datetime: "Date & Time",
+      cartype: "Car Type",
+    }[path] || "";
 
   const nav = [
     { title: "Home", path: "/" },
     { title: "Booking", path: "/booking/service" },
-    { title: currentPath, path: "/booking/" + path[2] },
+    { title: currentPath, path: `/booking/${path}` },
   ];
 
-  const updateTotals = (servicePrice = 0, serviceTime = 0, addons = []) => {
-    const addonPrice = addons.reduce((sum, item) => sum + item.price, 0);
-    const addonTime = addons.reduce((sum, item) => sum + item.time, 0);
-    setTotalPrice(servicePrice + addonPrice);
-    setTotalTime(serviceTime + addonTime);
-  };
+  const updateTotals = useCallback(
+    (servicePrice = 0, serviceTime = 0, addons = []) => {
+      try {
+        const addonPrice = addons.reduce((sum, item) => sum + item.price, 0);
+        const addonTime = addons.reduce((sum, item) => sum + item.time, 0);
+        setState((prev) => ({
+          ...prev,
+          totalPrice: servicePrice + addonPrice,
+          totalTime: serviceTime + addonTime,
+        }));
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          errors: "Error calculating totals",
+        }));
+      }
+    },
+    []
+  );
 
   useEffect(() => {
-    AOS.init({
-      disable: function () {
-        return window.innerWidth < 992;
-      },
-      disable: "mobile",
-    });
+    try {
+      AOS.init({
+        disable: window.innerWidth < 992,
+        once: true,
+      });
+    } catch (error) {
+      console.error("AOS initialization failed:", error);
+    }
+    setValue("pickupDrop", true);
   }, []);
 
-  const onSubmit = (data) => {
-    if (!serviceid?.id) {
-      navigate("/booking/service");
-      setErrors("Please select a service");
-      return;
-    }
-    if (!selectedDate || !selectedTime) {
-      navigate("/booking/datetime");
-      setErrors("Please select a date and time");
-      return;
-    }
-    if (!cartype?.id) {
-      setCartypeError("Please select a car type");
-      setErrors("Please select a car type");
-      return;
-    }
-    console.log(data);
+  const onSubmit = useCallback(
+    (data) => {
+      const { serviceid, selectedDate, selectedTime, cartype } = state;
+      try {
+        if (!serviceid?.id) {
+          navigate("/booking/service");
+          throw new Error("Please select a service");
+        }
+        if (!selectedDate || !selectedTime) {
+          navigate("/booking/datetime");
+          throw new Error("Please select a date and time");
+        }
+        if (!cartype?.id) {
+          navigate("/booking/cartype");
+          throw new Error("Please select a car type");
+        }
+        navigate("/booking/payment", { state: { data, booking: state } });
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          errors: error.message,
+          cartypeError: error.message.includes("car type")
+            ? error.message
+            : prev.cartypeError,
+        }));
+      }
+    },
+    [state, navigate]
+  );
+
+  const contextValue = {
+    ...state,
+    setServiceid: (val) => setState((prev) => ({ ...prev, serviceid: val })),
+    setAddon: (val) => setState((prev) => ({ ...prev, addon: val })),
+    setCartype: (val) => setState((prev) => ({ ...prev, cartype: val })),
+    setSelectedDate: (val) =>
+      setState((prev) => ({ ...prev, selectedDate: val })),
+    setSelectedTime: (val) =>
+      setState((prev) => ({ ...prev, selectedTime: val })),
+    setCartypeError: (val) =>
+      setState((prev) => ({ ...prev, cartypeError: val })),
+    setErrors: (val) => setState((prev) => ({ ...prev, errors: val })),
+    updateTotals,
   };
+
+  const handleCheckboxChange = (field) => {
+    if (field === "pickupDrop") {
+      setValue("pickupDrop", true);
+      setValue("onSiteService", false);
+    } else {
+      setValue("pickupDrop", false);
+      setValue("onSiteService", true);
+    }
+  };
+
   return (
     <>
       <Header title="Booking" navigation={nav} />
       <div
-        style={{ backgroundColor: "var(--color3)" }}
         className="booking-container"
+        style={{ backgroundColor: "var(--color3)" }}
       >
         <Container>
           <Row className="booking-container-row justify-content-center">
             <Col lg={true} className="booking-container-col1">
-              <button
-                onClick={() => navigate("/booking/service")}
-                className={
-                  "account-page-col1-button zen-dots " +
-                  (path[2] === "service" ? "active btn-4" : "") +
-                  (serviceid?.id ? " complete " : "") +
-                  (serviceid?.id && path[2] !== "service" ? " btn-3" : "")
-                }
-              >
-                Service
-              </button>
-              <button
-                onClick={() => serviceid?.id && navigate("/booking/addons")}
-                className={
-                  "account-page-col1-button zen-dots " +
-                  (path[2] === "addons" ? "active btn-4" : "btn-3") +
-                  (path[2].startsWith("datetime") ||
-                  path[2].startsWith("cartype") ||
-                  addon.length > 0
-                    ? " complete "
-                    : "") +
-                  (path[2] !== "addons" ? " btn-3" : "")
-                }
-              >
-                Addons
-              </button>
-              <button
-                onClick={() => serviceid?.id && navigate("/booking/datetime")}
-                className={
-                  "account-page-col1-button zen-dots " +
-                  (path[2] === "datetime" ? "active btn-4" : "btn-3") +
-                  (selectedDate && selectedTime ? " complete" : "") +
-                  (selectedDate && selectedTime && path[2] !== "datetime"
-                    ? " btn-3"
-                    : "")
-                }
-              >
-                Date & Time
-              </button>
-              <button
-                onClick={() => serviceid?.id && navigate("/booking/cartype")}
-                className={
-                  "account-page-col1-button zen-dots " +
-                  (path[2] === "cartype" ? "active btn-4" : "btn-3") +
-                  (cartype?.id ? " complete" : "") +
-                  (cartype?.id && path[2] !== "cartype" ? " btn-3" : "")
-                }
-              >
-                Car Type
-              </button>
+              {["service", "addons", "datetime", "cartype"].map((step) => (
+                <button
+                  key={step}
+                  onClick={() =>
+                    step === "service" || state.serviceid?.id
+                      ? navigate(`/booking/${step}`)
+                      : null
+                  }
+                  className={`account-page-col1-button zen-dots ${
+                    path === step ? "active btn-4" : "btn-3"
+                  } ${
+                    (step === "service" && state.serviceid?.id) ||
+                    (step === "addons" &&
+                      (path === "datetime" ||
+                        path === "cartype" ||
+                        state.addon.length > 0)) ||
+                    (step === "datetime" &&
+                      state.selectedDate &&
+                      state.selectedTime) ||
+                    (step === "cartype" && state.cartype?.id)
+                      ? "complete"
+                      : ""
+                  }`}
+                >
+                  {step.charAt(0).toUpperCase() + step.slice(1)}
+                </button>
+              ))}
             </Col>
             <Col lg={true} className="booking-container-col2">
-              <Outlet
-                context={{
-                  serviceid,
-                  setServiceid,
-                  totalPrice,
-                  totalTime,
-                  addon,
-                  setAddon,
-                  updateTotals,
-                  selectedDate, // Pass selectedDate
-                  setSelectedDate, // Pass setter for date
-                  selectedTime, // Pass selectedTime
-                  setSelectedTime, // Pass setter for time
-                  cartype,
-                  setCartype,
-                  cartypeError,
-                  setCartypeError,
-                  setErrors,
-                }}
-              />
+              <Outlet context={contextValue} />
             </Col>
           </Row>
           <Row>
@@ -182,13 +196,13 @@ const Booking = () => {
             >
               Order Confirmation
             </Col>
-            {errors && (
+            {/* {state.errors && (
               <Col xl={12} lg={12} md={12}>
                 <div className="d-flex justify-content-center align-items-center">
-                  <span className="text-danger k2d">{errors}</span>
+                  <span className="text-danger k2d">{state.errors}</span>
                 </div>
               </Col>
-            )}
+            )} */}
             <Col xl={6} lg={6} md={12}>
               <Row
                 xl={2}
@@ -198,86 +212,69 @@ const Booking = () => {
                 xs={2}
                 className="booking-service-order-confirmation-row"
               >
-                <Col className="">
+                <Col>
                   <div className="booking-service-order-summary-col">
-                    <div className="order-summary-icon">
-                      <ServiceTypeIcon className="OrderSummaryIcon" />
-                    </div>
+                    <ServiceTypeIcon className="OrderSummaryIcon" />
                     <span className="order-summary-icon-text">
                       Service Type
                     </span>
                     <span className="order-summary-icon-text2 k2d">
-                      {serviceid?.name || serviceid?.id ? serviceid?.name : "-"}
+                      {state.serviceid?.name || "-"}
                     </span>
                   </div>
                 </Col>
-                <Col className="">
+                <Col>
                   <div className="booking-service-order-summary-col">
-                    <div className="order-summary-icon">
-                      <AddonsIcon className="OrderSummaryIcon" />
-                    </div>
+                    <AddonsIcon className="OrderSummaryIcon" />
                     <span className="order-summary-icon-text">Add-Ons</span>
                     <span className="order-summary-icon-text3 k2d">
-                      {Array.isArray(addon) && addon.length > 0
-                        ? addon.map((item, index) => (
-                            <span key={index}>
-                              {item.name}
-                              {index < addon.length - 1 && <br />}
-                            </span>
-                          ))
+                      {state.addon.length > 0
+                        ? state.addon.map((item) => item.name).join(", ")
                         : "-"}
                     </span>
                   </div>
                 </Col>
-                <Col className="">
+                <Col>
                   <div className="booking-service-order-summary-col">
-                    <div className="order-summary-icon">
-                      <ClockFillIcon className="OrderSummaryIcon" />
-                    </div>
+                    <ClockFillIcon className="OrderSummaryIcon" />
                     <span className="order-summary-icon-text">Date & Time</span>
                     <span className="order-summary-icon-text2 k2d">
-                      {selectedDate || selectedTime
-                        ? `${selectedDate.getDate()} ${selectedDate.toLocaleString(
+                      {state.selectedDate && state.selectedTime
+                        ? `${state.selectedDate.getDate()} ${state.selectedDate.toLocaleString(
                             "en-US",
                             { month: "short" }
-                          )}, ${selectedTime}`
+                          )}, ${state.selectedTime}`
                         : "-"}
                     </span>
                   </div>
                 </Col>
-                <Col className="">
+                <Col>
                   <div className="booking-service-order-summary-col">
-                    <div className="order-summary-icon">
-                      <Carrigttolefticon className="OrderSummaryIcon" />
-                    </div>
+                    <Carrigttolefticon className="OrderSummaryIcon" />
                     <span className="order-summary-icon-text">Car Type</span>
                     <span className="order-summary-icon-text2 k2d">
-                      {cartype?.name || cartype?.id ? cartype?.name : "-"}
+                      {state.cartype?.name || "-"}
                     </span>
                   </div>
                 </Col>
-                <Col className="">
+                <Col>
                   <div className="booking-service-order-summary-col">
-                    <div className="order-summary-icon">
-                      <DurationIcon className="OrderSummaryIcon" />
-                    </div>
+                    <DurationIcon className="OrderSummaryIcon" />
                     <span className="order-summary-icon-text">
                       Total Duration
                     </span>
                     <span className="order-summary-icon-text3 k2d">
-                      {totalTime || 0}min
+                      {state.totalTime}min
                     </span>
                   </div>
                 </Col>
-                <Col className="">
+                <Col>
                   <div className="booking-service-order-summary-col">
-                    <div className="order-summary-icon">
-                      <PriceTagIcon className="OrderSummaryIcon" />
-                    </div>
+                    <PriceTagIcon className="OrderSummaryIcon" />
                     <span className="order-summary-icon-text">Total Price</span>
                     <span className="order-summary-icon-text3 k2d">
                       {appSetting?.currency_symbol}
-                      {totalPrice || 0}
+                      {state.totalPrice}
                     </span>
                   </div>
                 </Col>
@@ -289,67 +286,105 @@ const Booking = () => {
                   Input Your Contact Info
                 </span>
               </div>
-              <Form className="row " onSubmit={handleSubmit(onSubmit)}>
+              <Form className="row" onSubmit={handleSubmit(onSubmit)}>
                 <Col xl={12} lg={12} md={12} className="order-form-control">
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      placeholder="Your Name"
-                      className="order-form-input k2d"
-                    />
-                  </Form.Group>
+                  <Form.Control
+                    type="text"
+                    placeholder="Your Name"
+                    className="order-form-input k2d"
+                    {...register("name", { required: "Name is required" })}
+                  />
+                  {errors.name && (
+                    <div className="d-flex">
+                      <span className="text-danger k2d">
+                        {errors.name.message}
+                      </span>
+                    </div>
+                  )}
                 </Col>
                 <Col xl={6} lg={6} md={6} xs={6} className="order-form-control">
-                  <Form.Group>
-                    <Form.Control
-                      type="number"
-                      placeholder="Phone Number"
-                      className="order-form-input k2d"
-                    />
-                  </Form.Group>
+                  <Form.Control
+                    type="number"
+                    placeholder="Phone Number"
+                    className="order-form-input k2d"
+                    {...register("phone", {
+                      required: "Phone Number is required",
+                      pattern: {
+                        value: /^[0-9]{10}$/,
+                        message: "Phone Number must be exactly 10 digits",
+                      },
+                    })}
+                  />
+
+                  {errors.phone && (
+                    <div className="d-flex">
+                      <span className="text-danger k2d">
+                        {errors.phone.message}
+                      </span>
+                    </div>
+                  )}
                 </Col>
                 <Col xl={6} lg={6} md={6} xs={6} className="order-form-control">
-                  <Form.Group>
-                    <Form.Control
-                      type="email"
-                      placeholder="Email"
-                      className="order-form-input k2d"
-                    />
-                  </Form.Group>
+                  <Form.Control
+                    type="email"
+                    placeholder="Email"
+                    className="order-form-input k2d"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Invalid email address",
+                      },
+                    })}
+                  />
+                  {errors.email && (
+                    <div className="d-flex">
+                      <span className="text-danger k2d">
+                        {errors.email.message}
+                      </span>
+                    </div>
+                  )}
                 </Col>
                 <Col xl={12} lg={12} md={12} className="order-form-control">
-                  <Form.Group>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      type="text"
-                      className="order-form-input k2d"
-                      placeholder="Additional Information"
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Additional Information"
+                    className="order-form-input k2d"
+                    {...register("additionalInfo")}
+                  />
+                </Col>
+                <Col xl={6} lg={6} md={6} className="order-form-control">
+                  <div className="order-form-checkbox-container">
+                    <Form.Check
+                      type="checkbox"
+                      label="Pickup and Drop service"
+                      className="order-form-checkbox k2d"
+                      checked={pickupDrop}
+                      {...register("pickupDrop")}
+                      onChange={() => handleCheckboxChange("pickupDrop")}
                     />
-                  </Form.Group>
+                  </div>
                 </Col>
                 <Col xl={6} lg={6} md={6} className="order-form-control">
-                  <Form.Group>
-                    <div className="order-form-checkbox-container k2d">
-                      <Form.Check
-                        type="checkbox"
-                        label="PIckup and Drop service"
-                        className="order-form-checkbox"
-                      />
-                    </div>
-                  </Form.Group>
+                  <div className="order-form-checkbox-container">
+                    <Form.Check
+                      type="checkbox"
+                      label="On-Site Service At Station"
+                      className="order-form-checkbox k2d"
+                      checked={onSiteService}
+                      {...register("onSiteService")}
+                      onChange={() => handleCheckboxChange("onSiteService")}
+                    />
+                  </div>
                 </Col>
-                <Col xl={6} lg={6} md={6} className="order-form-control">
-                  <Form.Group>
-                    <div className="order-form-checkbox-container k2d">
-                      <Form.Check
-                        type="checkbox"
-                        label="On-Site Service At Station"
-                        className="order-form-checkbox"
-                      />
+                {state.errors && (
+                  <Col xl={12} lg={12} md={12}>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <span className="text-danger k2d">{state.errors}</span>
                     </div>
-                  </Form.Group>
-                </Col>
+                  </Col>
+                )}
                 <Col
                   xl={12}
                   lg={12}
@@ -366,43 +401,6 @@ const Booking = () => {
               </Form>
             </Col>
           </Row>
-          {/* <Row>
-            <Col>{serviceid?.id || "No service selected"}</Col>
-            <Col>{serviceid?.name || ""}</Col>
-            <Col>{serviceid?.price || 0}</Col>
-            <Col>{serviceid?.time || 0}</Col>
-          </Row>
-          <Row>
-            {addon.map((item) => (
-              <Col key={item._id}>
-                <div>{item._id}</div>
-                <div>{item.name}</div>
-                <div>{item.price}</div>
-                <div>{item.time}</div>
-              </Col>
-            ))}
-          </Row>
-          <Row>
-            <Col>Total Price: {totalPrice}</Col>
-            <Col>Total Time: {totalTime}</Col>
-          </Row>
-          <Row>
-            <Col>
-              Selected Date:{" "}
-              {selectedDate
-                ? `${selectedDate.getDate()} ${selectedDate.toLocaleString(
-                    "en-US",
-                    { month: "short" }
-                  )}`
-                : "Not selected"}
-            </Col>
-
-            <Col>Selected Time: {selectedTime || "Not selected"}</Col>
-          </Row>
-          <Row>
-            <Col>Selected Cartype: {cartype?.name || "Not selected"}</Col>
-            <Col>Selected Cartype ID: {cartype?.id || "Not selected"}</Col>
-          </Row> */}
         </Container>
         <Showcase />
       </div>
@@ -410,4 +408,4 @@ const Booking = () => {
   );
 };
 
-export default Booking;
+export default memo(Booking);

@@ -2,10 +2,10 @@ import "./servivehistory.css";
 import { getOrder } from "../../../API/Api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Modal } from "antd";
 import dayjs from "dayjs";
-const Servicehistory = () => {
+import { useSelector } from "react-redux";
+const Upcoming = () => {
   const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -17,7 +17,10 @@ const Servicehistory = () => {
       setLoading(true);
       const res = await getOrder();
       if (res.status === 200) {
-        setOrder(res.data.info);
+        const upcomingOrder = res.data.info.filter(
+          (item) => item.order_status === "PENDING"
+        );
+        setOrder(upcomingOrder);
       }
     } catch (error) {
       console.log(error);
@@ -75,21 +78,24 @@ const Servicehistory = () => {
                     {appSettings?.currency_symbol}
                     {item.total_amount}
                   </span>
-                  <div
-                    className={`service-history-status ${item.order_status} k2d`}
-                  >
-                    {item.order_status}
-                  </div>
+                  {item.pickupanddrop && (
+                    <div>
+                      <span className="service-history-pickup zen-dots">
+                        Pickup Address:
+                      </span>
+                      <span className="service-history-details k2d">
+                        {" "}
+                        {item.house_no} ,{item.house_no}, {item.city} ,
+                        {item.pincode}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="service-history-button-container zen-dots">
-                  {item.order_status === "COMPLETED" && (
+                  {item.order_status === "PENDING" && (
                     <>
                       <button className="service-history-button btn-4">
-                        View Invoice
-                      </button>
-
-                      <button className="service-history-button btn-4">
-                        Leave Review
+                        Cancel Service
                       </button>
                     </>
                   )}
@@ -107,4 +113,4 @@ const Servicehistory = () => {
   );
 };
 
-export default Servicehistory;
+export default Upcoming;
