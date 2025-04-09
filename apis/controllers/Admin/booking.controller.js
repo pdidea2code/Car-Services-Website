@@ -10,7 +10,9 @@ const getOrder = async (req, res, next) => {
       .populate("service_id")
       .populate("cartype_id")
       .populate("promocode_id")
-      .populate("address_id");
+      .populate("address_id")
+      .populate("user_id")
+      .populate("addons_id");
     successResponse(res, orders);
   } catch (error) {
     next(error);

@@ -8,7 +8,7 @@ import "./Dateandtime.css";
 import { getBusinessHour } from "../../../API/Api";
 import { memo } from "react";
 
-const cache = new Map();
+// const cache = new Map();
 
 // Helper function to generate time slots
 const generateTimeSlots = (open, close, duration, isClosed) => {
@@ -59,17 +59,17 @@ const Dateandtime = () => {
   const fetchBusinessHour = useCallback(async () => {
     setIsLoading(true);
     try {
-      if (cache.has("businessHours")) {
-        setBusinessHour(cache.get("businessHours"));
+      // if (cache.has("businessHours")) {
+      //   setBusinessHour(cache.get("businessHours"));
+      // } else {
+      const response = await getBusinessHour();
+      if (response.data.status === 200) {
+        setBusinessHour(response.data.info);
+        // cache.set("businessHours", response.data.info);
       } else {
-        const response = await getBusinessHour();
-        if (response.data.status === 200) {
-          setBusinessHour(response.data.info);
-          cache.set("businessHours", response.data.info);
-        } else {
-          throw new Error("Failed to fetch business hours");
-        }
+        throw new Error("Failed to fetch business hours");
       }
+      // }
     } catch (error) {
       setError({ date: error.message || "Error fetching business hours" });
     } finally {

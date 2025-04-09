@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema(
     addons_id: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Addon",
+        ref: "Addons",
       },
     ],
     cartype_id: {
@@ -39,6 +39,10 @@ const orderSchema = new mongoose.Schema(
     },
     time: {
       type: String,
+      required: true,
+    },
+    total_time: {
+      type: Number,
       required: true,
     },
     additionalinfo: {
@@ -109,12 +113,23 @@ const orderSchema = new mongoose.Schema(
     paymentstatus: {
       type: String,
       required: true,
-      enum: ["PENDING", "SUCCESS", "FAILED"],
+      enum: ["PENDING", "SUCCESS", "FAILED", "REFUNDED"],
     },
     order_status: {
       type: String,
       required: true,
       enum: ["PENDING", "COMPLETED", "CANCELLED"],
+    },
+    card_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Card",
+      default: null,
+    },
+    paymentIntentId: { type: String, default: null },
+    paymentMethod: {
+      type: String,
+      required: true,
+      enum: ["CARD", "CASH", "UPI", "NETBANKING"],
     },
   },
   {

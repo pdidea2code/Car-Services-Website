@@ -1,33 +1,52 @@
-import "./servivehistory.css";
+import "./servicehistory.css";
 import { getOrder } from "../../../API/Api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Modal } from "antd";
 import dayjs from "dayjs";
+import { Spinner } from "react-bootstrap";
+import AOS from "aos";
+import "aos/dist/aos.css";
 const Servicehistory = () => {
   const [order, setOrder] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const appSettings = useSelector((state) => state.appSetting.appSetting);
 
   const fetchOrder = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       const res = await getOrder();
       if (res.status === 200) {
-        setOrder(res.data.info);
+        const completedOrder = res.data.info.filter(
+          (item) =>
+            item.paymentstatus === "SUCCESS" ||
+            (item.paymentstatus === "FAILED" &&
+              item.paymentmode === "ONLINE") ||
+            item.paymentmode === "COD"
+        );
+        setOrder(completedOrder);
       }
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
   useEffect(() => {
     fetchOrder();
   }, []);
+  useEffect(() => {
+    AOS.init({
+      disable: function () {
+        return window.innerWidth < 992;
+      },
+      disable: "mobile",
+    });
+  }, [order.length > 0]);
+
   return (
     <div>
       <Modal centered open={open} onCancel={() => setOpen(false)} footer={null}>
@@ -35,15 +54,19 @@ const Servicehistory = () => {
           Service is not available
         </span>
       </Modal>
-      {loading ? (
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
+      {isLoading ? (
+        <div className="d-flex justify-content-center align-items-center">
+          <Spinner style={{ color: "var(--color2)" }} />
         </div>
       ) : (
         <>
           {order.length > 0 ? (
-            order.map((item) => (
-              <div className="service-history-container">
+            order.map((item, index) => (
+              <div
+                className="service-history-container"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+              >
                 <div className="service-history-details-container">
                   <span
                     className="service-history-title zen-dots"

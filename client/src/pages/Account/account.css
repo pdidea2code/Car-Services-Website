@@ -80,4 +80,7 @@
   .account-page {
     padding-top: 20px;
   }
+  .account-page-col1 {
+    margin-bottom: 20px !important;
+  }
 }

@@ -1,17 +1,47 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
 import Header from "../../../components/Header";
 import Showcase from "../../../components/showcase/Showcase";
-import { Container, Row, Col, Form, InputGroup } from "react-bootstrap";
+
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  InputGroup,
+  Spinner,
+  Modal,
+  Button,
+} from "react-bootstrap";
 import "./payment.css";
 import { useForm } from "react-hook-form";
 import { getAddress, createOrder } from "../../../API/Api";
 import { useSelector } from "react-redux";
 import { verifyPromocode } from "../../../API/Api";
+import {
+  useStripe,
+  useElements,
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
+} from "@stripe/react-stripe-js";
+import {
+  VisaCardIcon,
+  MasterCardIcon,
+  DeleteIcon,
+  CardIcon,
+} from "../../../assets/icon/icons";
+import {
+  getCard,
+  deleteCard,
+  cardPayment,
+  verifyPayment,
+} from "../../../API/Api";
 import dayjs from "dayjs";
 
 const Payment = () => {
+  const stripe = useStripe();
+  const elements = useElements();
   const appSetting = useSelector((state) => state.appSetting.appSetting);
   const {
     register,
@@ -20,7 +50,9 @@ const Payment = () => {
   } = useForm();
   const navigate = useNavigate();
   const [address, setAddress] = useState([]);
+  const [cardList, setCardList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
   const { state } = useLocation();
   const [isOn, setIsOn] = useState(true);
   const [promoCode, setPromoCode] = useState("");
@@ -28,6 +60,7 @@ const Payment = () => {
   const [promoCodeDetails, setPromoCodeDetails] = useState({});
   const [isPromoCodeApplied, setIsPromoCodeApplied] = useState(false);
   const [orderError, setOrderError] = useState("");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [priceDetails, setPriceDetails] = useState({
     basePrice: 0.0,
     discountedPrice: 0.0,
@@ -35,9 +68,53 @@ const Payment = () => {
     discount: 0.0,
     finalPrice: 0.0,
   });
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [cardToDelete, setCardToDelete] = useState(null);
+  const [issubitloading, setIssubitloading] = useState(false);
 
   const handleToggle = () => {
     setIsOn(!isOn);
+  };
+
+  const handleDelete = async (id) => {
+    setCardToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const res = await deleteCard({ id: cardToDelete });
+      if (res.status === 200) {
+        setSuccessMessage("Card deleted successfully");
+        setShowSuccessModal(true);
+        fetchCard();
+      } else {
+        setErrorMessage("Failed to delete card");
+        setShowErrorModal(true);
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Failed to delete card");
+      setShowErrorModal(true);
+    } finally {
+      setShowDeleteModal(false);
+      setCardToDelete(null);
+    }
+  };
+  const fetchCard = async () => {
+    try {
+      setIsLoading(true);
+      const res = await getCard();
+      setCardList(res.data.info);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   function calculatePriceWithTaxAndDiscount(basePrice, taxRate, discount = 0) {
@@ -121,7 +198,7 @@ const Payment = () => {
   // Handle form submission and create order
   const onSubmit = async (data) => {
     try {
-      setIsLoading(true);
+      setIssubitloading(true);
 
       // Prepare payload for createOrder API
       const payload = {
@@ -134,6 +211,7 @@ const Payment = () => {
         name: state?.data?.name,
         email: state?.data?.email,
         phone: state?.data?.phone,
+        total_time: state?.booking?.totalTime,
         service_amount: priceDetails.basePrice,
         tax_amount: priceDetails.taxAmount,
         total_amount: priceDetails.finalPrice,
@@ -144,6 +222,7 @@ const Payment = () => {
         pincode: data.pincode,
         colony: data.colony || "",
         house_no: data.flat || "",
+        cardId: selectedCard ? selectedCard : null,
         paymentmode: isOn ? "ONLINE" : "COD",
         // Only include discount_amount and promocode_id if a promo code is applied
         ...(isPromoCodeApplied &&
@@ -152,18 +231,78 @@ const Payment = () => {
             discount_amount: priceDetails.discount,
           }),
       };
+      let response;
+      if (
+        selectedCard ||
+        isOn ||
+        selectedCard !== null ||
+        selectedPaymentMethod === "card"
+      ) {
+        response = await cardPayment(payload);
+        const data = response.data.info;
+        let result;
+        if (selectedCard) {
+          if (data.paymentIntent.status === "succeeded") {
+            result = { paymentIntent: data.paymentIntent };
+          } else if (
+            data.paymentIntent.status === "requires_action" ||
+            data.paymentIntent.status === "requires_confirmation"
+          ) {
+            result = await stripe.confirmCardPayment(
+              data.paymentIntent.client_secret,
+              {
+                payment_method: data.paymentIntent.payment_method,
+              }
+            );
+          } else {
+            throw new Error(
+              `Payment failed on server: ${data.paymentIntent.status}`
+            );
+          }
+        } else {
+          console.log(response);
+          console.log("card not selected");
+        }
 
+        if (result.error) {
+          const response11 = await verifyPayment({
+            order_id: response.data.info.order._id,
+            status: "failed",
+            paymentIntentId: result.error.payment_intent.id,
+          });
+          alert("Payment failed: " + result.error.message);
+        } else if (result.paymentIntent.status === "succeeded") {
+          console.log("Payment successful:", result);
+          const response11 = await verifyPayment({
+            order_id: response.data.info.order._id,
+            status: "completed",
+            paymentIntentId: result.paymentIntent.id,
+          });
+
+          if (response11.status === 200) {
+            navigate(`/account/servicehistory`);
+          }
+          alert("Payment successful!");
+        }
+      } else {
+        response = await createOrder(payload);
+        if (response.status === 200) {
+          navigate(`/account/servicehistory`);
+        }
+      }
       // Call createOrder API
-      const response = await createOrder(payload);
+
       if (response.status === 200) {
         console.log(response.data.info);
-        navigate(`/account/servicehistory`);
       }
     } catch (error) {
       console.error("Error creating order:", error);
-      alert(error?.response?.data?.message || "Failed to create order");
+      setErrorMessage(
+        error?.response?.data?.message || "Failed to create order"
+      );
+      setShowErrorModal(true);
     } finally {
-      setIsLoading(false);
+      setIssubitloading(false);
     }
   };
 
@@ -196,6 +335,10 @@ const Payment = () => {
     console.log(state);
     window.scrollTo(0, 0);
   }, [state, appSetting?.service_tax, navigate]);
+
+  useEffect(() => {
+    fetchCard();
+  }, []);
 
   return (
     <>
@@ -462,9 +605,9 @@ const Payment = () => {
                         <button
                           className="btn-4 payment-page-btn zen-dots"
                           type="submit"
-                          disabled={isLoading}
+                          disabled={issubitloading}
                         >
-                          {isLoading ? "Processing..." : "Confirm"}
+                          {issubitloading ? "Processing..." : "Confirm"}
                         </button>
                       </div>
                     </Form>
@@ -472,15 +615,75 @@ const Payment = () => {
                 </Col>
                 {isOn && (
                   <Col className="payment-page-col">
-                    <div className="payment-page-title">Payment</div>
+                    <div className="payment-page-title zen-dots">
+                      Choose Payment Option
+                    </div>
+                    <Row>
+                      {cardList.length === 0 ? (
+                        <Col
+                          xl={12}
+                          lg={12}
+                          md={12}
+                          className="managecard-card-container"
+                        >
+                          <div className="managecard-card-right">
+                            <span className="managecard-card-title k2d">
+                              No card found
+                            </span>
+                          </div>
+                        </Col>
+                      ) : (
+                        cardList.map((card) => (
+                          <Col
+                            xl={12}
+                            lg={12}
+                            md={12}
+                            className={`managecard-card-container ${
+                              card._id === selectedCard ? "selected" : ""
+                            }`}
+                            onClick={() => {
+                              setSelectedPaymentMethod("card");
+                              setSelectedCard(card._id);
+                            }}
+                          >
+                            <div className="managecard-card-right">
+                              {card.cardType === "visa" && <VisaCardIcon />}
+                              {card.cardType === "mastercard" && (
+                                <MasterCardIcon />
+                              )}
+                              {card.cardType !== "visa" &&
+                                card.cardType !== "mastercard" && (
+                                  <CardIcon className="CardIcon" />
+                                )}
+                              <div className="d-flex flex-column ps-3">
+                                <span className="managecard-card-title k2d">
+                                  xxxx xxxx xxxx {card.last4}
+                                </span>
+                                <span className="managecard-card-title k2d">
+                                  Exp. date {card.expiryMonth}/{card.expiryYear}
+                                </span>
+                              </div>
+                            </div>
+                            <div
+                              className="managecard-card-left"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => handleDelete(card._id)}
+                            >
+                              <DeleteIcon className="DeleteIcon" />
+                            </div>
+                          </Col>
+                        ))
+                      )}
+                    </Row>
+
                     <Form onSubmit={handleSubmit(onSubmit)}>
                       <div className="text-center">
                         <button
                           className="btn-4 payment-page-btn zen-dots"
                           type="submit"
-                          disabled={isLoading}
+                          disabled={issubitloading}
                         >
-                          {isLoading ? "Processing..." : "Pay Now"}
+                          {issubitloading ? "Processing..." : "Pay Now"}
                         </button>
                       </div>
                     </Form>
@@ -492,6 +695,47 @@ const Payment = () => {
           <Showcase />
         </>
       )}
+      {/* Success Modal */}
+      <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Success</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{successMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => setShowSuccessModal(false)}>
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Error Modal */}
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{errorMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this card?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

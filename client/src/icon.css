@@ -106,3 +106,11 @@
 .OrderSummaryIcon path {
   fill: var(--color2);
 }
+
+.DeleteIcon path {
+  fill: var(--color2);
+}
+
+.CardIcon path {
+  fill: var(--color1);
+}

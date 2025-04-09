@@ -8,6 +8,9 @@ import "./account.css";
 import { useState, useEffect } from "react";
 import Header from "../../components/Header/index";
 import Showcase from "../../components/showcase/Showcase";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_SECRET_KEY);
 const Account = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,6 +29,9 @@ const Account = () => {
       break;
     case "upcomingservice":
       currentPath = "Upcoming Service";
+      break;
+    case "managecard":
+      currentPath = "Manage Card";
       break;
   }
   const nav = [
@@ -147,7 +153,9 @@ const Account = () => {
               </button>
             </Col>
             <Col lg={true}>
-              <Outlet />
+              <Elements stripe={stripePromise}>
+                <Outlet />
+              </Elements>
             </Col>
           </Row>
         </Container>

@@ -5,10 +5,13 @@ import { getProfile, EditProfileApi } from "../../../API/Api";
 import defaultProfile from "../../../assets/image/Profile.png";
 import { ProfileEditIcon } from "../../../assets/icon/icons";
 import { useForm } from "react-hook-form";
+import AOS from "aos";
+import "aos/dist/aos.css";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState(null);
+  const [editerror, setEditerror] = useState("");
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
   const {
@@ -51,6 +54,7 @@ const Profile = () => {
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
+      setEditerror("");
       const formData = new FormData();
 
       Object.keys(data).forEach((key) => {
@@ -69,6 +73,7 @@ const Profile = () => {
       }
     } catch (error) {
       console.log(error);
+      setEditerror(error?.response?.data?.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -76,8 +81,16 @@ const Profile = () => {
   useEffect(() => {
     fetchUser();
   }, []);
+  useEffect(() => {
+    AOS.init({
+      disable: function () {
+        return window.innerWidth < 992;
+      },
+      disable: "mobile",
+    });
+  }, [user?.email]);
   return (
-    <div className="profile-page">
+    <div className="profile-page" data-aos="fade-up">
       {isLoading ? (
         <div className="d-flex justify-content-center align-items-center">
           <Spinner style={{ color: "var(--color2)" }} />
@@ -161,6 +174,9 @@ const Profile = () => {
                         className="profile-page-edit-content-input k2d"
                       />
                     </Form.Group>
+                  </div>
+                  <div className="d-flex justify-content-center align-items-center">
+                    <span className="text-danger k2d">{editerror}</span>
                   </div>
                   <div className="d-flex justify-content-center">
                     <button

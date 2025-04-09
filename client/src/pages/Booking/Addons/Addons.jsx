@@ -12,7 +12,7 @@ import {
   AddIcon,
 } from "../../../assets/icon/icons";
 
-const cache = new Map();
+// const cache = new Map();
 
 const Addons = () => {
   const appSetting = useSelector((state) => state.appSetting.appSetting);
@@ -27,18 +27,18 @@ const Addons = () => {
   const fetchAddon = useCallback(async () => {
     setIsLoading(true);
     try {
-      const cacheKey = `addons_${serviceid.id}`;
-      if (cache.has(cacheKey)) {
-        setAddons(cache.get(cacheKey));
+      // const cacheKey = `addons_${serviceid.id}`;
+      // if (cache.has(cacheKey)) {
+      //   setAddons(cache.get(cacheKey));
+      // } else {
+      const response = await getAddonByServiceId({ serviceid: serviceid.id });
+      if (response.data.status === 200) {
+        setAddons(response.data.info);
+        // cache.set(cacheKey, response.data.info);
       } else {
-        const response = await getAddonByServiceId({ serviceid: serviceid.id });
-        if (response.data.status === 200) {
-          setAddons(response.data.info);
-          cache.set(cacheKey, response.data.info);
-        } else {
-          throw new Error("Failed to fetch addons");
-        }
+        throw new Error("Failed to fetch addons");
       }
+      // }
     } catch (error) {
       setError(error.message || "Error fetching addons");
     } finally {

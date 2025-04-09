@@ -14,7 +14,7 @@ import {
   ClockIcon,
 } from "../../../assets/icon/icons";
 
-const cache = new Map();
+// const cache = new Map();
 
 const BookServce = () => {
   const navigate = useNavigate();
@@ -31,17 +31,19 @@ const BookServce = () => {
   const fetchService = useCallback(async () => {
     setLoading(true);
     try {
-      if (cache.has("services")) {
-        setServices(cache.get("services"));
+      // if (cache.has("services")) {
+      //   console.log(cache.get("services"));
+      //   setServices(cache.get("services"));
+      // } else {
+      const response = await getAllService();
+      if (response.data.status === 200) {
+        setServices(response.data.info);
+        console.log(response.data.info);
+        // cache.set("services", response.data.info);
       } else {
-        const response = await getAllService();
-        if (response.data.status === 200) {
-          setServices(response.data.info);
-          cache.set("services", response.data.info);
-        } else {
-          throw new Error("Failed to fetch services");
-        }
+        throw new Error("Failed to fetch services");
       }
+      // }
     } catch (error) {
       setError(error.message || "Error fetching services");
     } finally {
@@ -76,7 +78,7 @@ const BookServce = () => {
       };
       handleServiceSelect(service);
     }
-  }, [fetchService, state, handleServiceSelect]);
+  }, []);
 
   useEffect(() => {
     if (serviceid.id) setSelectedService(serviceid);

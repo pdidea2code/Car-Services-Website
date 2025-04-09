@@ -5,7 +5,7 @@ import { getCartype } from "../../../API/Api";
 import { DropArrowIcon } from "../../../assets/icon/icons";
 import { memo } from "react";
 
-const cache = new Map();
+// const cache = new Map();
 
 const Cartype = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,17 +28,17 @@ const Cartype = () => {
   const fetchCartype = useCallback(async () => {
     setIsLoading(true);
     try {
-      if (cache.has("cartypes")) {
-        setCartypes(cache.get("cartypes"));
+      // if (cache.has("cartypes")) {
+      //   setCartypes(cache.get("cartypes"));
+      // } else {
+      const response = await getCartype();
+      if (response.data.status === 200) {
+        setCartypes(response.data.info);
+        // cache.set("cartypes", response.data.info);
       } else {
-        const response = await getCartype();
-        if (response.data.status === 200) {
-          setCartypes(response.data.info);
-          cache.set("cartypes", response.data.info);
-        } else {
-          throw new Error("Failed to fetch car types");
-        }
+        throw new Error("Failed to fetch car types");
       }
+      // }
     } catch (error) {
       setError(error.message || "Error fetching car types");
     } finally {

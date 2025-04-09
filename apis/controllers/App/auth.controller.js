@@ -7,6 +7,7 @@ const crypto = require("crypto");
 const { sendMail } = require("../../helper/emailSender");
 const User = require("../../models/User");
 require("dotenv").config();
+const AppSetting = require("../../models/AppSetting");
 const deleteFiles = require("../../helper/deleteFiles");
 
 const Register = async (req, res, next) => {
@@ -289,6 +290,7 @@ const checkEmailId = async (req, res, next) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
+    const appSetting = await AppSetting.findOne({});
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
     if (user.status === false)
       return queryErrorRelatedResponse(
@@ -302,7 +304,6 @@ const checkEmailId = async (req, res, next) => {
         401,
         "Email not verified go to Register"
       );
-    const appSetting = await AppSetting.findOne({});
 
     const otp = crypto.randomInt(1000, 9999);
     const otpExpiry = Date.now() + 1 * 60 * 1000; //otp expire in one minute

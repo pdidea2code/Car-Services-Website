@@ -48,4 +48,14 @@ export const ADD_CONTENT = "/api/user/contectus/addcontent";
 export const VERIFY_PROMOCODE = "/api/user/booking/verifypromocode";
 export const CREATE_ORDER = "/api/user/booking/createorder";
 export const GET_ORDER = "/api/user/booking/getorder";
+export const CARD_PAYMENT = "/api/user/booking/cardpayment";
+export const VERIFY_PAYMENT = "/api/user/booking/verifypayment";
+export const REFUND_PAYMENT = "/api/user/booking/refundpayment";
 /*----------------------------------- End Booking    -----------------------------------*/
+
+/*-----------------------------------   Card    -----------------------------------*/
+export const ADD_CARD = "/api/user/card/addcard";
+export const SAVE_CARD = "/api/user/card/savecard";
+export const GET_CARD = "/api/user/card/getcard";
+export const DELETE_CARD = "/api/user/card/deletecard";
+/*----------------------------------- End Card    -----------------------------------*/

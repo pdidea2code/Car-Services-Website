@@ -24,6 +24,7 @@ import Dateandtime from "../pages/Booking/Dateandtime/Dateandtime";
 import Cartype from "../pages/Booking/Cartype/Cartype";
 import Payment from "../pages/Booking/Payment/Payment";
 import Upcoming from "../pages/Account/Servicehistory/Upcoming";
+import Managecard from "../pages/Account/Managecard/Managecard";
 const PrivateRoute = ({ children }) => {
   const auth = Cookies.get("isLoggedIn") || Cookies.get("token");
 
@@ -116,6 +117,7 @@ const RouteList = () => {
         <Route path="profile" element={<Profile />}></Route>
         <Route path="servicehistory" element={<Servicehistory />}></Route>
         <Route path="upcomingservice" element={<Upcoming />}></Route>
+        <Route path="managecard" element={<Managecard />}></Route>
       </Route>
       <Route
         path="/booking"

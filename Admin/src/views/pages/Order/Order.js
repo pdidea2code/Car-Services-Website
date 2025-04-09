@@ -90,7 +90,14 @@ const Order = () => {
       label: 'Order Status',
       options: {
         customBodyRender: (value, { rowIndex }) => {
-          const { _id, order_status } = orders[rowIndex]
+          const { _id, order_status, paymentstatus, paymentmode } = orders[rowIndex]
+          if (paymentstatus === 'FAILED') {
+            return <span className="text-danger">Payment Failed</span>
+          }
+          if (paymentstatus === 'PENDING' && paymentmode === 'ONLINE') {
+            return <span className="text-warning">Payment Pending</span>
+          }
+
           return (
             <CFormSelect
               value={order_status}

@@ -92,4 +92,7 @@
     width: 100%;
     font-weight: 400;
   }
+  .service-history-button {
+    margin: auto;
+  }
 }

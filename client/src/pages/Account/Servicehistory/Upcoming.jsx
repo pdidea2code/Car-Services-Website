@@ -1,10 +1,13 @@
-import "./servivehistory.css";
-import { getOrder } from "../../../API/Api";
+import "./servicehistory.css";
+import { getOrder, refundPayment } from "../../../API/Api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
+import { Spinner } from "react-bootstrap";
+import AOS from "aos";
+import "aos/dist/aos.css";
 const Upcoming = () => {
   const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +21,13 @@ const Upcoming = () => {
       const res = await getOrder();
       if (res.status === 200) {
         const upcomingOrder = res.data.info.filter(
-          (item) => item.order_status === "PENDING"
+          (item) =>
+            (item.order_status === "PENDING" &&
+              item.paymentstatus === "SUCCESS" &&
+              item.paymentmode === "ONLINE") ||
+            (item.order_status === "PENDING" &&
+              item.paymentstatus === "PENDING" &&
+              item.paymentmode === "COD")
         );
         setOrder(upcomingOrder);
       }
@@ -28,9 +37,31 @@ const Upcoming = () => {
       setLoading(false);
     }
   };
+
+  const cancelService = async (id) => {
+    try {
+      const res = await refundPayment({ order_id: id });
+      if (res.status === 200) {
+        alert("Service cancelled successfully");
+        setOrder(order.filter((item) => item._id !== id));
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message || "Something went wrong");
+    }
+  };
   useEffect(() => {
     fetchOrder();
   }, []);
+
+  useEffect(() => {
+    AOS.init({
+      disable: function () {
+        return window.innerWidth < 992;
+      },
+      disable: "mobile",
+    });
+  }, [order.length > 0]);
   return (
     <div>
       <Modal centered open={open} onCancel={() => setOpen(false)} footer={null}>
@@ -39,14 +70,18 @@ const Upcoming = () => {
         </span>
       </Modal>
       {loading ? (
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
+        <div className="d-flex justify-content-center align-items-center">
+          <Spinner style={{ color: "var(--color2)" }} />
         </div>
       ) : (
         <>
           {order.length > 0 ? (
-            order.map((item) => (
-              <div className="service-history-container">
+            order.map((item, index) => (
+              <div
+                className="service-history-container"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+              >
                 <div className="service-history-details-container">
                   <span
                     className="service-history-title zen-dots"
@@ -91,15 +126,22 @@ const Upcoming = () => {
                     </div>
                   )}
                 </div>
-                <div className="service-history-button-container zen-dots">
-                  {item.order_status === "PENDING" && (
-                    <>
-                      <button className="service-history-button btn-4">
-                        Cancel Service
-                      </button>
-                    </>
-                  )}
-                </div>
+                {((item.order_status === "PENDING" &&
+                  item.paymentstatus === "SUCCESS" &&
+                  item.paymentmode === "ONLINE") ||
+                  (item.order_status === "PENDING" &&
+                    item.paymentstatus === "PENDING" &&
+                    item.paymentmode === "COD")) && (
+                  <>
+                    <button
+                      className="service-history-button btn-4 zen-dots"
+                      onClick={() => cancelService(item._id)}
+                      style={{ textTransform: "uppercase" }}
+                    >
+                      Cancel Service
+                    </button>
+                  </>
+                )}
               </div>
             ))
           ) : (
