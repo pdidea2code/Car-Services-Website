@@ -154,3 +154,9 @@
   font-weight: 400;
   color: var(--color1);
 }
+
+.managecard-card-container1 {
+  margin-top: 15px;
+  display: flex;
+  background-color: var(--color3);
+}

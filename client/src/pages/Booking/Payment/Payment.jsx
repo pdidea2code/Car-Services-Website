@@ -30,12 +30,15 @@ import {
   MasterCardIcon,
   DeleteIcon,
   CardIcon,
+  GooglePayIcon,
 } from "../../../assets/icon/icons";
+import NetbankingIcon from "../../../assets/icon/netbanking.svg";
 import {
   getCard,
   deleteCard,
   cardPayment,
   verifyPayment,
+  createCheckoutSession,
 } from "../../../API/Api";
 import dayjs from "dayjs";
 
@@ -78,6 +81,12 @@ const Payment = () => {
 
   const handleToggle = () => {
     setIsOn(!isOn);
+    setSelectedPaymentMethod(null);
+    setSelectedCard(null);
+  };
+
+  const getBaseUrl = () => {
+    return `${window.location.protocol}//${window.location.host}`;
   };
 
   const handleDelete = async (id) => {
@@ -205,6 +214,7 @@ const Payment = () => {
         service_id: state?.booking?.serviceid?.id,
         addons_id: state?.booking?.addon.map((addon) => addon._id) || [],
         cartype_id: state?.booking?.cartype?.id,
+
         date: dayjs(state?.booking?.selectedDate).format("YYYY-MM-DD"), // Adjusted for ISO date
         time: dayjs(state?.booking?.selectedTime, "hh:mm A").format("HH:mm"), // Convert to 24-hour
         additionalinfo: state?.data?.additionalInfo || "",
@@ -218,11 +228,15 @@ const Payment = () => {
         pickupanddrop: state?.data?.pickupDrop || false,
         carname: data.carName,
         carnumber: data.carNumber,
+        address_id: data.city,
         city: address.find((addr) => addr._id === data.city)?.city || data.city,
         pincode: data.pincode,
         colony: data.colony || "",
         house_no: data.flat || "",
+        payment_method: selectedPaymentMethod,
         cardId: selectedCard ? selectedCard : null,
+        success_url: `${getBaseUrl()}/account/servicehistory`,
+        cancel_url: `${getBaseUrl()}/account/servicehistory`,
         paymentmode: isOn ? "ONLINE" : "COD",
         // Only include discount_amount and promocode_id if a promo code is applied
         ...(isPromoCodeApplied &&
@@ -232,12 +246,7 @@ const Payment = () => {
           }),
       };
       let response;
-      if (
-        selectedCard ||
-        isOn ||
-        selectedCard !== null ||
-        selectedPaymentMethod === "card"
-      ) {
+      if (selectedCard !== null && isOn && selectedPaymentMethod === "card") {
         response = await cardPayment(payload);
         const data = response.data.info;
         let result;
@@ -263,7 +272,7 @@ const Payment = () => {
           console.log(response);
           console.log("card not selected");
         }
-
+        console.log(result);
         if (result.error) {
           const response11 = await verifyPayment({
             order_id: response.data.info.order._id,
@@ -283,6 +292,20 @@ const Payment = () => {
             navigate(`/account/servicehistory`);
           }
           alert("Payment successful!");
+        }
+      } else if (
+        isOn ||
+        selectedPaymentMethod === "upi" ||
+        selectedPaymentMethod === "netbanking"
+      ) {
+        response = await createCheckoutSession(payload);
+        if (response.status === 200) {
+          const result = await stripe.redirectToCheckout({
+            sessionId: response.data.info.sessionId,
+          });
+          if (result.error) {
+            console.error("Error redirecting to checkout:", result.error);
+          }
         }
       } else {
         response = await createOrder(payload);
@@ -674,6 +697,61 @@ const Payment = () => {
                           </Col>
                         ))
                       )}
+                      <Col
+                        xl={12}
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="managecard-card-container1"
+                      >
+                        <Form.Group className="d-flex w-100">
+                          <Form.Check
+                            type="checkbox"
+                            className="payment-page-form-input order-form-checkbox k2d"
+                            label={
+                              <div className="d-flex align-items-center gap-2">
+                                <GooglePayIcon />
+                                <span className="payment-option-title k2d">
+                                  UPI Option
+                                </span>
+                              </div>
+                            }
+                            checked={selectedPaymentMethod === "upi"}
+                            onChange={() => {
+                              setSelectedPaymentMethod("upi");
+                              setSelectedCard(null);
+                            }}
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col
+                        xl={12}
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="managecard-card-container1"
+                      >
+                        <Form.Group className="d-flex w-100">
+                          <Form.Check
+                            type="checkbox"
+                            className="payment-page-form-input order-form-checkbox k2d"
+                            label={
+                              <div className="d-flex align-items-center gap-2">
+                                <img src={NetbankingIcon} alt="Net Banking" />
+                                <span className="payment-option-title k2d">
+                                  Net Banking
+                                </span>
+                              </div>
+                            }
+                            checked={selectedPaymentMethod === "netbanking"}
+                            onChange={() => {
+                              setSelectedPaymentMethod("netbanking");
+                              setSelectedCard(null);
+                            }}
+                          />
+                        </Form.Group>
+                      </Col>
                     </Row>
 
                     <Form onSubmit={handleSubmit(onSubmit)}>

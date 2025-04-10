@@ -34,6 +34,8 @@ const getAppSetting = async (req, res, next) => {
       currency: appSetting.currency,
       google_client_id: appSetting.google_client_id,
       service_tax: appSetting.service_tax,
+      stripe_secret_key: appSetting.stripe_secret_key,
+      stripe_publishable_key: appSetting.stripe_publishable_key,
     };
     successResponse(res, data);
   } catch (error) {

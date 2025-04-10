@@ -81,3 +81,8 @@ export const DELETE_PROMOCODE_API = '/api/admin/promocode/deletepromocode'
 export const GET_ALL_ORDER_API = '/api/admin/booking/getorder'
 export const UPDATE_ORDER_STATUS_API = '/api/admin/booking/updateOrderStatus'
 /* ---------------------------- END Order API ---------------------------- */
+/* ---------------------------- Review API ---------------------------- */
+export const GET_ALL_REVIEW_API = '/api/admin/review/getallreviews'
+export const CHANGE_REVIEW_STATUS_API = '/api/admin/review/changereviewstatus'
+export const DELETE_REVIEW_API = '/api/admin/review/deletereview'
+/* ---------------------------- END Review API ---------------------------- */

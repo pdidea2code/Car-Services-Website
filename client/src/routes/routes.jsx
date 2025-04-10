@@ -25,6 +25,8 @@ import Cartype from "../pages/Booking/Cartype/Cartype";
 import Payment from "../pages/Booking/Payment/Payment";
 import Upcoming from "../pages/Account/Servicehistory/Upcoming";
 import Managecard from "../pages/Account/Managecard/Managecard";
+import Invoice from "../pages/Account/Servicehistory/Invoice";
+import Review from "../pages/Account/review/Review";
 const PrivateRoute = ({ children }) => {
   const auth = Cookies.get("isLoggedIn") || Cookies.get("token");
 
@@ -120,6 +122,14 @@ const RouteList = () => {
         <Route path="managecard" element={<Managecard />}></Route>
       </Route>
       <Route
+        path="/account/servicehistory/review"
+        element={
+          <PrivateRoute>
+            <Review />
+          </PrivateRoute>
+        }
+      />
+      <Route
         path="/booking"
         element={
           <PrivateRoute>
@@ -132,6 +142,14 @@ const RouteList = () => {
         <Route path="datetime" element={<Dateandtime />} />
         <Route path="cartype" element={<Cartype />} />
       </Route>
+      <Route
+        path="/invoice"
+        element={
+          <PrivateRoute>
+            <Invoice />
+          </PrivateRoute>
+        }
+      />
       <Route path="/booking/payment" element={<Payment />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:id" element={<Blogdetail />} />

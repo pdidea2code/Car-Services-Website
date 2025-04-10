@@ -223,6 +223,11 @@ const OrderView = () => {
             </CCol>
             <CCol xs={12} md={4}>
               <p>
+                <strong>Payment Method:</strong> {order.paymentMethod || 'N/A'}
+              </p>
+            </CCol>
+            <CCol xs={12} md={4}>
+              <p>
                 <strong>Payment Status:</strong>{' '}
                 <CBadge
                   color={

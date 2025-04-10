@@ -79,6 +79,12 @@ const _nav = [
     icon: <Icons.LocalOfferRounded className="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'Review',
+    to: '/review',
+    icon: <Icons.ReviewsRounded className="nav-icon" />,
+  },
+  {
     component: CNavGroup,
     name: 'Setting',
     to: '/appsetting',

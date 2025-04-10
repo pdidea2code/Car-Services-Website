@@ -1,0 +1,173 @@
+/* Wrapper for responsiveness */
+.invoice-wrapper {
+  width: 100%;
+  max-width: 210mm; /* A4 width */
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+/* Container styles */
+.invoice-container {
+  width: 100%;
+  min-height: 297mm; /* A4 height */
+  padding: 5%;
+  background: var(--color3);
+  border: 1px solid var(--color1);
+  font-family: "K2D", sans-serif;
+  box-sizing: border-box;
+}
+
+/* Section spacing */
+.section {
+  margin-bottom: 2rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+/* Typography */
+.title {
+  font-size: clamp(12pt, 4vw, 14pt);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: clamp(10pt, 3.5vw, 12pt);
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color1);
+}
+
+.subsubtitle {
+  font-size: clamp(8pt, 3vw, 10pt);
+  margin-top: 1rem;
+}
+
+.text {
+  font-size: clamp(8pt, 2.5vw, 10pt);
+  line-height: 1.4;
+  margin: 0.5rem 0;
+}
+
+/* List styles */
+.list {
+  margin: 0;
+  padding-left: 2rem;
+}
+
+.list-item {
+  font-size: clamp(8pt, 2.5vw, 10pt);
+  line-height: 1.4;
+}
+
+/* Table styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table-header {
+  border: 1px solid var(--color1);
+  padding: 0.5rem;
+  text-align: left;
+  background-color: var(--color3);
+  font-weight: bold;
+  font-size: clamp(8pt, 2.5vw, 10pt);
+}
+
+.table-cell {
+  border: 1px solid var(--color1);
+  padding: 0.5rem;
+  text-align: left;
+  font-size: clamp(8pt, 2.5vw, 10pt);
+}
+
+/* Button styles */
+.download-btn {
+  display: block;
+  margin: 2rem auto;
+  padding: 0.8rem 1.6rem;
+  background-color: var(--color2);
+  color: var(--color3);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: clamp(8pt, 2.5vw, 10pt);
+}
+
+/* Footer styles */
+.footer {
+  text-align: center;
+  font-size: clamp(7pt, 2vw, 9pt);
+  border-top: 1px solid var(--color1);
+  padding-top: 1rem;
+}
+
+/* Loading/Error/No-data states */
+.loading,
+.error,
+.no-data {
+  font-size: clamp(8pt, 2.5vw, 10pt);
+  text-align: center;
+  margin: 2rem;
+}
+
+/* Media Queries for additional responsiveness */
+@media (max-width: 768px) {
+  .invoice-container {
+    padding: 3%;
+  }
+
+  .section {
+    margin-bottom: 1.5rem;
+  }
+
+  .table {
+    font-size: clamp(7pt, 2vw, 9pt);
+  }
+
+  .table-header,
+  .table-cell {
+    padding: 0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .invoice-container {
+    padding: 2%;
+  }
+
+  .title {
+    font-size: clamp(10pt, 3.5vw, 12pt);
+  }
+
+  .subtitle {
+    font-size: clamp(9pt, 3vw, 10pt);
+  }
+
+  .text,
+  .list-item,
+  .table-header,
+  .table-cell {
+    font-size: clamp(7pt, 2vw, 9pt);
+  }
+
+  .download-btn {
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+/* Ensure A4 size for PDF generation */
+@media print {
+  .invoice-container {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 15mm;
+    margin: 0;
+  }
+
+  .download-btn {
+    display: none;
+  }
+}

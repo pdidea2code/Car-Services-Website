@@ -28,6 +28,7 @@ import {
   VERIFY_PROMOCODE,
   CREATE_ORDER,
   GET_ORDER,
+  GET_ORDER_DETAILS,
   ADD_CARD,
   SAVE_CARD,
   GET_CARD,
@@ -35,6 +36,9 @@ import {
   CARD_PAYMENT,
   VERIFY_PAYMENT,
   REFUND_PAYMENT,
+  CREATE_CHECKOUT_SESSION,
+  ADD_REVIEW,
+  DISPLAY_REVIEW,
 } from "./Apilist";
 
 /*-----------------------------------   AppSetting    -----------------------------------*/
@@ -145,6 +149,18 @@ export const refundPayment = (request) =>
       Authorization: `Bearer ${Cookies.get("token")}`,
     },
   });
+export const getOrderDetails = (request) =>
+  axios.post(MAIN_URL + GET_ORDER_DETAILS, request, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+export const createCheckoutSession = (request) =>
+  axios.post(MAIN_URL + CREATE_CHECKOUT_SESSION, request, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
 /*----------------------------------- End Booking    -----------------------------------*/
 
 /*-----------------------------------   Card    -----------------------------------*/
@@ -174,3 +190,18 @@ export const deleteCard = (request) =>
     },
   });
 /*----------------------------------- End Card    -----------------------------------*/
+
+/*-----------------------------------   Review    -----------------------------------*/
+export const addReview = (request) =>
+  axios.post(MAIN_URL + ADD_REVIEW, request, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+export const displayReview = () =>
+  axios.get(MAIN_URL + DISPLAY_REVIEW, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    },
+  });
+/*----------------------------------- End Review    -----------------------------------*/

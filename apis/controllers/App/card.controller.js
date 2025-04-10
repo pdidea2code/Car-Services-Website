@@ -5,7 +5,26 @@ const {
   queryErrorRelatedResponse,
 } = require("../../helper/sendResponse");
 const User = require("../../models/User");
-const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const AppSetting = require("../../models/AppSetting");
+
+let Stripe;
+
+// Initialize Stripe
+const initializeStripe = async () => {
+  try {
+    const appSetting = await AppSetting.findOne({});
+    if (!appSetting?.stripe_secret_key) {
+      throw new Error("Stripe secret key not found");
+    }
+    Stripe = require("stripe")(appSetting.stripe_secret_key);
+  } catch (error) {
+    console.error("Stripe initialization failed:", error);
+    process.exit(1);
+  }
+};
+
+// Call this during app startup
+initializeStripe();
 
 // Helper function to get or create a Customer
 const getOrCreateCustomer = async (userdetails) => {

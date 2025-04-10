@@ -7,7 +7,7 @@ import Blog from "./Blog";
 import Faq from "./Faq";
 import Showcase from "../../components/showcase/Showcase";
 import { useEffect } from "react";
-
+import Reviewdisplay from "./Reviewdisplay";
 const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -21,6 +21,7 @@ const Home = () => {
       <Offer />
       <Blog />
       <Faq />
+      <Reviewdisplay />
       <Showcase />
     </div>
   );

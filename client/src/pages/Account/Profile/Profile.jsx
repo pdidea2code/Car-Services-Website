@@ -7,6 +7,7 @@ import { ProfileEditIcon } from "../../../assets/icon/icons";
 import { useForm } from "react-hook-form";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Cookies from "js-cookie";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
@@ -39,6 +40,7 @@ const Profile = () => {
       setIsLoading(true);
       const response = await getProfile();
       if (response.status === 200) {
+        Cookies.set("user", JSON.stringify(response.data.info.user));
         setUser(response.data.info.user);
         setImage(response.data.info.user.image);
         setValue("name", response.data.info.user.name);

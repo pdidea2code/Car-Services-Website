@@ -26,6 +26,8 @@ const addAppSetting = async (req, res, next) => {
       smtp_service: req.body.smtp_service,
       google_client_id: req.body.google_client_id,
       service_tax: req.body.service_tax,
+      stripe_secret_key: req.body.stripe_secret_key,
+      stripe_publishable_key: req.body.stripe_publishable_key,
     });
     successResponse(res, appSetting);
   } catch (error) {
@@ -82,6 +84,12 @@ const editAppSetting = async (req, res, next) => {
     appSetting.service_tax = req.body.service_tax
       ? req.body.service_tax
       : appSetting.service_tax;
+    appSetting.stripe_secret_key = req.body.stripe_secret_key
+      ? req.body.stripe_secret_key
+      : appSetting.stripe_secret_key;
+    appSetting.stripe_publishable_key = req.body.stripe_publishable_key
+      ? req.body.stripe_publishable_key
+      : appSetting.stripe_publishable_key;
 
     if (req?.files?.logo && req?.files?.logo[0]?.filename) {
       if (appSetting.logo) {

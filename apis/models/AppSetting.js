@@ -28,6 +28,8 @@ const appSettingSchema = new mongoose.Schema({
   smtp_password: { type: String, required: false },
   smtp_service: { type: String, required: false },
   service_tax: { type: Number, required: false },
+  stripe_secret_key: { type: String, required: false },
+  stripe_publishable_key: { type: String, required: false },
 });
 const AppSetting = mongoose.model("AppSetting", appSettingSchema);
 

@@ -114,3 +114,11 @@
 .CardIcon path {
   fill: var(--color1);
 }
+
+.RoundArrowIconwhite path {
+  fill: var(--color3);
+}
+
+.ReviewIcon path {
+  fill: var(--color2);
+}

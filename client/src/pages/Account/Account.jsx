@@ -10,8 +10,10 @@ import Header from "../../components/Header/index";
 import Showcase from "../../components/showcase/Showcase";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_SECRET_KEY);
+import { useSelector } from "react-redux";
 const Account = () => {
+  const appsrting = useSelector((state) => state.appSetting.appSetting);
+  const stripePromise = loadStripe(appsrting?.stripe_publishable_key);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -49,7 +51,6 @@ const Account = () => {
     },
   ];
   useEffect(() => {
-    console.log(path);
     if (location.pathname === "/account") {
       navigate("/account/profile");
     }

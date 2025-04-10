@@ -51,6 +51,9 @@ import {
   DELETE_PROMOCODE_API,
   GET_ALL_ORDER_API,
   UPDATE_ORDER_STATUS_API,
+  GET_ALL_REVIEW_API,
+  CHANGE_REVIEW_STATUS_API,
+  DELETE_REVIEW_API,
 } from '../../constant'
 import Cookies from 'js-cookie'
 axios.interceptors.response.use(
@@ -427,4 +430,24 @@ export const updateOrderStatusApi = async (data) =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
-/* ---------------------------- END Order API ---------------------------- */
+/* ----------------------------\ END Order API ---------------------------- */
+/* ---------------------------- Review API ---------------------------- */
+export const getAllReviewsApi = async () =>
+  axios.get(MAIN_URL + GET_ALL_REVIEW_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const changeReviewStatusApi = async (data) =>
+  axios.post(MAIN_URL + CHANGE_REVIEW_STATUS_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deleteReviewApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_REVIEW_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+/* ---------------------------- END Review API ---------------------------- */

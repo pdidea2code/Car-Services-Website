@@ -59,6 +59,8 @@ const Appsetting = () => {
         setValue('smtp_service', res.data.info.smtp_service)
         setValue('google_client_id', res.data.info.google_client_id)
         setValue('service_tax', res.data.info.service_tax)
+        setValue('stripe_secret_key', res.data.info.stripe_secret_key)
+        setValue('stripe_publishable_key', res.data.info.stripe_publishable_key)
       }
     } catch (error) {
       console.error(error)
@@ -331,6 +333,38 @@ const Appsetting = () => {
                   {errors.smtp_service && (
                     <CFormFeedback className="text-danger">
                       {errors.smtp_service.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={12} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Stripe Secret Key"
+                    name="stripe_secret_key"
+                    {...register('stripe_secret_key', {
+                      required: 'Stripe Secret Key is required',
+                    })}
+                    invalid={!!errors.stripe_secret_key}
+                  />
+                  {errors.stripe_secret_key && (
+                    <CFormFeedback className="text-danger">
+                      {errors.stripe_secret_key.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={12} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Stripe Publishable Key"
+                    name="stripe_publishable_key"
+                    {...register('stripe_publishable_key', {
+                      required: 'Stripe Publishable Key is required',
+                    })}
+                    invalid={!!errors.stripe_publishable_key}
+                  />
+                  {errors.stripe_publishable_key && (
+                    <CFormFeedback className="text-danger">
+                      {errors.stripe_publishable_key.message}
                     </CFormFeedback>
                   )}
                 </CCol>

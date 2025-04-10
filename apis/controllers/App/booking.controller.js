@@ -1,5 +1,5 @@
 // controllers/orderController.js
-const AppSetting = require("../../models/AppSetting");
+
 const Order = require("../../models/Order"); // Import Order model
 const PromoCode = require("../../models/Promocode"); // Import PromoCode model
 const {
@@ -8,7 +8,26 @@ const {
 } = require("../../helper/sendResponse"); // Import response helpers
 const Card = require("../../models/Card");
 require("dotenv").config();
-const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const AppSetting = require("../../models/AppSetting");
+
+let Stripe;
+
+// Initialize Stripe
+const initializeStripe = async () => {
+  try {
+    const appSetting = await AppSetting.findOne({});
+    if (!appSetting?.stripe_secret_key) {
+      throw new Error("Stripe secret key not found");
+    }
+    Stripe = require("stripe")(appSetting.stripe_secret_key);
+  } catch (error) {
+    console.error("Stripe initialization failed:", error);
+    process.exit(1);
+  }
+};
+
+// Call this during app startup
+initializeStripe();
 
 const getOrCreateCustomer = async (userdetails) => {
   let customer = await Stripe.customers.list({ email: `${userdetails.email}` });
@@ -170,7 +189,7 @@ const createOrder = async (req, res, next) => {
         "Contact details are required"
       );
     }
-    if (!carname || !carnumber || !city || !pincode) {
+    if (!carname || !carnumber || !address_id || !pincode) {
       return queryErrorRelatedResponse(
         res,
         400,
@@ -341,7 +360,7 @@ const cardpayment = async (req, res, next) => {
         "Contact details are required"
       );
     }
-    if (!carname || !carnumber || !city || !pincode) {
+    if (!carname || !carnumber || !address_id || !pincode) {
       return queryErrorRelatedResponse(
         res,
         400,
@@ -369,7 +388,10 @@ const cardpayment = async (req, res, next) => {
       return queryErrorRelatedResponse(res, 404, "Card not found or invalid");
     }
 
-    const total_amount = service_amount + tax_amount - discount_amount;
+    let total_amount = service_amount + tax_amount;
+    if (discount_amount > 0) {
+      total_amount = total_amount - discount_amount;
+    }
     if (!total_amount || isNaN(total_amount) || total_amount <= 0) {
       return queryErrorRelatedResponse(res, 400, "Invalid total amount");
     }
@@ -631,6 +653,299 @@ const refundPayment = async (req, res, next) => {
   }
 };
 
+const createcheckoutsession = async (req, res, next) => {
+  try {
+    const {
+      service_id,
+      addons_id,
+      cartype_id,
+      promocode_id,
+      address_id,
+      date,
+      time,
+      additionalinfo,
+      name,
+      email,
+      phone,
+      service_amount,
+      tax_amount,
+      total_time,
+      discount_amount,
+      pickupanddrop,
+      carname,
+      carnumber,
+      city,
+      pincode,
+      colony,
+      house_no,
+      paymentmode,
+      payment_method,
+    } = req.body;
+    const userId = req.user._id;
+    if (!service_amount || !tax_amount) {
+      return queryErrorRelatedResponse(
+        res,
+        400,
+        "Service and tax amounts are required"
+      );
+    }
+    if (!date || !time) {
+      return queryErrorRelatedResponse(res, 400, "Date and time are required");
+    }
+    if (!name || !email || !phone) {
+      return queryErrorRelatedResponse(
+        res,
+        400,
+        "Contact details are required"
+      );
+    }
+    if (!carname || !carnumber || !address_id || !pincode) {
+      return queryErrorRelatedResponse(
+        res,
+        400,
+        "Car and location details are required"
+      );
+    }
+    if (!paymentmode) {
+      return queryErrorRelatedResponse(res, 400, "Payment mode is required");
+    }
+
+    // Check if payment mode is ONLINE and payment method is either upi or netbanking
+    if (
+      paymentmode === "ONLINE" &&
+      (payment_method === "upi" || payment_method === "netbanking")
+    ) {
+      // Check if payment_option is missing or invalid
+      if (!payment_method || payment_method.trim() === "") {
+        return queryErrorRelatedResponse(
+          res,
+          400,
+          "Payment option is required for UPI or Netbanking"
+        );
+      }
+    }
+    let total_amount = service_amount + tax_amount;
+    if (discount_amount > 0) {
+      total_amount = total_amount - discount_amount;
+    }
+    console.log("total_amount", total_amount);
+    if (!total_amount || isNaN(total_amount) || total_amount <= 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid total amount");
+    }
+
+    const order_id = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+    // Promo code validation (no update yet)
+    let promoCode = null;
+    if (promocode_id) {
+      promoCode = await PromoCode.findById(promocode_id);
+      if (!promoCode) {
+        return queryErrorRelatedResponse(res, 404, "Promo code not found");
+      }
+      const currentDate = new Date();
+      if (
+        currentDate < promoCode.startDate ||
+        currentDate > promoCode.expirationDate
+      ) {
+        return queryErrorRelatedResponse(
+          res,
+          400,
+          "Promo code is not valid at this time"
+        );
+      }
+      if (promoCode.user_ids.includes(userId)) {
+        return queryErrorRelatedResponse(
+          res,
+          400,
+          "You have already used this promo code"
+        );
+      }
+      if (
+        promoCode.maxUses !== -1 &&
+        promoCode.usesCount >= promoCode.maxUses
+      ) {
+        return queryErrorRelatedResponse(
+          res,
+          400,
+          "Promo code usage limit reached"
+        );
+      }
+    }
+
+    const order = new Order({
+      user_id: userId,
+      order_id,
+      service_id,
+      addons_id,
+      cartype_id,
+      promocode_id,
+      address_id,
+      date,
+      time,
+      additionalinfo,
+      name,
+      email,
+      phone,
+      service_amount,
+      tax_amount,
+      discount_amount,
+      total_amount: total_amount.toFixed(2),
+      pickupanddrop,
+      carname,
+      carnumber,
+      city,
+      pincode,
+      colony,
+      house_no,
+      total_time,
+      paymentmode,
+      paymentstatus: "PENDING",
+      order_status: "PENDING",
+      paymentMethod:
+        payment_method === "upi"
+          ? "UPI"
+          : payment_method === "netbanking"
+          ? "NETBANKING"
+          : "",
+    });
+    await order.save();
+
+    const appSetting = await AppSetting.findOne({});
+
+    const customer = await getOrCreateCustomer(req.user);
+    const session = await Stripe.checkout.sessions.create({
+      payment_method_types: ["card"], // Only card payments for "Other"
+      customer: customer.id,
+
+      line_items: [
+        {
+          price_data: {
+            currency: appSetting?.currency?.toLowerCase() || "usd",
+            product_data: {
+              name: "Service Fee",
+            },
+            unit_amount: Math.round(total_amount * 100),
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${req.body.success_url}`,
+      cancel_url: `${req.body.cancel_url}`,
+      metadata: {
+        order_id,
+        user_id: req.user.email,
+      },
+      expires_at: Math.floor(Date.now() / 1000) + 1800,
+    });
+    order.paymentIntentId = session.id;
+    await order.save();
+    successResponse(res, {
+      sessionId: session.id,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const webhook = async (req, res, next) => {
+  try {
+    const sig = req.headers["stripe-signature"];
+    console.log(req.body);
+    let event;
+    const appSetting = await AppSetting.findOne({});
+    const endpointSecret =
+      "whsec_9c1ba2fd6b24693b5bb659af25be828ea6432c5bb51b5d9ddf2a1441220ad486";
+    try {
+      event = Stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+      console.log(event);
+    } catch (err) {
+      console.log(err);
+      return queryErrorRelatedResponse(res, 400, err.message);
+    }
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const order = await Order.findOne({
+        paymentIntentId: session.id,
+      });
+      if (!order) {
+        return queryErrorRelatedResponse(res, 404, "Order not found");
+      }
+
+      const promoCode = await PromoCode.findById(order.promocode_id);
+      if (promoCode) {
+        promoCode.usesCount += 1;
+        promoCode.user_ids.push(order.user_id);
+        promoCode.totalDiscountAmount += order.discount_amount;
+        await promoCode.save();
+      }
+      order.paymentstatus = "SUCCESS";
+      order.order_status = "PENDING";
+      await order.save();
+      return successResponse(res, {
+        message: "Payment verified and order completed successfully",
+        order,
+      });
+    }
+    if (event.type === "checkout.session.expired") {
+      const session = event.data.object;
+      const order = await Order.findOne({
+        paymentIntentId: session.id,
+      });
+      if (!order) {
+        return queryErrorRelatedResponse(res, 404, "Order not found");
+      }
+      order.paymentstatus = "FAILED";
+      order.order_status = "CANCELLED";
+      await order.save();
+      return successResponse(res, {
+        message: "Payment expired and order cancelled",
+        order,
+      });
+    }
+    if (event.type === "payment_intent.payment_failed") {
+      const session = event.data.object;
+      const order = await Order.findOne({
+        paymentIntentId: session.id,
+      });
+      if (!order) {
+        return queryErrorRelatedResponse(res, 404, "Order not found");
+      }
+      order.paymentstatus = "FAILED";
+      order.order_status = "CANCELLED";
+      await order.save();
+      return successResponse(res, {
+        message: "Payment failed and order cancelled",
+        order,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getOrderDetails = async (req, res, next) => {
+  try {
+    const { order_id } = req.body;
+    const order = await Order.findOne({
+      _id: order_id,
+      user_id: req.user._id,
+    })
+      .populate("service_id")
+      .populate("cartype_id")
+      .populate("promocode_id")
+      .populate("address_id")
+      .populate("user_id")
+      .populate("addons_id");
+    if (!order) {
+      return queryErrorRelatedResponse(res, 404, "Order not found");
+    }
+    successResponse(res, order);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   VerifyPromoCode,
   createOrder,
@@ -638,4 +953,7 @@ module.exports = {
   cardpayment,
   verifyPayment,
   refundPayment,
+  createcheckoutsession,
+  webhook,
+  getOrderDetails,
 };

@@ -1,0 +1,62 @@
+.review-background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  height: fit-content;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 0px;
+  gap: 25px;
+  box-shadow: 0px 0px 0px 500px #000000b2 inset;
+}
+
+.review-background-title {
+  font-size: 30px;
+  font-weight: 400;
+  max-width: 100%;
+  color: var(--color3);
+}
+.review-background-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color3);
+}
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 30px;
+}
+
+.review-form-col {
+  max-width: 515px !important;
+  margin-top: 30px !important;
+}
+
+.review-form-input {
+  border-radius: 0px !important;
+  border: 0px solid #000000 !important;
+  padding: 15px !important;
+  width: 100%;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--color1) !important;
+  background-color: var(--color3) !important;
+}
+
+.review-form-input::placeholder {
+  color: var(--color1) !important;
+}
+.review-form-input:focus {
+  box-shadow: none !important;
+  border: 0px solid #000000 !important;
+}
+
+@media (max-width: 768px) {
+  .review-background {
+    margin-top: 20px;
+  }
+}

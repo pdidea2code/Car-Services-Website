@@ -9,6 +9,7 @@ const appSettingRoutes = require("./appsetting.routes");
 const contectusRoutes = require("./contectus.routes");
 const bookingRoutes = require("./booking.routes");
 const cardRoutes = require("./card.routes");
+const reviewRoutes = require("./review.routes");
 
 router.use("/auth", authRoutes);
 router.use("/banner", bannerRoutes);
@@ -19,5 +20,6 @@ router.use("/appsetting", appSettingRoutes);
 router.use("/contectus", contectusRoutes);
 router.use("/booking", bookingRoutes);
 router.use("/card", cardRoutes);
+router.use("/review", reviewRoutes);
 
 module.exports = router;

@@ -43,7 +43,7 @@ const orderSchema = new mongoose.Schema(
     },
     total_time: {
       type: Number,
-      required: true,
+      // required: true,
     },
     additionalinfo: {
       type: String,

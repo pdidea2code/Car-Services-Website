@@ -8,9 +8,12 @@ import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import AOS from "aos";
 import "aos/dist/aos.css";
+
 const Upcoming = () => {
   const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false); // New state for confirmation modal
+  const [selectedOrderId, setSelectedOrderId] = useState(null); // Track which order to cancel
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const appSettings = useSelector((state) => state.appSetting.appSetting);
@@ -48,8 +51,22 @@ const Upcoming = () => {
     } catch (error) {
       console.log(error);
       alert(error.response.data.message || "Something went wrong");
+    } finally {
+      setConfirmOpen(false); // Close modal after action
     }
   };
+
+  const handleCancelClick = (id) => {
+    setSelectedOrderId(id); // Set the order ID to be cancelled
+    setConfirmOpen(true); // Open confirmation modal
+  };
+
+  const handleConfirmCancel = () => {
+    if (selectedOrderId) {
+      cancelService(selectedOrderId); // Proceed with cancellation
+    }
+  };
+
   useEffect(() => {
     fetchOrder();
   }, []);
@@ -62,13 +79,44 @@ const Upcoming = () => {
       disable: "mobile",
     });
   }, [order.length > 0]);
+
   return (
     <div>
+      {/* Existing Modal for service not available */}
       <Modal centered open={open} onCancel={() => setOpen(false)} footer={null}>
         <span className="service-history-details k2d">
           Service is not available
         </span>
       </Modal>
+
+      {/* New Confirmation Modal */}
+      <Modal
+        centered
+        open={confirmOpen}
+        onCancel={() => setConfirmOpen(false)}
+        footer={[
+          <button
+            key="cancel"
+            className="btn btn-secondary zen-dots"
+            onClick={() => setConfirmOpen(false)}
+            style={{ marginRight: "10px" }}
+          >
+            Cancel
+          </button>,
+          <button
+            key="confirm"
+            className="btn btn-danger zen-dots"
+            onClick={handleConfirmCancel}
+          >
+            Confirm
+          </button>,
+        ]}
+      >
+        <span className="service-history-details k2d">
+          Are you sure you want to cancel this service?
+        </span>
+      </Modal>
+
       {loading ? (
         <div className="d-flex justify-content-center align-items-center">
           <Spinner style={{ color: "var(--color2)" }} />
@@ -135,7 +183,7 @@ const Upcoming = () => {
                   <>
                     <button
                       className="service-history-button btn-4 zen-dots"
-                      onClick={() => cancelService(item._id)}
+                      onClick={() => handleCancelClick(item._id)}
                       style={{ textTransform: "uppercase" }}
                     >
                       Cancel Service

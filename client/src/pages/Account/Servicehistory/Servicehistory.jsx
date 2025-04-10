@@ -27,7 +27,7 @@ const Servicehistory = () => {
               item.paymentmode === "ONLINE") ||
             item.paymentmode === "COD"
         );
-        setOrder(completedOrder);
+        setOrder(res.data.info);
       }
     } catch (error) {
       console.log(error);
@@ -62,11 +62,7 @@ const Servicehistory = () => {
         <>
           {order.length > 0 ? (
             order.map((item, index) => (
-              <div
-                className="service-history-container"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
+              <div className="service-history-container" data-aos="fade-up">
                 <div className="service-history-details-container">
                   <span
                     className="service-history-title zen-dots"
@@ -107,11 +103,25 @@ const Servicehistory = () => {
                 <div className="service-history-button-container zen-dots">
                   {item.order_status === "COMPLETED" && (
                     <>
-                      <button className="service-history-button btn-4">
+                      <button
+                        className="service-history-button btn-4"
+                        onClick={() => {
+                          navigate("/invoice", {
+                            state: { orderId: item._id },
+                          });
+                        }}
+                      >
                         View Invoice
                       </button>
 
-                      <button className="service-history-button btn-4">
+                      <button
+                        className="service-history-button btn-4"
+                        onClick={() => {
+                          navigate("/account/servicehistory/review", {
+                            state: { item },
+                          });
+                        }}
+                      >
                         Leave Review
                       </button>
                     </>
