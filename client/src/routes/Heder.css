@@ -5,7 +5,6 @@
 
 .navbar-toggler-icon {
   background-image: none !important;
- 
 }
 .navbar-toggler:focus {
   box-shadow: none !important;
@@ -40,16 +39,15 @@
   gap: 5px;
 }
 
-
 .desktop-profile-div-text {
-  font-family: "Zen Dots", cursive ;
-  color: var(--color3) ;
-  font-size: 12px ;
-  font-weight: 400 ;
+  font-family: "Zen Dots", cursive;
+  color: var(--color3);
+  font-size: 12px;
+  font-weight: 400;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
   height: 100%;
 }
 .desktop-profile-div-text:hover {
@@ -61,7 +59,7 @@
 @media (max-width: 992px) {
   .nav-link {
     color: var(--color3) !important;
-    font-size: 14px !important; 
+    font-size: 14px !important;
     font-weight: 400 !important;
   }
   .navlinks {
@@ -77,6 +75,12 @@
     display: none;
   }
   .desktop-profile-div-text {
-  display: none;
+    display: none;
+  }
+
+  .Header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   }
 }

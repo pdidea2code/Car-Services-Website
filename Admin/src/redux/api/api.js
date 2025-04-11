@@ -481,7 +481,7 @@ export const getTopServicesAndAddonsApi = async () =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
-export const getRecentActivityApi = async () => 
+export const getRecentActivityApi = async () =>
   axios.get(MAIN_URL + GET_RECENT_ACTIVITY_API, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,

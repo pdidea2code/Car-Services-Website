@@ -19,7 +19,7 @@ const AppRoutes = () => {
     <>
       <Header />
       <Elements stripe={stripePromise}>
-        <RouteList />
+        <RouteList style={{ flex: 1 }} />
       </Elements>
       <Footer />
     </>

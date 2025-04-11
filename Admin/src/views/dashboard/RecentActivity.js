@@ -69,7 +69,7 @@ const RecentActivity = () => {
       <CCol xs={12} className="mb-4">
         <CCard>
           <CCardHeader>
-            <h5>Today's Orders</h5>
+            <h5>Today{"'"}s Orders</h5>
           </CCardHeader>
           <CCardBody>
             {activityData.todayOrders.length === 0 ? (
