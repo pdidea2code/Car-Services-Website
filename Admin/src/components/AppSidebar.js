@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
@@ -8,7 +8,7 @@ import { AppSidebarNav } from './AppSidebarNav'
 
 import { logoNegative } from 'src/assets/brand/logo-negative'
 import { sygnet } from 'src/assets/brand/sygnet'
-
+import { getAllAppSettingApi } from '../redux/api/api'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
@@ -17,9 +17,25 @@ import navigation from '../_nav'
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
+  const [appSetting, setAppSetting] = useState('')
   const unfoldable = useSelector((state) => state.sidebar.sidebarUnfoldable)
 
   const sidebarShow = useSelector((state) => state.sidebar.sidebarShow)
+  useEffect(() => {
+    const appsetting = async () => {
+      try {
+        const response = await getAllAppSettingApi()
+        if (response.status === 200) {
+          const data = response.data.info
+          console.log(data)
+          setAppSetting(data)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    appsetting()
+  }, [])
 
   return (
     <CSidebar
@@ -30,9 +46,13 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
-      <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
-        <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
+      <CSidebarBrand
+        style={{ backgroundColor: 'var(--color-one)' }}
+        className="d-none d-md-flex"
+        to="/"
+      >
+        <img src={appSetting.logo} alt="logo" className="sidebar-brand-full" height={35} />
+        <img src={appSetting.logo} alt="logo" className="sidebar-brand-narrow" height={35} />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

@@ -61,6 +61,7 @@ const Appsetting = () => {
         setValue('service_tax', res.data.info.service_tax)
         setValue('stripe_secret_key', res.data.info.stripe_secret_key)
         setValue('stripe_publishable_key', res.data.info.stripe_publishable_key)
+        setValue('stripe_webhook_secret', res.data.info.stripe_webhook_secret)
       }
     } catch (error) {
       console.error(error)
@@ -365,6 +366,22 @@ const Appsetting = () => {
                   {errors.stripe_publishable_key && (
                     <CFormFeedback className="text-danger">
                       {errors.stripe_publishable_key.message}
+                    </CFormFeedback>
+                  )}
+                </CCol>
+                <CCol xl={12} md={12}>
+                  <CFormInput
+                    type="text"
+                    label="Stripe Webhook Secret"
+                    name="stripe_webhook_secret"
+                    {...register('stripe_webhook_secret', {
+                      required: 'Stripe Webhook Secret is required',
+                    })}
+                    invalid={!!errors.stripe_webhook_secret}
+                  />
+                  {errors.stripe_webhook_secret && (
+                    <CFormFeedback className="text-danger">
+                      {errors.stripe_webhook_secret.message}
                     </CFormFeedback>
                   )}
                 </CCol>

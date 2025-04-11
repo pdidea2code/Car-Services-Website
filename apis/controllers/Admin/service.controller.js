@@ -5,7 +5,8 @@ const {
 } = require("../../helper/sendResponse");
 const deleteFiles = require("../../helper/deleteFiles");
 const Addon = require("../../models/Addons");
-
+const Order = require("../../models/Order");
+const Review = require("../../models/Review");
 const addService = async (req, res, next) => {
   try {
     const service = await Service.create({
@@ -120,9 +121,48 @@ const softDeleteService = async (req, res, next) => {
   }
 };
 
+const servicebyid = async (req, res, next) => {
+  try {
+    const service = await Service.findById(req.body.id);
+    if (!service) {
+      return queryErrorRelatedResponse(res, "Service not found");
+    }
+    const baseUrl =
+      req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
+    const serviceData = {
+      ...service.toObject(),
+      iconimage: service.iconimage ? baseUrl + service.iconimage : null,
+      image: service.image ? baseUrl + service.image : null,
+      whyChooseqImage: service.whyChooseqImage
+        ? baseUrl + service.whyChooseqImage
+        : null,
+    };
+    const addonBaseUrl =
+      req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
+
+    const addon = await Addon.find({ serviceid: service._id });
+    const addonData = addon.map((item) => {
+      return {
+        ...item.toObject(),
+        image: item.image ? addonBaseUrl + item.image : null,
+      };
+    });
+
+    const order = await Order.find({ service_id: service._id });
+    const review = await Review.find({ service_id: service._id });
+    serviceData.addon = addonData;
+    serviceData.order = order;
+    serviceData.review = review;
+
+    successResponse(res, serviceData);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   addService,
   editService,
   getAllService,
   softDeleteService,
+  servicebyid,
 };

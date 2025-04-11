@@ -49,8 +49,7 @@ app.post(
 
       let event;
       const appSetting = await AppSetting.findOne({});
-      const endpointSecret =
-        "whsec_9c1ba2fd6b24693b5bb659af25be828ea6432c5bb51b5d9ddf2a1441220ad486";
+      const endpointSecret = appSetting.stripe_webhook_secret;
       try {
         event = Stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
       } catch (err) {

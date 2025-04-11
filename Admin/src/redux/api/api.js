@@ -54,6 +54,11 @@ import {
   GET_ALL_REVIEW_API,
   CHANGE_REVIEW_STATUS_API,
   DELETE_REVIEW_API,
+  GET_SERVICE_BY_ID_API,
+  GET_KPI_METRICS_API,
+  GET_ORDER_STATUS_BREAKDOWN_API,
+  GET_TOP_SERVICES_AND_ADDONS_API,
+  GET_RECENT_ACTIVITY_API,
 } from '../../constant'
 import Cookies from 'js-cookie'
 axios.interceptors.response.use(
@@ -193,6 +198,12 @@ export const editServiceApi = async (data) =>
   })
 export const softDeleteServiceApi = async (data) =>
   axios.post(MAIN_URL + SOFT_DELETE_SERVICE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const getServiceByIdApi = async (data) =>
+  axios.post(MAIN_URL + GET_SERVICE_BY_ID_API, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
@@ -451,3 +462,30 @@ export const deleteReviewApi = async (data) =>
     },
   })
 /* ---------------------------- END Review API ---------------------------- */
+/* ---------------------------- Dashboard API ---------------------------- */
+export const getKpiMetricsApi = async () =>
+  axios.get(MAIN_URL + GET_KPI_METRICS_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const getOrderStatusBreakdownApi = async () =>
+  axios.get(MAIN_URL + GET_ORDER_STATUS_BREAKDOWN_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const getTopServicesAndAddonsApi = async () =>
+  axios.get(MAIN_URL + GET_TOP_SERVICES_AND_ADDONS_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const getRecentActivityApi = async () => 
+  axios.get(MAIN_URL + GET_RECENT_ACTIVITY_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+
+/* ---------------------------- END Dashboard API ---------------------------- */

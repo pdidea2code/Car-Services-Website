@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -16,12 +16,27 @@ import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
-import { logo } from 'src/assets/brand/logo'
+import { getAllAppSettingApi } from '../redux/api/api'
 
 const AppHeader = () => {
+  const [appSetting, setAppSetting] = useState('')
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebar.sidebarShow)
-
+  useEffect(() => {
+    const appsetting = async () => {
+      try {
+        const response = await getAllAppSettingApi()
+        if (response.status === 200) {
+          const data = response.data.info
+          console.log(data)
+          setAppSetting(data)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    appsetting()
+  }, [])
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
@@ -31,8 +46,12 @@ const AppHeader = () => {
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
-        <CHeaderBrand className="mx-auto d-md-none" to="/">
-          <CIcon icon={logo} height={48} alt="Logo" />
+        <CHeaderBrand
+          style={{ backgroundColor: 'var(--color-one)' }}
+          className="mx-auto d-md-none"
+          to="/"
+        >
+          <img src={appSetting.logo} alt="logo" height={48} />
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>

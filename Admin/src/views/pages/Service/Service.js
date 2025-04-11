@@ -1,3 +1,4 @@
+// Service.jsx
 import { useState, useEffect } from 'react'
 import { getAllServiceApi, softDeleteServiceApi, editServiceApi } from 'src/redux/api/api'
 import { useNavigate } from 'react-router-dom'
@@ -61,6 +62,7 @@ const Service = () => {
       toast.error(error?.response?.data?.message || 'Something went wrong')
     }
   }
+
   useEffect(() => {
     fetchService()
   }, [])
@@ -72,10 +74,10 @@ const Service = () => {
     },
     {
       name: 'image',
-      lable: 'image',
+      label: 'Image',
       options: {
         customBodyRender: (value) => {
-          return <img src={value} alt="service" style={{ width: '200px' }} />
+          return <img src={value} alt="service" style={{ width: '200px', height: 'auto' }} />
         },
       },
     },
@@ -85,7 +87,7 @@ const Service = () => {
     },
     {
       name: 'time',
-      label: 'Time(minutes)',
+      label: 'Time (minutes)',
     },
     {
       name: 'status',
@@ -112,13 +114,21 @@ const Service = () => {
           const data = service[rowIndex]
           return (
             <div className="d-flex gap-2">
+              <Tooltip title="View Details">
+                <Button
+                  className="editButton w-fit"
+                  onClick={() => navigate(`/service/view/${data._id}`, { state: data })}
+                >
+                  <Icons.VisibilityRounded />
+                </Button>
+              </Tooltip>
               <Button
                 className="w-fit"
                 color="error"
                 onClick={async () => {
                   const confirm = await swal({
                     title: 'Are you sure?',
-                    text: 'You want to delete this car type?',
+                    text: 'You want to delete this service?',
                     icon: 'warning',
                     buttons: true,
                     dangerMode: true,
@@ -153,7 +163,13 @@ const Service = () => {
 
   const options = {
     selectableRows: 'none',
+    responsive: 'standard',
+    print: false,
+    download: true,
+    filter: true,
+    search: true,
   }
+
   return (
     <>
       {isLoading ? (
@@ -161,8 +177,8 @@ const Service = () => {
           <CSpinner className="theme-spinner-color" />
         </div>
       ) : (
-        <div>
-          <div className="right-text">
+        <div className="container p-4">
+          <div className="right-text mb-4">
             <Button
               className="add-button"
               variant="contained"
@@ -172,7 +188,7 @@ const Service = () => {
             </Button>
           </div>
           <ToastContainer />
-          <MUIDataTable title={'Service'} data={service} columns={columns} options={options} />
+          <MUIDataTable title={'Service List'} data={service} columns={columns} options={options} />
         </div>
       )}
     </>

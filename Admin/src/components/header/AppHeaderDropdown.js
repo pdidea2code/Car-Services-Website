@@ -48,10 +48,10 @@ const AppHeaderDropdown = () => {
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
         <CAvatar src={profile} size="md" />
       </CDropdownToggle>
-      <CDropdownMenu className="pt-0" placement="bottom-end">
+      <CDropdownMenu className="pt-2 m-2" placement="bottom-end">
         <CDropdownItem href="#" onClick={() => Logout()}>
-          <CIcon icon={cilLockLocked} className="me-2" />
-          Lock Account
+          <CIcon icon={cilLockLocked} className="" />
+          Logout
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

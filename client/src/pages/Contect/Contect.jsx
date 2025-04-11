@@ -16,7 +16,7 @@ import {
 import { useSelector } from "react-redux";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
+import Faq from "../Homepage/Faq";
 const Contect = () => {
   const appSetting = useSelector((state) => state.appSetting.appSetting);
   const [address, setAddress] = useState([]);
@@ -326,6 +326,7 @@ const Contect = () => {
           </>
         )}
       </Container>
+      <Faq />
       <Showcase />
     </div>
   );

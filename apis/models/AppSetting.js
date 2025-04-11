@@ -30,6 +30,7 @@ const appSettingSchema = new mongoose.Schema({
   service_tax: { type: Number, required: false },
   stripe_secret_key: { type: String, required: false },
   stripe_publishable_key: { type: String, required: false },
+  stripe_webhook_secret: { type: String, required: false },
 });
 const AppSetting = mongoose.model("AppSetting", appSettingSchema);
 

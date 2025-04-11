@@ -28,6 +28,7 @@ const addAppSetting = async (req, res, next) => {
       service_tax: req.body.service_tax,
       stripe_secret_key: req.body.stripe_secret_key,
       stripe_publishable_key: req.body.stripe_publishable_key,
+      stripe_webhook_secret: req.body.stripe_webhook_secret,
     });
     successResponse(res, appSetting);
   } catch (error) {
@@ -90,6 +91,9 @@ const editAppSetting = async (req, res, next) => {
     appSetting.stripe_publishable_key = req.body.stripe_publishable_key
       ? req.body.stripe_publishable_key
       : appSetting.stripe_publishable_key;
+    appSetting.stripe_webhook_secret = req.body.stripe_webhook_secret
+      ? req.body.stripe_webhook_secret
+      : appSetting.stripe_webhook_secret;
 
     if (req?.files?.logo && req?.files?.logo[0]?.filename) {
       if (appSetting.logo) {

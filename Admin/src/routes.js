@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const Dashboard1 = React.lazy(() => import('./views/dashboard/Dashboard(1)'))
 const User = React.lazy(() => import('./views/pages/User/User'))
 const CarType = React.lazy(() => import('./views/pages/Car Type/index'))
 const CarTypeForm = React.lazy(() => import('./views/pages/Car Type/CarTypeForm'))
@@ -27,6 +28,7 @@ const PromocodeForm = React.lazy(() => import('./views/pages/Promocode/Promocode
 const Order = React.lazy(() => import('./views/pages/Order/Order'))
 const OrderView = React.lazy(() => import('./views/pages/Order/Orderview'))
 const Review = React.lazy(() => import('./views/pages/Review/Review'))
+const ServiceView = React.lazy(() => import('./views/pages/Service/Serviceview'))
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 // const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -79,7 +81,8 @@ const Review = React.lazy(() => import('./views/pages/Review/Review'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
 
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboard', name: 'Dashboard', element: Dashboard1 },
+  { path: '/dashboard1', name: 'Dashboard1', element: Dashboard1 },
   { path: '/users', name: 'Users', element: User },
   { path: '/cartype', name: 'Car Type', element: CarType },
   { path: '/cartype/form', name: 'Car Type Form', element: CarTypeForm },
@@ -106,6 +109,7 @@ const routes = [
   { path: '/order', name: 'Order', element: Order },
   { path: '/order/view', name: 'Order View', element: OrderView },
   { path: '/review', name: 'Review', element: Review },
+  { path: '/service/view/:id', name: 'Service View', element: ServiceView },
   // { path: '/theme', na me: 'Theme', element: Colors, exact: true },
   // { path: '/theme/colors', name: 'Colors', element: Colors },
   // { path: '/theme/typography', name: 'Typography', element: Typography },

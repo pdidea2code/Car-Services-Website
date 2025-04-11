@@ -25,6 +25,7 @@ export const GET_ALL_SERVICE_API = '/api/admin/service/allservice'
 export const ADD_SERVICE_API = '/api/admin/service/addservice'
 export const EDIT_SERVICE_API = '/api/admin/service/editservice'
 export const SOFT_DELETE_SERVICE_API = '/api/admin/service/softdeleteservice'
+export const GET_SERVICE_BY_ID_API = '/api/admin/service/servicebyid'
 /* ---------------------------- END Service API ---------------------------- */
 /* ---------------------------- Addons API ---------------------------- */
 export const GET_ALL_ADDONS_API = '/api/admin/addons/getalladdons'
@@ -86,3 +87,9 @@ export const GET_ALL_REVIEW_API = '/api/admin/review/getallreviews'
 export const CHANGE_REVIEW_STATUS_API = '/api/admin/review/changereviewstatus'
 export const DELETE_REVIEW_API = '/api/admin/review/deletereview'
 /* ---------------------------- END Review API ---------------------------- */
+/* ---------------------------- Dashboard API ---------------------------- */
+export const GET_KPI_METRICS_API = '/api/admin/dashbord/kpimetrics'
+export const GET_ORDER_STATUS_BREAKDOWN_API = '/api/admin/dashbord/orderstatusbreakdown'
+export const GET_TOP_SERVICES_AND_ADDONS_API = '/api/admin/dashbord/topservicesandaddons'
+export const GET_RECENT_ACTIVITY_API = '/api/admin/dashbord/recentactivity'
+/* ---------------------------- END Dashboard API ---------------------------- */
