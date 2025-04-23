@@ -1,20 +1,31 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { CFooter } from '@coreui/react'
 
 const AppFooter = () => {
+  const [currentTime, setCurrentTime] = useState(new Date())
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+
+    return () => clearInterval(timer) // Cleanup on unmount
+  }, [])
+
   return (
     <CFooter>
       <div>
-        <a href="https://coreui.io" target="_blank" rel="noopener noreferrer">
-          CoreUI
-        </a>
-        <span className="ms-1">&copy; 2023 creativeLabs.</span>
-      </div>
-      <div className="ms-auto">
-        <span className="me-1">Powered by</span>
-        <a href="https://coreui.io/react" target="_blank" rel="noopener noreferrer">
-          CoreUI React Admin &amp; Dashboard Template
-        </a>
+        <span>
+          {currentTime.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+          })}
+        </span>
       </div>
     </CFooter>
   )

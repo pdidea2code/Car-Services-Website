@@ -1,0 +1,54 @@
+.custom-calendar {
+  background-color: var(--color3) !important;
+  color: var(--color1) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  font-family: "K2D" !important;
+}
+.custom-calendar .react-calendar__tile--active {
+  background-color: var(--color2) !important;
+  color: var(--color3) !important;
+}
+
+.custom-calendar .react-calendar__month-view__days__day--weekend {
+  background-color: var(--color3);
+  color: var(--color1);
+}
+
+.time-slots-dropdown {
+  height: auto;
+  border-top: 1px solid var(--color1);
+  background-color: #0e082105;
+}
+
+.time-slot-item {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "K2D";
+  font-size: 16px;
+  font-weight: 500;
+}
+.time-slot-item:hover {
+  background-color: var(--color3);
+}
+
+.time-slot-item-icon {
+  width: 20px;
+  height: 20px;
+  background-color: var(--color3);
+  border: 1px solid var(--color2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.time-slot-item-icon-check {
+  width: 12px;
+  height: 12px;
+  background-color: var(--color2);
+  border-radius: 50%;
+}

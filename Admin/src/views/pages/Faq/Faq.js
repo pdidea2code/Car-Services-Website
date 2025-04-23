@@ -95,7 +95,6 @@ const Faq = () => {
       label: 'Action',
       options: {
         sort: false,
-        filter: false,
         customBodyRender: (value, { rowIndex }) => {
           const data = faq[rowIndex]
           return (

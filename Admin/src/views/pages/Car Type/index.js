@@ -99,7 +99,6 @@ const CarType = () => {
       name: 'name',
       label: 'Action',
       options: {
-        filter: false,
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const data = carType[rowIndex]

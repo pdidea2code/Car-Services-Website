@@ -12,7 +12,92 @@ const getOrder = async (req, res, next) => {
       .populate("promocode_id")
       .populate("address_id")
       .populate("user_id")
-      .populate("addons_id");
+      .populate("addons_id")
+      .sort({ date: -1 });
+    successResponse(res, orders);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUpcomingOrder = async (req, res, next) => {
+  try {
+    const currentDateTime = new Date();
+
+    // Find orders where the combined date and time is in the future
+    const orders = await Order.find({
+      $expr: {
+        $gte: [
+          {
+            $dateFromString: {
+              dateString: {
+                $concat: [
+                  { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                  "T",
+                  "$time",
+                  ":00.000Z",
+                ],
+              },
+            },
+          },
+          currentDateTime,
+        ],
+      },
+    })
+      .populate("service_id")
+      .populate("cartype_id")
+      .populate("promocode_id")
+      .populate("address_id")
+      .populate("user_id")
+      .populate("addons_id")
+      .sort({ date: -1 });
+
+    successResponse(res, orders);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPastOrder = async (req, res, next) => {
+  try {
+    const orders = await Order.find({
+      date: { $lt: new Date() },
+    })
+      .populate("service_id")
+      .populate("cartype_id")
+      .populate("promocode_id")
+      .populate("address_id")
+      .populate("user_id")
+      .populate("addons_id")
+      .sort({ date: -1 });
+
+    successResponse(res, orders);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getTodayOrder = async (req, res, next) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Start of today
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1); // Start of tomorrow
+
+    const orders = await Order.find({
+      date: {
+        $gte: today,
+        $lt: tomorrow,
+      },
+    })
+      .populate("service_id")
+      .populate("cartype_id")
+      .populate("promocode_id")
+      .populate("address_id")
+      .populate("user_id")
+      .populate("addons_id")
+      .sort({ date: -1 });
+
     successResponse(res, orders);
   } catch (error) {
     next(error);
@@ -69,4 +154,7 @@ const updateOrderStatus = async (req, res, next) => {
 module.exports = {
   getOrder,
   updateOrderStatus,
+  getUpcomingOrder,
+  getPastOrder,
+  getTodayOrder,
 };

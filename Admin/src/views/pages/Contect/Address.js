@@ -103,7 +103,6 @@ const Address = () => {
       name: 'action',
       label: 'action',
       options: {
-        filter: false,
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const data = address[rowIndex]

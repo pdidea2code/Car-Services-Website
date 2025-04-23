@@ -121,9 +121,7 @@ const Gallery = () => {
       name: '_id',
       label: 'Action',
       options: {
-        filter: false,
         sort: false,
-
         customBodyRender: (value, { rowIndex }) => {
           const data = gallery[rowIndex]
           return (

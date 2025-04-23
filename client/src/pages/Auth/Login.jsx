@@ -57,7 +57,7 @@ const Login = () => {
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setError(error?.response?.data?.message || "Something went wrong");
     } finally {
       setIsLoading(false);
@@ -93,7 +93,7 @@ const Login = () => {
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setError(error?.response?.data?.message || "Something went wrong");
     } finally {
       setIsLoading(false);

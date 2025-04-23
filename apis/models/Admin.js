@@ -60,7 +60,9 @@ AdminSchema.methods.generateAuthToken = function (data) {
   const user = this;
   const id = { _id: user._id };
   data = { ...data, ...id };
-  const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1000m" });
+  const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "1000m",
+  });
   return token;
 };
 
@@ -76,7 +78,7 @@ AdminSchema.methods.comparePassword = async function (candidatePassword) {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw new Error("Error comparing passwords");
   }
 };

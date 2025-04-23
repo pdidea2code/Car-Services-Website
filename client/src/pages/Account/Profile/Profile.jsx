@@ -48,7 +48,7 @@ const Profile = () => {
         setValue("email", response.data.info.user.email);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -74,7 +74,7 @@ const Profile = () => {
         fetchUser();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setEditerror(error?.response?.data?.message || "Something went wrong");
     } finally {
       setIsLoading(false);

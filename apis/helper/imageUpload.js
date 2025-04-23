@@ -9,7 +9,10 @@ function singleFileUpload(path, allowedMimes, fileSize, name) {
       cb(null, path);
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase());
+      cb(
+        null,
+        Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase()
+      );
     },
   });
 
@@ -21,7 +24,7 @@ function singleFileUpload(path, allowedMimes, fileSize, name) {
       const error = new Error("Invalid file type.");
       error.httpStatuscode = 422;
       error.errorMessage = "Invalid file type.";
-      console.log(error);
+      console.error(error);
       return cb(error);
     }
   };
@@ -43,7 +46,10 @@ function multiFileUpload(path, allowedMimes, fileSize, name) {
       cb(null, path);
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase());
+      cb(
+        null,
+        Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase()
+      );
     },
   });
 
@@ -73,7 +79,10 @@ function multiDiffFileUpload(path, fieldConfigurations) {
       cb(null, path);
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase());
+      cb(
+        null,
+        Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase()
+      );
     },
   });
 
@@ -85,7 +94,9 @@ function multiDiffFileUpload(path, fieldConfigurations) {
   });
 
   const fileFilter = (req, file, cb) => {
-    const allowedMimes = fieldConfigurations.find((config) => config.name === file.fieldname).allowedMimes;
+    const allowedMimes = fieldConfigurations.find(
+      (config) => config.name === file.fieldname
+    ).allowedMimes;
 
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
@@ -108,7 +119,9 @@ const multiDiffFileAndPathUpload = (fieldConfigurations) => {
 
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      const fieldConfig = fieldConfigurations.find((config) => config.name === file.fieldname);
+      const fieldConfig = fieldConfigurations.find(
+        (config) => config.name === file.fieldname
+      );
       if (fieldConfig) {
         const dirPath = path.join(baseUploadsPath, fieldConfig.path); // Concatenate base path with specified path
 
@@ -125,7 +138,10 @@ const multiDiffFileAndPathUpload = (fieldConfigurations) => {
       }
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase());
+      cb(
+        null,
+        Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase()
+      );
     },
   });
 
@@ -135,7 +151,9 @@ const multiDiffFileAndPathUpload = (fieldConfigurations) => {
   }));
 
   const fileFilter = (req, file, cb) => {
-    const allowedMimes = fieldConfigurations.find((config) => config.name === file.fieldname)?.allowedMimes;
+    const allowedMimes = fieldConfigurations.find(
+      (config) => config.name === file.fieldname
+    )?.allowedMimes;
     if (!allowedMimes || allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
@@ -152,4 +170,9 @@ const multiDiffFileAndPathUpload = (fieldConfigurations) => {
   }).fields(uploadFields);
 };
 
-module.exports = { singleFileUpload, multiFileUpload, multiDiffFileUpload, multiDiffFileAndPathUpload };
+module.exports = {
+  singleFileUpload,
+  multiFileUpload,
+  multiDiffFileUpload,
+  multiDiffFileAndPathUpload,
+};

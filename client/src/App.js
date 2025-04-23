@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react"; // Add useState
 import { useDispatch, useSelector } from "react-redux";
 import {
   SET_LOADING,
@@ -18,8 +18,10 @@ import "./icon.css";
 
 function App() {
   const loading = useSelector((state) => state.loading.loading);
-
+  const appsrting = useSelector((state) => state.appSetting.appSetting);
   const dispatch = useDispatch();
+  const [isAppSettingLoaded, setIsAppSettingLoaded] = useState(false); // Track app setting load
+
   const setFavicon = (iconUrl) => {
     const existingLink = document.querySelector("link[rel='icon']");
     if (existingLink) {
@@ -40,6 +42,7 @@ function App() {
       if (response.status === 200) {
         dispatch({ type: SET_APP_SETTING, payload: response.data.info });
         setFavicon(response.data.info.favicon);
+        setIsAppSettingLoaded(true); // Mark as loaded
       }
     } catch (error) {
       console.error("error", error);
@@ -70,26 +73,22 @@ function App() {
   }, [dispatch]);
 
   return (
-    <>
-      <BrowserRouter>
-        <Suspense fallback={<div>Loading...</div>}>
-          <div>
-            {loading ? (
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ height: "100vh" }}
-              >
-                <Spinner animation="border" role="status" />
-              </div>
-            ) : (
-              <div>
-                <AppRoutes />
-              </div>
-            )}
-          </div>
-        </Suspense>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
+        <div>
+          {loading || !isAppSettingLoaded ? ( // Wait for both loading and app setting
+            <div
+              className="d-flex justify-content-center align-items-center"
+              style={{ height: "100vh" }}
+            >
+              <Spinner animation="border" role="status" />
+            </div>
+          ) : (
+            <AppRoutes />
+          )}
+        </div>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 

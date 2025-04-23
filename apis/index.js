@@ -53,7 +53,7 @@ app.post(
       try {
         event = Stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
       } catch (err) {
-        console.log(err);
+        console.error(err);
         return queryErrorRelatedResponse(res, 400, err.message);
       }
       if (event.type === "checkout.session.completed") {

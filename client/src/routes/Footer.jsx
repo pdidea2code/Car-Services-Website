@@ -133,7 +133,7 @@ const Footer = () => {
                   <DeshlineIcon className="deshline-icon" />{" "}
                   <span
                     className="footer-col3-link no-select"
-                    onClick={() => navigate("/booking")}
+                    onClick={() => navigate("/booking/service")}
                   >
                     Booking
                   </span>

@@ -8,12 +8,19 @@ import * as Icons from '@mui/icons-material'
 import { useState, useEffect } from 'react'
 import { Button, Switch } from '@mui/material'
 
-import { getAllOrdersApi, updateOrderStatusApi } from 'src/redux/api/api' // Assume updateOrderStatusApi is added
+import {
+  getAllOrdersApi,
+  updateOrderStatusApi,
+  getUpcomingOrdersApi,
+  getPastOrdersApi,
+  getTodayOrdersApi,
+} from 'src/redux/api/api' // Assume updateOrderStatusApi is added
 
 const Order = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [orders, setOrders] = useState([])
+  const [tableTitle, setTableTitle] = useState('Orders')
 
   // Fetch all orders
   const fetchOrders = async () => {
@@ -22,6 +29,54 @@ const Order = () => {
       const response = await getAllOrdersApi()
       if (response.status === 200) {
         setOrders(response.data.info)
+        setTableTitle('Orders')
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to fetch orders')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const fetchUpcomingOrders = async () => {
+    try {
+      setIsLoading(true)
+
+      const response = await getUpcomingOrdersApi()
+      if (response.status === 200) {
+        setOrders(response.data.info)
+        setTableTitle('Upcoming Orders')
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to fetch orders')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const fetchPastOrders = async () => {
+    try {
+      setIsLoading(true)
+
+      const response = await getPastOrdersApi()
+      if (response.status === 200) {
+        setOrders(response.data.info)
+        setTableTitle('Past Orders')
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to fetch orders')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  const fetchTodayOrders = async () => {
+    try {
+      setIsLoading(true)
+
+      const response = await getTodayOrdersApi()
+      if (response.status === 200) {
+        setOrders(response.data.info)
+        setTableTitle('Today Orders')
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Failed to fetch orders')
@@ -116,7 +171,6 @@ const Order = () => {
       name: '_id',
       label: 'Action',
       options: {
-        filter: false,
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const data = orders[rowIndex]
@@ -145,7 +199,35 @@ const Order = () => {
       ) : (
         <>
           <ToastContainer />
-          <MUIDataTable title={'Orders'} data={orders} columns={columns} options={options} />
+          <Button
+            className="add-button mb-4 mx-4"
+            variant="contained"
+            onClick={() => fetchOrders()}
+          >
+            Fetch Orders
+          </Button>
+          <Button
+            className="add-button mb-4 mx-4"
+            variant="contained"
+            onClick={() => fetchTodayOrders()}
+          >
+            Fetch Today Orders
+          </Button>
+          <Button
+            className="add-button mb-4 mx-4"
+            variant="contained"
+            onClick={() => fetchUpcomingOrders()}
+          >
+            Fetch Upcoming Orders
+          </Button>
+          <Button
+            className="add-button mb-4 mx-4"
+            variant="contained"
+            onClick={() => fetchPastOrders()}
+          >
+            Fetch Past Orders
+          </Button>
+          <MUIDataTable title={tableTitle} data={orders} columns={columns} options={options} />
         </>
       )}
     </>

@@ -81,6 +81,9 @@ export const DELETE_PROMOCODE_API = '/api/admin/promocode/deletepromocode'
 /* ---------------------------- Order API ---------------------------- */
 export const GET_ALL_ORDER_API = '/api/admin/booking/getorder'
 export const UPDATE_ORDER_STATUS_API = '/api/admin/booking/updateOrderStatus'
+export const GET_UPCOMING_ORDER_API = '/api/admin/booking/getupcomingorder'
+export const GET_PAST_ORDER_API = '/api/admin/booking/getpastorder'
+export const GET_TODAY_ORDER_API = '/api/admin/booking/gettodayorder'
 /* ---------------------------- END Order API ---------------------------- */
 /* ---------------------------- Review API ---------------------------- */
 export const GET_ALL_REVIEW_API = '/api/admin/review/getallreviews'
@@ -92,4 +95,10 @@ export const GET_KPI_METRICS_API = '/api/admin/dashbord/kpimetrics'
 export const GET_ORDER_STATUS_BREAKDOWN_API = '/api/admin/dashbord/orderstatusbreakdown'
 export const GET_TOP_SERVICES_AND_ADDONS_API = '/api/admin/dashbord/topservicesandaddons'
 export const GET_RECENT_ACTIVITY_API = '/api/admin/dashbord/recentactivity'
+export const GET_SYSTEM_HEALTH_ALERTS_API = '/api/admin/dashbord/systemhealthalerts'
 /* ---------------------------- END Dashboard API ---------------------------- */
+/* ---------------------------- Content API ---------------------------- */
+export const GET_CONTENT_API = '/api/admin/content/getcontent'
+export const DELETE_CONTENT_API = '/api/admin/content/deletecontent'
+export const UPDATE_CONTENT_API = '/api/admin/content/updatecontent'
+/* ---------------------------- END Content API ---------------------------- */

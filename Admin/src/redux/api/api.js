@@ -50,6 +50,7 @@ import {
   EDIT_PROMOCODE_API,
   DELETE_PROMOCODE_API,
   GET_ALL_ORDER_API,
+  GET_UPCOMING_ORDER_API,
   UPDATE_ORDER_STATUS_API,
   GET_ALL_REVIEW_API,
   CHANGE_REVIEW_STATUS_API,
@@ -59,6 +60,12 @@ import {
   GET_ORDER_STATUS_BREAKDOWN_API,
   GET_TOP_SERVICES_AND_ADDONS_API,
   GET_RECENT_ACTIVITY_API,
+  GET_SYSTEM_HEALTH_ALERTS_API,
+  GET_PAST_ORDER_API,
+  GET_TODAY_ORDER_API,
+  GET_CONTENT_API,
+  DELETE_CONTENT_API,
+  UPDATE_CONTENT_API,
 } from '../../constant'
 import Cookies from 'js-cookie'
 axios.interceptors.response.use(
@@ -66,40 +73,54 @@ axios.interceptors.response.use(
   async (err) => {
     const originalRequest = err.config
 
-    if (err.status == 402 && !originalRequest._retry) {
+    // Check for 401 Unauthorized (expired token) and ensure no infinite retry
+    if (err.response?.status === 402 && !originalRequest._retry) {
       originalRequest._retry = true
 
-      // Cookies.remove('accessToken')
-      // Cookies.remove('refreshToken')
-      // Cookies.remove('permission')
-      // window.location.reload()
       try {
         const refreshToken = Cookies.get('refreshToken')
 
-        const res = await axios.post(`${MAIN_URL}/api/admin/auth/refreshtoken`, { refreshToken })
+        if (!refreshToken) {
+          // No refresh token available, redirect to login
+          Cookies.remove('token')
+          Cookies.remove('refreshToken')
+          Cookies.remove('admin')
+          window.location.href = '/'
+          return Promise.reject(err)
+        }
 
-        const accessToken = res.data.info
+        // Request new access token using refresh token
+        const res = await axios.post(`${MAIN_URL}/api/admin/auth/refreshtoken`, {
+          refreshToken,
+        })
+        const accessToken = res.data.info // Adjust based on actual response structure
 
+        // Update access token in cookies
         Cookies.set('token', accessToken, { sameSite: 'Strict', secure: true })
 
-        // Retry the original request with the new token
+        // Update Authorization header and retry original request
         originalRequest.headers.Authorization = `Bearer ${accessToken}`
 
         return axios(originalRequest)
-      } catch (refresherr) {
-        console.error('err refreshing token:', refresherr)
-        // Cookies.remove('refreshToken')
-        // Cookies.remove('token')
-        // Cookies.remove('admin')
-        // window.location.reload()
-        // You might want to redirect to login or handle the err in another way
+      } catch (refreshErr) {
+        console.error('Error refreshing token:', refreshErr)
+        // Clear cookies and redirect to login on refresh failure
+        Cookies.remove('token')
+        Cookies.remove('refreshToken')
+        Cookies.remove('admin')
+        window.location.href = '/'
+        return Promise.reject(refreshErr)
       }
     }
 
-    if (err.status === 405) {
-      Cookies.remove('accessToken')
-      // window.location.reload()
+    // Handle other errors (e.g., 403 Forbidden or invalid credentials)
+    if (err.response?.status === 403) {
+      Cookies.remove('token')
+      Cookies.remove('refreshToken')
+      Cookies.remove('admin')
+      window.location.href = '/'
     }
+
     return Promise.reject(err)
   },
 )
@@ -435,6 +456,24 @@ export const getAllOrdersApi = async () =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+export const getUpcomingOrdersApi = async () =>
+  axios.get(MAIN_URL + GET_UPCOMING_ORDER_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const getPastOrdersApi = async () =>
+  axios.get(MAIN_URL + GET_PAST_ORDER_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const getTodayOrdersApi = async () =>
+  axios.get(MAIN_URL + GET_TODAY_ORDER_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
 export const updateOrderStatusApi = async (data) =>
   axios.post(MAIN_URL + UPDATE_ORDER_STATUS_API, data, {
     headers: {
@@ -488,4 +527,30 @@ export const getRecentActivityApi = async () =>
     },
   })
 
+export const getSystemHealthAlertsApi = async () =>
+  axios.get(MAIN_URL + GET_SYSTEM_HEALTH_ALERTS_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
 /* ---------------------------- END Dashboard API ---------------------------- */
+/* ---------------------------- Content API ---------------------------- */
+export const getAllContentApi = async () =>
+  axios.get(MAIN_URL + GET_CONTENT_API, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deleteContentApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_CONTENT_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const updateContentApi = async (data) =>
+  axios.post(MAIN_URL + UPDATE_CONTENT_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+/* ---------------------------- END Content API ---------------------------- */

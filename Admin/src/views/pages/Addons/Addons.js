@@ -142,7 +142,6 @@ const Addons = () => {
       name: 'action',
       label: 'Action',
       options: {
-        filter: false,
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const data = addons[rowIndex]

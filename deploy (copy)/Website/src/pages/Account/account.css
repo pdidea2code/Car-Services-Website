@@ -1,0 +1,86 @@
+.account-page {
+  background-color: var(--color3);
+  padding-top: 60px;
+}
+.account-page-col1 {
+  max-width: 260px !important;
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #0e082105;
+  height: fit-content;
+}
+.account-page-col1-button {
+  background-color: var(--color3);
+  color: var(--color1);
+  border: none;
+  padding: 16px 0px;
+  border-radius: 0px;
+  cursor: pointer;
+  max-width: 220px;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  text-transform: uppercase !important;
+}
+
+.account-page-col1-button.active {
+  background-color: var(--color2);
+  color: var(--color3);
+}
+
+.logout-modal-footer {
+  display: flex;
+  justify-content: center !important;
+  gap: 10px;
+  border-top: none !important;
+}
+
+.modal-cancel-button {
+  max-width: 165px;
+  width: 100%;
+  background-color: var(--color1);
+  color: var(--color3);
+  border: none;
+  padding: 16px 0px;
+  border-radius: 0px;
+}
+
+.modal-logout-button {
+  max-width: 165px;
+  width: 100%;
+  background-color: var(--color2);
+  color: var(--color3);
+  border: none;
+  padding: 16px 0px;
+  border-radius: 0px;
+}
+
+.logout-modal-body {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 10px;
+}
+
+.logout-modal .modal-content {
+  background-color: var(--color3);
+  border-radius: 0px;
+  padding: 20px;
+}
+
+@media (max-width: 992px) {
+  .account-page-row {
+    justify-content: center !important;
+  }
+  .profile-page-content-title {
+    font-size: 18px;
+  }
+  .account-page {
+    padding-top: 20px;
+  }
+  .account-page-col1 {
+    margin-bottom: 20px !important;
+  }
+}

@@ -151,7 +151,7 @@ const Payment = () => {
         setAddress(response.data.info);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -183,7 +183,7 @@ const Payment = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setPromoCodeError(
         error?.response?.data?.message || "Something went wrong"
       );
@@ -269,10 +269,9 @@ const Payment = () => {
             );
           }
         } else {
-          console.log(response);
-          console.log("card not selected");
+          console.error("card not selected");
         }
-        console.log(result);
+
         if (result.error) {
           const response11 = await verifyPayment({
             order_id: response.data.info.order._id,
@@ -281,7 +280,6 @@ const Payment = () => {
           });
           alert("Payment failed: " + result.error.message);
         } else if (result.paymentIntent.status === "succeeded") {
-          console.log("Payment successful:", result);
           const response11 = await verifyPayment({
             order_id: response.data.info.order._id,
             status: "completed",
@@ -316,7 +314,6 @@ const Payment = () => {
       // Call createOrder API
 
       if (response.status === 200) {
-        console.log(response.data.info);
       }
     } catch (error) {
       console.error("Error creating order:", error);
@@ -355,7 +352,7 @@ const Payment = () => {
         finalPrice,
       });
     }
-    console.log(state);
+
     window.scrollTo(0, 0);
   }, [state, appSetting?.service_tax, navigate]);
 

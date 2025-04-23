@@ -58,7 +58,7 @@ const Contect = () => {
         setAddress(response.data.info);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -77,7 +77,7 @@ const Contect = () => {
         reset();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setAddContentLoading(false);
     }

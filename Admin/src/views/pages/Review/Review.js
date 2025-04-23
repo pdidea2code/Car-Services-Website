@@ -126,7 +126,6 @@ const CarType = () => {
       name: 'actions',
       label: 'Actions',
       options: {
-        filter: false,
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const review = reviews[rowIndex]

@@ -27,7 +27,6 @@ function SampleNextArrow(props) {
 
 function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
-  console.log(props);
   return (
     <div
       className={className}
@@ -50,7 +49,7 @@ function CustomArrows() {
         setreview(response.data.info);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {

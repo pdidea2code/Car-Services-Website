@@ -28,7 +28,7 @@ const AppHeader = () => {
         const response = await getAllAppSettingApi()
         if (response.status === 200) {
           const data = response.data.info
-          console.log(data)
+
           setAppSetting(data)
         }
       } catch (error) {

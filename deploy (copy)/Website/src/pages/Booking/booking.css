@@ -1,0 +1,128 @@
+.booking-container {
+  background-color: var(--color3);
+  padding-top: 60px;
+}
+
+.booking-container-col1 {
+  max-width: 260px !important;
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #0e082105;
+  height: fit-content;
+}
+
+.account-page-col1-button.complete {
+  border: 1px solid var(--color2);
+}
+.booking-service-order-confirmation {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color1);
+  text-align: center;
+  margin-top: 30px !important;
+  margin-bottom: 30px !important;
+}
+.booking-service-order-confirmation-row {
+  --bs-gutter-x: 20px !important; /* Horizontal gap (column gap) */
+  --bs-gutter-y: 20px !important;
+}
+
+.booking-service-order-summary-col {
+  background-color: #0e082105;
+  padding: 26px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.order-summary-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.order-summary-icon-text {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color2);
+  font-family: "Zen Dots", cursive;
+}
+.order-summary-icon-text3 {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color1);
+  text-align: center;
+}
+.order-summary-icon-text2 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color1);
+  text-align: center;
+}
+.order-form-title {
+  font-size: 20px;
+  width: 100%;
+  font-weight: 400;
+  color: var(--color3);
+  text-align: center;
+}
+.order-form-col-inner {
+  margin-bottom: 20px;
+  margin-top: 30px;
+  text-align: center;
+}
+.order-form-col {
+  background-color: var(--color1);
+  padding-bottom: 20px;
+}
+.order-form-control {
+  margin-bottom: 15px;
+}
+.order-form-checkbox-container {
+  color: var(--color1);
+  padding: 17px 8px !important;
+  background-color: var(--color3);
+  font-size: 14px;
+  font-weight: 500;
+}
+.order-form-checkbox .form-check-input {
+  background-color: var(--color3);
+  border-color: var(--color2);
+  width: 15px !important;
+  height: 15px !important;
+  border-radius: 0px !important;
+}
+.order-form-checkbox .form-check-input:checked {
+  background-color: var(--color2);
+  border-color: var(--color2);
+}
+.order-form-checkbox .form-check-input:focus {
+  box-shadow: none !important;
+}
+.order-form-input {
+  background-color: var(--color3) !important;
+  padding: 17px 15px !important;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color1);
+  border-radius: 0px !important;
+}
+.order-form-input::placeholder {
+  color: var(--color1);
+  font-weight: 500;
+}
+@media (max-width: 992px) {
+  .booking-container {
+    padding-top: 20px;
+  }
+  .booking-container-row {
+    gap: 20px;
+  }
+  .order-form-title {
+    font-size: 18px;
+  }
+}

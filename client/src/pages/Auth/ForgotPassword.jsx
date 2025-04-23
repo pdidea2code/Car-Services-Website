@@ -66,7 +66,7 @@ const ForgotPassword = () => {
         setEmailError(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setEmailError(error?.response?.data?.message || "Something went wrong");
     } finally {
       setIsLoading(false);
@@ -93,7 +93,7 @@ const ForgotPassword = () => {
         setOtpError(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setOtpError(error?.response?.data?.message || "Something went wrong");
     } finally {
       setIsLoading(false);
@@ -122,7 +122,7 @@ const ForgotPassword = () => {
         setPasswordError(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setPasswordError(
         error?.response?.data?.message || "Something went wrong"
       );

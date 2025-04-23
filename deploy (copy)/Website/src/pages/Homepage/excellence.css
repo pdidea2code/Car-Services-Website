@@ -1,0 +1,162 @@
+.excellence{
+    background-color: var(--color3);
+    padding: 60px 0;
+}
+
+.excellence-title{
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color2);
+}
+
+.excellence-description{
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--color1);
+}
+
+.excellence-description-span{
+    color: var(--color2);
+}
+.excellence1{
+    width: 102px;
+    height: 35px;
+    object-fit: cover;
+    /* margin-left: 10px; */
+    border-radius: 50px
+    
+}
+.car-image-container{
+    margin-top: 32px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.car-image{
+    width: 100%;
+    height: 100%;
+    
+}
+.car-image-overlay1{
+    /* position: absolute; */
+    top: 46.85%;
+    left: 6%;
+    
+}
+.car-image-overlay2{
+    /* position: absolute; */
+    top: 84.85%;
+    left: 21%;
+    
+}
+.car-image-overlay3{
+    /* position: absolute; */
+    top: 29.85%;
+    left: 36%;
+    
+}
+.car-image-overlay4{
+    /* position: absolute; */
+    top: 44.85%;
+    left: 49%;
+    
+}
+.car-image-overlay5{
+    /* position: absolute; */
+    top: 23.85%;
+    left: 62%;
+}
+.car-image-overlay6{
+    /* position: absolute; */
+    top: 73.85%;
+    left: 76.50%;
+}
+.car-image-overlay7{
+    /* position: absolute; */
+    top: 23.85%;
+    left: 90%;
+}
+.dot-optical{
+    position: absolute;
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+    background-color: var(--color2);
+    border-radius: 50%;
+    animation: dot-optical 2s linear infinite;
+
+}
+
+.tooltip{
+    --bs-tooltip-bg: var(--color2) !important;
+    color: var(--color3) !important;
+    border-radius: 0px !important;
+    --bs-tooltip-opacity: 1 !important;
+    --bs-tooltip-max-width: 250px !important;
+    ;
+}
+.tooltip-text-span-title{
+    font-size: 16px !important;
+    text-align: start !important;
+    font-weight: 400 !important;
+}
+.tooltip-text-span-description{
+    font-size: 14px !important;
+    text-align: start !important;
+    font-weight: 500 !important;
+}
+
+.tooltip-text .tooltip-inner{
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: start !important;
+    width: fit-content !important;
+    background-color: var(--color2) !important;
+    color: var(--color3) !important;
+    border-radius: 0px !important;
+    padding-bottom: 25px !important
+}
+.dot-optical:hover {
+    animation: none;
+}
+
+@keyframes dot-optical {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.4);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .excellence-title{
+        font-size: 14px;
+    }
+    .excellence-description{
+        font-size: 16px;
+    }
+
+    .dot-optical{
+        width: 9px;
+        height: 9px;
+    }
+
+}
+@media (max-width: 576px) {
+    .dot-optical{
+        width: 4.67px;
+        height: 4.67px;
+    }
+    .excellence{
+        padding: 20px 0;
+    }
+}

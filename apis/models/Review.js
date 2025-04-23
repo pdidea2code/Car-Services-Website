@@ -13,7 +13,7 @@ const reviewSchema = new mongoose.Schema(
       trim: true,
       match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"], // Email validation
     },
-    status: { type: Boolean, default: true },
+    status: { type: Boolean, default: false },
     designation: { type: String, required: true, trim: true },
     // is_approved: {
     //   type: "String", // Status of the review (e.g., "pending", "approved", "rejected")

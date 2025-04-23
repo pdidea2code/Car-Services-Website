@@ -1,5 +1,8 @@
 const Admin = require("../../models/Admin");
-const { queryErrorRelatedResponse, successResponse } = require("../../helper/sendResponse");
+const {
+  queryErrorRelatedResponse,
+  successResponse,
+} = require("../../helper/sendResponse");
 const jwt = require("jsonwebtoken");
 
 const createAdmin = async (req, res, next) => {
@@ -25,7 +28,9 @@ const loginAdmin = async (req, res, next) => {
     }
 
     const token = await admin.generateAuthToken({ email: admin.email });
-    const refreshToken = await admin.generateRefreshToken({ email: admin.email });
+    const refreshToken = await admin.generateRefreshToken({
+      email: admin.email,
+    });
     admin.token = token;
     await admin.save();
 
@@ -39,7 +44,11 @@ const RefreshToken = async (req, res, next) => {
   const refreshToken = req.body.refreshToken;
 
   if (!refreshToken) {
-    return queryErrorRelatedResponse(res, 401, "Access Denied. No refresh token provided");
+    return queryErrorRelatedResponse(
+      res,
+      401,
+      "Access Denied. No refresh token provided"
+    );
   }
 
   try {

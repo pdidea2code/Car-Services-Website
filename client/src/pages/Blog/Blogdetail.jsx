@@ -30,7 +30,7 @@ const Blogdetail = () => {
         setBlog(response?.data?.info);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       navigate("/blog");
     } finally {
       setLoading(false);

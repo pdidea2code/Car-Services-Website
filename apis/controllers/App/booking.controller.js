@@ -545,7 +545,6 @@ const cardpayment = async (req, res, next) => {
 const verifyPayment = async (req, res, next) => {
   try {
     const { order_id, paymentIntentId } = req.body;
-    console.log(order_id, paymentIntentId);
 
     if (!order_id || !paymentIntentId) {
       return queryErrorRelatedResponse(
@@ -561,7 +560,6 @@ const verifyPayment = async (req, res, next) => {
     }
 
     const paymentIntent = await Stripe.paymentIntents.retrieve(paymentIntentId);
-    console.log(paymentIntent);
     if (paymentIntent.status === "succeeded") {
       order.paymentstatus = "SUCCESS";
       order.order_status = "PENDING";
@@ -728,7 +726,6 @@ const createcheckoutsession = async (req, res, next) => {
     if (discount_amount > 0) {
       total_amount = total_amount - discount_amount;
     }
-    console.log("total_amount", total_amount);
     if (!total_amount || isNaN(total_amount) || total_amount <= 0) {
       return queryErrorRelatedResponse(res, 400, "Invalid total amount");
     }
@@ -851,16 +848,13 @@ const createcheckoutsession = async (req, res, next) => {
 const webhook = async (req, res, next) => {
   try {
     const sig = req.headers["stripe-signature"];
-    console.log(req.body);
     let event;
     const appSetting = await AppSetting.findOne({});
     const endpointSecret =
       "whsec_9c1ba2fd6b24693b5bb659af25be828ea6432c5bb51b5d9ddf2a1441220ad486";
     try {
       event = Stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-      console.log(event);
     } catch (err) {
-      console.log(err);
       return queryErrorRelatedResponse(res, 400, err.message);
     }
     if (event.type === "checkout.session.completed") {

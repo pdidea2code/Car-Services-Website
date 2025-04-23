@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Washing Booking System - Documentation</title>
+    <link href="./assets/style.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+</head>
+
+<body>
+    <style>
+        pre {
+            background: #222;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+    <button class="toggle-button" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar text-center" id="sidebar">
+        <img src="./assets/images/logo.png" alt="Logo" class="logo-img" />
+        <h3 class="sidebar-head"><a href="#introduction">Introduction</a></h3>
+        <ul id="sidebar-links">
+            <!-- <li><a href="#admin-installation">Installation Setup</a></li> -->
+            <li><a href="#api-run-locally">Run API Locally</a></li>
+            <li><a href="#admin-run-locally">Run Admin Locally</a></li>
+        </ul>
+
+        <h3 class="sidebar-head">Website Setting</h3>
+        <ul id="sidebar-links">
+            <li><a href="#website-introduction">Introduction</a></li>
+            <li><a href="#website-technologies-used">Technologies Used</a></li>
+            <li><a href="#website-features">Features</a></li>
+            <li><a href="#website-installation">Installation</a></li>
+        </ul>
+        <h3 class="sidebar-head"><a href="#website-deployment">Deployment</a></h3>
+        <h3 class="sidebar-head">Admin Setting</h3>
+        <ul id="sidebar-links">
+            <li><a href="#admin-app-settings">App Settings</a></li>
+            <li><a href="#admin-dashboard">Dashboard</a></li>
+            <li><a href="#admin-users">Users</a></li>
+            <li><a href="#admin-cartype-settings">Car Type</a></li>
+            <li><a href="#admin-service-settings">Service </a></li>
+            <li><a href="#admin-addons-settings">Addons </a></li>
+            <li><a href="#admin-blog-settings">Blog </a></li>
+            <li><a href="#admin-address-settings">Address </a></li>
+            <li><a href="#admin-promocode-settings">Promocode </a></li>
+            <li><a href="#admin-order-settings">Order </a></li>
+            <li><a href="#admin-review-settings">Review </a></li>
+            <li><a href="#admin-contact-settings">Contact Us</a></li>
+            <li><a href="#admin-faq-settings">FAQs</a></li>
+            <li><a href="#admin-businesshour-settings">Business Hour</a></li>
+            <li><a href="#admin-admintheme-settings">Admin Theme</a></li>
+            <li><a href="#admin-usertheme-settings">User Theme</a></li>
+        </ul>
+        <h3 class="sidebar-head"><a href="#aboutus">About Us</a></h3>
+        <h3 class="sidebar-head"><a href="#faqs">FAQs</a></h3>
+        <h3 class="sidebar-head"><a href="#yourfeedback">Your Feedback</a></h3>
+        <h3 class="sidebar-head"><a href="#contactus">Contact Us</a></h3>
+    </div>
+    <div class="content mt-20">
+        <section id="introduction" class="mt-20">
+            <h2>Car Washing Booking System - Full Web Application Setup</h2>
+            <h4>📘 Introduction</h4>
+
+            <p><strong>What is Car Wash System?</strong></p>
+
+            <p><strong>Car Wash</strong> is a powerful Direct-to-Consumer (D2C) car wash booking and management
+                platform, built on
+                the secure and scalable MERN (MongoDB, Express, React, Node.js) stack. It is designed for individual car
+                wash
+                businesses and agencies that want to offer their services directly to customers without depending on
+                third-party
+                platforms.</p>
+
+            <p>The platform features a modern and intuitive admin panel that provides complete control over every aspect
+                of the
+                website—service listings, bookings, content, users, and more. All website content is dynamically managed
+                through the
+                admin panel, making it easy for non-technical users to update and personalize the platform to fit their
+                brand and
+                business needs.</p>
+
+            <p>With Car wash, service providers can effortlessly create professional service pages, manage customer
+                appointments,
+                publish engaging blogs, and access detailed revenue and
+                service
+                performance reports. Whether you're offering basic exterior washes, full detailing, interior cleaning,
+                or premium
+                service packages, CleanRide equips D2C car wash providers with the tools needed to attract, manage, and
+                retain
+                customers—while maintaining full ownership of their customer data and relationships.</p>
+
+
+
+            <p><strong>⚙️ How It Works</strong></p>
+            <ol>
+                <li>Service providers log in to the platform and create car wash service listings through the intuitive
+                    admin
+                    panel—customizing service details, pricing and duration.</li>
+                <li>Customers visit the Car Washing Booking System website, browse available services, and
+                    seamlessly book services through the frontend interface.</li>
+                <li>Booking details and payments are collected directly into the provider's admin account, with
+                    real-time monitoring
+                    of all transactions and schedules.</li>
+                <li>Customers receive instant booking confirmations and service details directly in their profile
+                    dashboard, where they
+                    can view, manage, or cancel upcoming appointments at any time.</li>
+
+                <li>Additionally, admins can manage blog posts, promotional content, customer feedback, services, FAQs,
+                    and even
+                    customize the website theme—all from a centralized dashboard.</li>
+
+            </ol>
+
+
+            <p><strong>🌟 Key Features</strong></p>
+            <ol>
+                <li><strong>Rich Admin Dashboard:</strong> A powerful dashboard gives administrators full control over
+                    the platform,
+                    including service management, theming/customization, payment gateways, bookings, payouts, user
+                    management, and
+                    more—all in one place.</li>
+
+                <li><strong>Dynamic Theming & Customization:</strong> Easily personalize your platform through the admin
+                    panel.
+                    Update the platform name, logo, theme colors, currency, contact info, social media links, and static
+                    pages
+                    (Privacy Policy, Terms, etc.)—no coding required.</li>
+
+                <li><strong>Social Login:</strong> Offer users a faster way to register and sign in using Google.
+                    Additional social login options will be supported in future updates.</li>
+
+                <li><strong>Advanced Sales & Performance Analytics:</strong> Access detailed statistics for bookings by
+                    service
+                    type, date, or location. Export reports in PDF, or CSV formats to support data-driven
+                    decision making.
+                </li>
+
+                <li><strong>Help Center Integration:</strong> Improve customer support with a built-in Help Center where
+                    users can
+                    find answers to common questions before reaching out.</li>
+
+                <li><strong>Built-in Blog System:</strong> Share cleaning tips, announcements, promotions, or industry
+                    insights
+                    directly from the admin dashboard with an easy-to-manage blog section.</li>
+
+                <li><strong>Additional Powerful Features:</strong> The platform also includes appointment management,
+                    service
+                    filtering by status, orderid, date, price, service name, customer reviews, payout requests, and
+                    mobile app
+                    support for both
+                    customers and providers.</li>
+            </ol>
+
+
+            <p><strong>⚡ More features will be revealed and explored as you begin working with the platform!</strong>
+            </p>
+
+        </section>
+        <!-- <section id="admin-installation" class="mt-20">
+                <h2>How to Install Find E-Event on Your shared hosting</h2>
+                <ol>
+                    <li>Create your domain or subdomain in your shared hosting</li>
+                    <li>
+                        Create an empty database in your shared hosting and remember this credentials:
+                        <ol type="i">
+                            <li>database connection url</li>
+                        </ol>
+                    </li>
+                    <li>Upload the source code you have downloaded from CodeCanyon and unzip it.</li>
+                    <li>
+                        Now navigate to the url where your project is located.<br />ex. mydomain.com or
+                        subdomain.mydomain.com
+                    </li>
+                    <li>The installation screen should appear and guide you in the process.</li>
+                </ol>
+
+            </section> -->
+
+        <section id="api-run-locally" class="mt-20">
+            <h2>How to Setup "Car Auto Wash" API on Your Local Server?</h2>
+
+            <h2>1. Install Required Software</h2>
+            <ol>
+                <li>Operating System: Windows, Linux.</li>
+                <li>IDE: VSCode</li>
+                <li>Basic knowledge of React, Node, express and MongoDB.</li>
+                <li>Install NodeJS</li>
+                <p>Note: Download and install NodeJS from the official website:<a href="https://nodejs.org/">
+                        https://nodejs.org/</a></p>
+                <li>Install MongoDB</li>
+                <p>Note: Download and install MongoDB Community Edition:<a
+                        href="https://www.mongodb.com/try/download/community" rel="nofollow"
+                        target="_block">https://www.mongodb.com/try/download/community</a> And Follow the steps: <a
+                        href="https://www.geeksforgeeks.org/how-to-install-mongodb-on-windows/" rel="nofollow"
+                        target="_block">https://www.geeksforgeeks.org/how-to-install-mongodb-on-windows/</a> </p>
+                <p><strong>OR</strong></p>
+
+                <h4>Download MongoDB Database Tools</h4>
+                <p>
+                    <a href="https://www.mongodb.com/try/download/tools" target="_blank">Go to: MongoDB Tools
+                        Download</a>
+                </p>
+                <ol>
+                    <li>Choose your operating system: <strong>Windows</strong>.</li>
+                    <li>Download and install the MongoDB Database Tools.</li>
+                </ol>
+
+                <h4>Add MongoDB Tools to PATH</h4>
+                <ol>
+                    <li>Press <kbd>Win + R</kbd>, type <code>sysdm.cpl</code>, and hit <kbd>Enter</kbd>.</li>
+                    <li>Go to <strong>Advanced</strong> → <strong>Environment Variables</strong>.</li>
+                    <li>Find <strong>Path</strong> under <strong>System Variables</strong> and click
+                        <strong>Edit</strong>.
+                    </li>
+                    <li>Add the MongoDB <code>bin</code> directory (e.g.,
+                        <code>C:\Program Files\MongoDB\Tools\bin</code>).
+                    </li>
+                    <li>Click <strong>OK</strong> to save the changes.</li>
+                </ol>
+
+
+            </ol>
+
+
+            <!-- <pre><code>git clone &lt;your-repo-url&gt; 
+cd &lt;your-project-folder&gt;</code></pre>
+                <p><strong>OR</strong></p> -->
+
+
+            <h2>2. Create database in MongoDB Atlas</h2>
+            <ul>
+                <li>If you have downloaded the source code from CodeCanyon, unzip the folder.</li>
+                <li>Open a terminal in the root folder.</li>
+            </ul>
+            <ol>
+                <li>Login Or SignUp at <a href="https://account.mongodb.com/account/login">MongoDB Atlas</a></li><br>
+
+                <li>Create a new project<br>
+                    <img src="./assets/images/create_project.png" alt="Create Project" class="admin-img" />
+                </li><br>
+
+                <li>Set project name and create project<br>
+                    <img src="./assets/images/enter_project_name.png" alt="Create Project" class="admin-img" />
+                </li><br>
+
+                <li>Create cluster<br>
+                    <img src="./assets/images/create_cluster.png" alt="Create Project" class="admin-img" />
+                </li><br>
+
+                <li>Choose Plan > Set cluster name and copy > Select cloud provider and region > Click on "Create
+                    Deployment" button<br>
+                    <img src="./assets/images/set_clustername.png" alt="Create Project" class="admin-img" />
+                </li><br>
+
+                <li>Copy username and password > Click on "Create database Use' button > Click on "Choose a connection
+                    method" button > Click on "Close" button<br>
+                    <img src="./assets/images/create_database.png" alt="Create Project" class="admin-img" />
+                </li><br>
+
+                <li>Go to Network Access option from the left side menu > Click on "+ADD IP ADDRESS" button > Click on
+                    "Allow access from anywhere" button > Click on "Confirm" button<br>
+                    <img src="./assets/images/network_access.png" alt="Network Access" class="admin-img" />
+                </li><br>
+
+                <li>To import the database > <strong> Run VSCode > Import project folder > run the following command in
+                        the project root terminal. </strong></li>
+                <pre><code>mongorestore --uri "mongodb+srv://&lt;username&gt;:&lt;db_password&gt;@&lt;clustername&gt;.mongodb.net" &lt;path&gt;</code></pre>
+                <p><strong>OR</strong></p>
+                <p>Go to MongoDB Atlas > Click on "Connect" button at Clusters section > Click on "Drivers" > Copy
+                    Connection string > Paste it inbetween "" comma with above command line</p>
+                <p>
+                    Replace <code>&lt;username&gt;</code> with your admin username,
+                    <code>&lt;db_password&gt;</code> with your database password, and
+                    <code>&lt;clustername&gt;</code> with your cluter name, and
+                    <code>&lt;path&gt;</code> with the folder name containing the database.
+                </p>
+
+                <p>for more information visit this link <a
+                        href="https://www.mongodb.com/docs/atlas/import/mongoimport/">https://www.mongodb.com/docs/atlas/import/mongoimport/</a>
+                </p>
+            </ol>
+
+            <h2>4. Install Dependencies</h2>
+            <p>To run api locally</p>
+            <pre><code>cd API</code></pre>
+            <pre><code>npm install</code></pre>
+
+            <h2>5. Set Up Environment Variables</h2>
+            <pre><code>cp .env.example .env</code></pre>
+            <p>Go to API folder > Edit the <code>.env </code> file and set database credentials and other variables</p>
+
+            <pre><code>DB_CONNECTION=&lt;CONNECTION_STRING&gt;
+ACCESS_TOKEN_SECRET=&lt;ACCESS_TOKEN_SECRET&gt;
+REFRESH_TOKEN_SECRET=&lt;REFRESH_TOKEN_SECRET&gt;
+PORT=&lt;PORT&gt;</code></pre>
+            <ul>
+                <li>
+                    <p>Go to <strong>MongoDB Atlas</strong> and click the <strong>"Connect"</strong> button in the
+                        <strong>Clusters</strong> section.
+                    </p>
+                    <p>Select the <strong>"Drivers"</strong> option, copy the connection string, and replace
+                        <strong>&lt;CONNECTION_STRING&gt;</strong> with it.
+                    </p>
+                    <p>Ensure you replace <strong>&lt;db_password&gt;</strong> with your actual database password.</p>
+                </li>
+                <li>
+                    <p>Run following command Twice at terminal so you can get
+                        <strong>&lt;ACCESS_TOKEN_SECRET&gt;</strong> and <strong>&lt;REFRESH_TOKEN_SECRET&gt;</strong>
+                    </p>
+                    <pre><code>node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"</code></pre>
+                </li>
+                <li>
+                    <p>Set the value of <strong>PORT=5800</strong> in the <strong>.env</strong> file:</p>
+                    <pre><code>PORT=5800</code></pre>
+                </li>
+            </ul>
+
+
+            <h2>6. Run the Development Server</h2>
+            <pre><code>npm start</code></pre>
+            <p>Access the API at <a href="http://localhost:5800/api">http://localhost:5800/api</a></p>
+        </section>
+
+        <section id="admin-run-locally" class="mt-20">
+            <h2>How to Run "Car Auto Wash" Admin on Your Local Server?</h2>
+            <h2>1. Open new terminal</h2>
+            <pre><code>cd Admin</code></pre>
+            <pre><code>npm install</code></pre>
+
+            <h2>2. Set Up Environment Variables</h2>
+            <p>Go to Admin folder > Edit the <code>.env </code> file (If Needed)
+            <pre><code>REACT_APP_API_URL=http://localhost:5800</code></pre>
+
+            <h2>3. Run the Development Server</h2>
+            <pre><code>npm start</code></pre>
+
+            <h4>The Admin Dashboard login page will open in the browser.</h4>
+            <img src="./assets/images/Admin_Login.png" alt="Admin Login" class="admin-img" />
+
+        </section>
+
+
+
+        <h1>Website Setting</h1>
+        <section id="website-introduction">
+
+            <h2>Introduction</h2>
+            <!-- <h1>Welcome to Car Auto Wash</h1> -->
+            <p>
+                <strong>Car Auto Wash</strong> is a premium online car wash booking and management platform built with
+                ReactJS.
+                This documentation provides an overview of the project, detailing its structure, setup process, core
+                features,
+                and deployment instructions.
+            </p>
+
+        </section>
+
+        <section id="website-technologies-used">
+            <h2>Technologies Used</h2>
+            <ul>
+                <li>ReactJS</li>
+                <li>React Router</li>
+                <li>Redux</li>
+                <li>NodeJS / Express</li>
+                <li>Bootstrap</li>
+                <li>Stripe</li>
+            </ul>
+        </section>
+        <section id="website-features">
+            <h2>Features</h2>
+            <ul>
+                <li>User authentication (Login/Signup)</li>
+                <li>Elegant service catalog </li>
+                <li>Comprehensive booking system with service selection, addons, preferred date & time, car type
+                    selection, and
+                    pickup/drop-off options—fully integrated with a smooth cart and checkout experience.</li>
+
+                <li>Multiple payment options including credit/debit cards, UPI, net banking, and cash on delivery
+                    (configurable)—securely integrated via popular payment gateways.</li>
+
+                <li>Booking and order management</li>
+                <li>Customer review system</li>
+                <li>Responsive design for optimal viewing on all devices</li>
+            </ul>
+        </section>
+
+        <section id="website-installation">
+
+            <h2>How to Run "Car Auto Wash" Website on Your Local Server?</h2>
+            <h2>1. Open new terminal</h2>
+            <pre><code>cd Website</code></pre>
+            <pre><code>npm install</code></pre>
+
+            <h2>2. Set Up Environment Variables</h2>
+            <p>Go to Admin folder > Edit the <code>.env </code> file (If Needed)
+            <pre><code>REACT_APP_API_URL=http://localhost:5800</code></pre>
+
+            <h2>3. Run the Development Server</h2>
+            <pre><code>npm start</code></pre>
+
+            <h4>Website Home page will open in the browser.</h4>
+            <img src="./assets/images/Web_home.png" alt="Web home" class="admin-img" />
+
+        </section>
+
+
+        <h1>Deployment</h1>
+
+        <section id="website-deployment">
+            <h2>Deploy API on Vercel Server</h2>
+            <ol>
+                <li>Login Or SignUp at <a href="https://vercel.com/login">Vecel</a></li><br>
+                <li>Go to API terminal and Install Vercel CLI by following command</li>
+                <pre><code>npm install -g vercel</code></pre>
+                <li>Login to Vercel by following command</li>
+                <pre><code>vercel login</code></pre>
+                <li>Select suitable method for login which you have used while signup</li>
+                <li>Deploy to production</li>
+                <pre><code>vercel --prod</code></pre>
+                <li>Read questions and answer them accordingly.<br>
+                    <img src="./assets/images/Vercel_dash_4.png" alt="Vercel_dash_4" class="admin-img" />
+                </li><br>
+                <li>Go to vercel website dashboard (1) > Select created project (2)<br>
+                    <img src="./assets/images/Vercel_dash_1.png" alt="Vercel_dash_1" class="admin-img" />
+                </li><br>
+                <li>Click on "Settings" tab from top menu (1) > Select "Environment Variables" from left menu (2) >
+                    Click on "Import.env" button (3) > Import <strong>.env</strong> file from project folder > Save
+                    (4)<br>
+                    <img src="./assets/images/Vercel_dash_2.png" alt="Vercel_dash_2" class="admin-img" />
+                </li><br>
+                <li>You will get Redeploy popup > Click on "Redeploy" button and finish process.</li>
+                <li>API deployment completed.</li>
+                <li>Go to dashboard and find API URL > Copy and Save it.</li>
+            </ol>
+
+            <h2>Deploy Admin on Vercel Server</h2>
+            <ol>
+                <li>Go to Admin terminal and Run following command</li>
+                <pre><code>vercel --prod</code></pre>
+                <li>Read questions and answer them accordingly.<br>
+                    <img src="./assets/images/Vercel_dash_3.png" alt="Vercel_dash_3" class="admin-img" />
+                </li><br>
+                <li>Go to vercel website dashboard (1) > Select created project (2)<br>
+                    <img src="./assets/images/Vercel_dash_5.png" alt="Vercel_dash_5" class="admin-img" />
+                </li><br>
+                <li>Click on "Settings" tab from top menu (1) > Select "Environment Variables" from left menu (2) > Add
+                    Key "REACT_APP_API_URL" (3) > Paste API URL at Value (4) Click on "Save" button (5)<br>
+                    <img src="./assets/images/Vercel_dash_6.png" alt="Vercel_dash_6" class="admin-img" />
+                </li><br>
+                <li>You will get Redeploy popup > Click on "Redeploy" button and finish process.</li>
+                <li>Admin deployment completed.</li>
+                <li>Go to dashboard and Click on Admin URL</li>
+            </ol>
+
+            <h2>Deploy Website on Vercel Server</h2>
+            <ol>
+                <li>Go to Website terminal and Run following command</li>
+                <pre><code>vercel --prod</code></pre>
+                <li>Read questions and answer them accordingly.<br>
+                    <img src="./assets/images/Vercel_dash_8.png" alt="Vercel_dash_8" class="admin-img" />
+                </li><br>
+                <li>Go to vercel website dashboard (1) > Select created project (2)<br>
+                    <img src="./assets/images/Vercel_dash_7.png" alt="Vercel_dash_7" class="admin-img" />
+                </li><br>
+                <li>Click on "Settings" tab from top menu (1) > Select "Environment Variables" from left menu (2) > Add
+                    Key "REACT_APP_API_URL" (3) > Paste API URL at Value (4) Click on "Save" button (5)<br>
+                    <img src="./assets/images/Vercel_dash_6.png" alt="Vercel_dash_6" class="admin-img" />
+                </li><br>
+                <li>You will get Redeploy popup > Click on "Redeploy" button and finish process.</li>
+                <li>Website deployment completed.</li>
+                <li>Go to dashboard and Click on Website URL</li>
+            </ol>
+
+        </section>
+
+        <h1>Setting</h1>
+        <section id="admin-app-settings">
+            <h2>Admin App Settings</h2>
+            <h4>To enjoy all website features, you need to configure the following settings:</h4>
+
+            <p><b>1. App Name:</b> Edit the app name to whatever you would like to set.</p>
+            <p><b>2. App Logo:</b> Update the app logo.</p>
+            <p><b>3. App Favicon:</b> Change the app favicon.</p>
+            <p><b>4. App Currency:</b> Edit the app currency.</p>
+            <p><b>5. SMTP Settings:</b> To send OTPs, you need to configure the SMTP
+                details.</p>
+            <p><b>6. Google Client IDs:</b> For Google login functionality, set the Google login client ID.</p>
+            <p><b>7. Stripe Credentials:</b> To enable service booking payments, configure the Stripe.</p>
+            <p><b>Webhook Settings:</b> Follow the steps below to configure the webhook for Stripe:</p>
+            <ul>
+                <li>Log in to your <a href="https://dashboard.stripe.com/">Stripe Dashboard</a>.</li>
+                <li>Navigate to the "Developers" section on the left sidebar.</li>
+                <li>Click on "Webhooks" and then click "Add Endpoint".</li>
+                <li>Enter the endpoint URL where Stripe should send webhook events (e.g., Domian/webhook).</li>
+                <li>Select the events you want to listen to (<b>checkout.session.completed
+                    </b>,
+                    <b>checkout.session.expired</b>
+                    ).
+                </li>
+                <li>Click "Add Endpoint" to save the webhook settings.</li>
+                <li>Copy the webhook secret key generated and save it in admin>appsetting>Stripe Webhook Secret to
+                    verify webhook
+                    authenticity.</li>
+            </ul>
+
+
+            <p><b>8. Service Tax:</b> Edit the service tax.</p>
+            <p><b>9. Copyright Text:</b> Edit the copyright text.</p>
+            <p><b>10. Social Media Links:</b> Add the social media links.</p>
+
+
+            <img src="./assets/images/Appsetting1.png" alt="App Settings" class="admin-img" />
+            <img src="./assets/images/Appsetting2.png" alt="App Settings" class="admin-img" />
+
+        </section>
+        <section id="admin-dashboard">
+            <h2>Admin Dashboard</h2>
+            <p>The dashboard provides an overview of the store's performance and key metrics.</p>
+            <p><b>1. Active Services:</b> Displays the number of events posted.</p>
+            <p><b>2. Total Orders:</b> Shows the number of orders placed.</p>
+            <p><b>3. Revenue:</b> Provides a summary of total revenue generated.</p>
+            <p><b>4. Today Orders:</b> Lists orders placed today.</p>
+            <p><b>5. Recent Orders:</b> Lists the most recent orders with details.</p>
+            <p><b>6. Users:</b> Displays the number of registered users.</p>
+            <p><b>7. Login State:</b> Displays the current login state of the user.</p>
+            <p><b>8. Order Status Breakdown:</b> Provides a breakdown of order statuses.</p>
+            <p><b>9. Payment Status Breakdown:</b> Shows a breakdown of payment statuses.</p>
+            <p><b>10. Payment Mode Breakdown:</b> Displays the distribution of payment methods used.</p>
+            <p><b>11. Top Services:</b> Lists the most frequently booked services.</p>
+            <p><b>12. Top Add-ons:</b> Shows the most popular service add-ons.</p>
+            <p><b>13. System Health and Alerts:</b> Monitors system performance and displays alerts.</p>
+            <img src="./assets/images/Dashbord1.png" alt="Dashboard" class="admin-img" />
+            <img src="./assets/images/Dashbord2.png" alt="Dashboard" class="admin-img" />
+            <img src="./assets/images/Dashbord3.png" alt="Dashboard" class="admin-img" />
+            <img src="./assets/images/Dashbord4.png" alt="Dashboard" class="admin-img" />
+        </section>
+
+        <section id="admin-users">
+            <h2>Users</h2>
+            <p>Manage all user accounts from the Users tab.</p>
+            <img src="./assets/images/Users.png" alt="Users" class="admin-img" />
+        </section>
+        <section id="admin-cartype-settings">
+            <h2>Car Type</h2>
+            <p>Manage car types. You can add new types, view existing ones, update details,
+                delete
+                entries, and toggle their active/inactive status.</p>
+
+            <img src="./assets/images/Car_type.png" alt="Car Type Settings" class="admin-img" />
+        </section>
+
+        <section id="admin-service-settings">
+            <h2>Service</h2>
+            <p>Manage services. You can add new services, view existing ones, edit details, delete entries, and toggle
+                their
+                active/inactive status.</p>
+            <img src="./assets/images/Service.png" alt="Service Settings" class="admin-img" />
+        </section>
+        <section id="admin-addons-settings">
+            <h2>Addons</h2>
+            <p>Manage addons. You can add new addons, view existing ones, edit details, delete entries, and toggle their
+                active/inactive status.</p>
+            <img src="./assets/images/Addons.png" alt="Addons Settings" class="admin-img" />
+        </section>
+
+        <section id="admin-blog-settings">
+            <h2>Blog</h2>
+            <p>Manage blog categories. You can add new categories, view existing ones, edit details, delete entries, and
+                toggle
+                their active/inactive status.</p>
+            <img src="./assets/images/Blog.png" alt="Blog Settings" class="admin-img" />
+        </section>
+
+
+        <section id="admin-address-settings">
+            <h2>Address</h2>
+            <p>Manage addresses. You can add new addresses, view existing ones, edit details, delete entries, and toggle
+                their
+                active/inactive status.</p>
+            <img src="./assets/images/Address.png" alt="Address Settings" class="admin-img" />
+        </section>
+
+        <section id="admin-promocode-settings">
+            <h2>Promocode</h2>
+            <p>Manage promocodes. You can add new promocodes, view existing ones, edit details, delete entries, and
+                toggle their
+                active/inactive status.</p>
+            <img src="./assets/images/Promocode.png" alt="Promocode Settings" class="admin-img" />
+        </section>
+        <section id="admin-order-settings">
+            <h2>Order</h2>
+            <p>Manage orders. You can filter orders, view detailed information, and change their status as needed.</p>
+            <img src="./assets/images/Order.png" alt="Order Settings" class="admin-img" />
+        </section>
+
+        <section id="admin-review-settings">
+            <h2>Review</h2>
+            <p>Manage reviews. You can view individual reviews, list all reviews, delete entries, and toggle their
+                active/inactive status.</p>
+            <img src="./assets/images/Review.png" alt="Review Settings" class="admin-img" />
+        </section>
+
+        <section id="admin-contact-settings">
+            <h2>Contact Us</h2>
+            <p>Manage customer messages. view messages, delete entries, and
+                toggle
+                their active/inactive status.</p>
+            <img src="./assets/images/Contecus.png" alt="Contact Settings" class="admin-img" />
+        </section>
+        <section id="admin-faq-settings">
+            <h2>Frequently Asked Questions</h2>
+            <p>Manage FAQs. You can add new questions, view existing ones, update content, delete entries, and toggle
+                their
+                active/inactive status.</p>
+            <img src="./assets/images/Faq.png" alt="FAQ Settings" class="admin-img" />
+        </section>
+        <section id="admin-businesshour-settings">
+            <h2>Business Hour</h2>
+            <p>Manage business hours. You can view existing hours, edit details.</p>
+            <img src="./assets/images/Businesshour.png" alt="Business Hour Settings" class="admin-img" />
+        </section>
+        <section id="admin-admintheme-settings">
+            <h2>Admin Theme</h2>
+            <p>Manage the admin theme. You can select colors, edit the theme details, and customize the appearance.</p>
+            <img src="./assets/images/Admintheme.png" alt="Admin Theme Settings" class="admin-img" />
+        </section>
+        <section id="admin-usertheme-settings">
+            <h2>User Theme</h2>
+            <p>Manage user themes. You can view existing themes, select colors, and add new themes to customize the
+                appearance.
+            </p>
+            <img src="./assets/images/Usertheme.png" alt="User Theme Settings" class="admin-img" />
+        </section>
+        <section id="aboutus">
+            <h2>About Us</h2>
+            <ul>
+                <li>
+                    <p>Welcome to SLMB Store. Stay up to date with best practices about coding of web and mobile app
+                        development.</p>
+                </li>
+                <li><b>Video Link : </b><a
+                        href="https://www.youtube.com/channel/UCxJAGOhfrd4ta3Bf5WoLpMQ">https://www.youtube.com/channel/UCxJAGOhfrd4ta3Bf5WoLpMQ</a>
+                </li>
+                <li><b>Subscribe Youtube Channel to stay connected : </b>
+                    <a
+                        href="https://www.youtube.com/channel/UCxJAGOhfrd4ta3Bf5WoLpMQ">https://www.youtube.com/channel/UCxJAGOhfrd4ta3Bf5WoLpMQ</a>
+                </li>
+                <li>
+                    <p>React.js is a JavaScript library for building user interfaces, developed by Facebook with
+                        continued support from the
+                        global community. React.js works with existing code, is used by developers and organizations
+                        around the world, and
+                        is free and open source.</p>
+
+                </li>
+                <p>Business Inquiries →<a href="mailto:info@idea2codeinfotech.com">info@idea2codeinfotech.com</a> </p>
+                <p>Thank You Very Much.</p>
+            </ul>
+
+
+
+        </section>
+        <section id="faqs">
+            <h2>FAQs</h2>
+            <p><strong>Where can I find purchase code ?</strong></p>
+            <p>you can find purchase code <a
+                    href="https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code">here</a>
+            </p>
+        </section>
+        <section id="yourfeedback">
+            <h2>Your Feedback</h2>
+            <p>Dear valuable customer, Thank you very much for choosing our product. It's our
+                pleasure to serve top-notch service to you. Please give us your honest feedback
+                that will help us to make a more strong and reliable product by <a href="www.google.com">click
+                    here</a> Rate Us.
+            </p>
+        </section>
+        <section id="contactus">
+            <h2>Contact Us</h2>
+            <p>Car Auto Wash has a creative and dedicated team of developers specializing in event management
+                solutions.
+                Our expertise lies in building high-quality web applications that provide seamless event planning
+                and
+                ticketing experiences for users worldwide.
+            </p>
+            <p>Mail Us : Car Auto Wash@gmail.com </p>
+
+            <ul>
+                <li>Created: April 04, 2025</li>
+                <li>By: SLMB Store</li>
+                <li>Support: <a href="mailto:slmbstore@gmail.com">Contact Us</a></li>
+            </ul>
+            <p>Thank you for purchasing our Car Serviece Boking System. If you have any questions that are beyond the
+                scope of this help file, please feel free to email via our user page contact form <a
+                    href="https://codecanyon.net/user/slmbstore">here</a>. Thanks so much!</p>
+
+
+            <p>Thank You Very Much.</p>
+        </section>
+    </div>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("show");
+        }
+
+        // Close sidebar on link click
+        document.querySelectorAll("#sidebar-links a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                var sidebar = document.getElementById("sidebar");
+                sidebar.classList.remove("show");
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            function setActiveMenu() {
+                let sections = document.querySelectorAll("section");
+                let links = document.querySelectorAll("#sidebar-links li a");
+
+                let currentSection = null;
+                sections.forEach((section) => {
+                    let rect = section.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        currentSection = section.id;
+                    }
+                });
+
+                links.forEach((link) => {
+                    link.classList.remove("active");
+                    if (link.getAttribute("href").substring(1) === currentSection) {
+                        link.classList.add("active");
+                    }
+                });
+            }
+
+            window.addEventListener("scroll", setActiveMenu);
+            window.addEventListener("hashchange", setActiveMenu);
+            setActiveMenu();
+        });
+    </script>
+</body>
+
+</html>

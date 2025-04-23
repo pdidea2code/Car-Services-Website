@@ -26,12 +26,12 @@ const getAllBlog = async (req, res, next) => {
 
       updatedContent = updatedContent.replace(
         /<img>\s*src="(.*?)"/g,
-        (match, p1) => `<img src="${baseUrl}${p1}">`
+        (match, p1) => `<img src="${baseUrl}${p1}"`
       );
 
       updatedContent = updatedContent.replace(
         /<img src="(?!http)(.*?)"/g,
-        (match, p1) => `<img src="${baseUrl}${p1}">`
+        (match, p1) => `<img src="${baseUrl}${p1}"`
       );
 
       return {
@@ -71,12 +71,12 @@ const getBlogById = async (req, res, next) => {
 
     updatedContent = updatedContent.replace(
       /<img>\s*src="(.*?)"/g,
-      (match, p1) => `<img src="${baseUrl}${p1}">`
+      (match, p1) => `<img src="${baseUrl}${p1}"`
     );
 
     updatedContent = updatedContent.replace(
       /<img src="(?!http)(.*?)"/g,
-      (match, p1) => `<img src="${baseUrl}${p1}">`
+      (match, p1) => `<img src="${baseUrl}${p1}"`
     );
 
     const updatedBlog = {

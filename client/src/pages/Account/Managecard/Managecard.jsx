@@ -306,6 +306,7 @@ const Managecard = () => {
             <div
               className="managecard-card-button-container"
               onClick={() => setCardform(true)}
+              style={{ cursor: "pointer" }}
             >
               + Add New Card
             </div>

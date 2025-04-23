@@ -59,6 +59,6 @@ router.post(
   ]),
   editAppSetting
 );
-router.get("/getappsetting", verifyAdminToken, getAppSetting);
+router.get("/getappsetting", getAppSetting);
 
 module.exports = router;

@@ -35,12 +35,27 @@ const handleMulterError = (err, res) => {
   if (err.status === "LIMIT_UNEXPECTED_FILE") {
     return res
       .status(400)
-      .json({ isSuccess: false, status: 400, message: "Too many files,You can only select Three files." }); //err.message
-  } else if (err.status === "LIMIT_FILE_SIZE" || err.message === "File too large") {
-    return res.status(400).json({ isSuccess: false, status: 400, message: "File is too large." }); //err.message
+      .json({
+        isSuccess: false,
+        status: 400,
+        message: "Too many files,You can only select Three files.",
+      }); //err.message
+  } else if (
+    err.status === "LIMIT_FILE_SIZE" ||
+    err.message === "File too large"
+  ) {
+    return res
+      .status(400)
+      .json({ isSuccess: false, status: 400, message: "File is too large." }); //err.message
   } else {
-    console.log(err);
-    return res.status(400).json({ isSuccess: false, status: 400, message: "Something wrong in file uploading." });
+    console.error(err);
+    return res
+      .status(400)
+      .json({
+        isSuccess: false,
+        status: 400,
+        message: "Something wrong in file uploading.",
+      });
   }
 };
 
@@ -75,6 +90,12 @@ module.exports = (err, req, res, next) => {
     }
     next();
   } catch (err) {
-    res.status(500).json({ isSuccess: false, status: 500, message: "Internal server error." });
+    res
+      .status(500)
+      .json({
+        isSuccess: false,
+        status: 500,
+        message: "Internal server error.",
+      });
   }
 };

@@ -1,0 +1,124 @@
+.profile-icon path {
+  fill: var(--color2);
+}
+
+.menu-icon path {
+  fill: var(--color3);
+}
+
+.social-icon path {
+  fill: var(--color3);
+  transition: all 0.3s ease;
+}
+
+.footer-social-icon-item:hover .social-icon path {
+  fill: var(--color2);
+}
+
+.deshline-icon {
+  stroke: var(--color2);
+}
+.UpRightArrowIconinhomepage path {
+  fill: var(--color3);
+}
+.UpRightArrowIconinhomepageblack path {
+  fill: var(--color1);
+}
+.SafetyGuaranteeIcon path {
+  fill: var(--color2);
+}
+
+.RoundArrowIcon path {
+  fill: var(--color1);
+}
+
+.RoundArrowIcon.active path {
+  fill: var(--color3);
+}
+
+.WalletIcon path {
+  fill: var(--color3);
+}
+
+.ClockIcon path {
+  fill: var(--color3);
+}
+
+.CarIcon path {
+  fill: var(--color2);
+}
+
+.RoundedCheckIcon path {
+  fill: var(--color2);
+}
+
+.EyeIcon path {
+  fill: var(--color1);
+}
+
+.EyeSlashIcon path {
+  fill: var(--color1);
+}
+
+.ProfileEditIcon path {
+  fill: var(--color2);
+  stroke: var(--color2);
+}
+
+.LocationIcon path {
+  fill: var(--color2);
+}
+.MailIcon path {
+  fill: var(--color2);
+}
+.PhoneIcon path {
+  fill: var(--color2);
+}
+
+.DropArrowIcon path {
+  fill: var(--color1);
+}
+
+.AddIcon path:first-child {
+  fill: var(--color3);
+}
+
+.AddIcon path:last-child {
+  fill: var(--color2);
+}
+
+.RemoveIcon path {
+  fill: var(--color2);
+}
+
+.WalletIcon.color2 path {
+  fill: var(--color2);
+}
+
+.ClockIcon.color2 path {
+  fill: var(--color2);
+}
+
+.CalendarIcon path {
+  fill: var(--color1);
+}
+
+.OrderSummaryIcon path {
+  fill: var(--color2);
+}
+
+.DeleteIcon path {
+  fill: var(--color2);
+}
+
+.CardIcon path {
+  fill: var(--color1);
+}
+
+.RoundArrowIconwhite path {
+  fill: var(--color3);
+}
+
+.ReviewIcon path {
+  fill: var(--color2);
+}

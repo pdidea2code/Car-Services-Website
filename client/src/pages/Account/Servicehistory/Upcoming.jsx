@@ -35,7 +35,7 @@ const Upcoming = () => {
         setOrder(upcomingOrder);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ const Upcoming = () => {
         setOrder(order.filter((item) => item._id !== id));
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert(error.response.data.message || "Something went wrong");
     } finally {
       setConfirmOpen(false); // Close modal after action

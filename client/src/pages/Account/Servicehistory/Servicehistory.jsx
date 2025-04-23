@@ -30,7 +30,7 @@ const Servicehistory = () => {
         setOrder(res.data.info);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

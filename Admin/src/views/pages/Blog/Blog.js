@@ -114,7 +114,6 @@ const Blog = () => {
       name: 'action',
       label: 'Action',
       options: {
-        filter: false,
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const data = blog[rowIndex]

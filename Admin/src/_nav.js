@@ -85,6 +85,12 @@ const _nav = [
     icon: <Icons.ReviewsRounded className="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'Contact Us',
+    to: '/contactus',
+    icon: <Icons.EmailRounded className="nav-icon" />,
+  },
+  {
     component: CNavGroup,
     name: 'Setting',
     to: '/appsetting',

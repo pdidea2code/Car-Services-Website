@@ -56,7 +56,6 @@ const BusinessHour = () => {
       name: '_id',
       label: 'Action',
       options: {
-        filter: false,
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const businessHours = businessHour[rowIndex]

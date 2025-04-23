@@ -38,7 +38,7 @@ const BookServce = () => {
       const response = await getAllService();
       if (response.data.status === 200) {
         setServices(response.data.info);
-        console.log(response.data.info);
+
         // cache.set("services", response.data.info);
       } else {
         throw new Error("Failed to fetch services");

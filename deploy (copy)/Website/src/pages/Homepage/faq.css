@@ -1,0 +1,113 @@
+.faq-container {
+  background-color: var(--color3);
+  padding-top: 60px;
+  padding-bottom: 60px;
+  transition: all 0.3s ease;
+}
+.faq-title {
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  color: var(--color2);
+}
+
+.faq-title2 {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+  color: var(--color1);
+}
+
+.faq-row2 {
+  margin-top: 40px !important;
+}
+
+.accordion-items{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 940px;
+}
+
+.accordion-item-div-inner{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.accordion-item-header{
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color1);
+}
+
+.accordion-item-header.active{
+  color: var(--color3);
+}
+
+.accordion-item-answer{
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.accordion-item-div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 29px 20px;
+  cursor: pointer;
+  color: var(--color1);
+  background-color: var(--color3);
+  border: 1px solid var(--color1);
+  transition: background-color 0.3s ease, border 0.3s ease, padding 0.3s ease;
+}
+
+.accordion-item-div.active {
+  height: fit-content;
+ background-color: var(--color2);
+ color: var(--color3);
+ border: 1px solid var(--color2);
+ padding: 24px 20px;
+ transition: background-color 0.3s ease, border 0.3s ease, padding 0.3s ease;
+}
+
+.accordion-item-body {
+  height: 0px;
+  overflow: hidden;
+  padding-top: 0px;
+  transition: all 0.3s ease;
+
+}
+
+.accordion-item-body.active {
+  height: 100%;
+  padding-top: 15px;
+  transition: all 0.3s ease;
+}
+
+.accordion-item-icon-div {
+  
+  transition: transform 0.3s ease;
+}
+
+.accordion-item-icon-div.active {
+  transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+  .faq-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .faq-row2{
+    margin-top: 20px !important;
+  }
+  .accordion-item-header{
+    font-size: 14px;
+  }
+  .accordion-item-answer{
+    font-size: 14px;
+  }
+  
+}

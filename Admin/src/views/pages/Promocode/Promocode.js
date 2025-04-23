@@ -138,7 +138,6 @@ const PromoCode = () => {
       name: 'code',
       label: 'Action',
       options: {
-        filter: false,
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
           const data = promoCodes[rowIndex]

@@ -20,7 +20,6 @@ const ServiceView = () => {
       const response = await getServiceByIdApi({ id })
       if (response.status === 200) {
         setService(response.data.info)
-        console.log(response.data.info)
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Something went wrong')

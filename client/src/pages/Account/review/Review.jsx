@@ -55,7 +55,7 @@ const Review = () => {
           "An error occurred while submitting the review"
       );
       setShowErrorModal(true); // Show error modal
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

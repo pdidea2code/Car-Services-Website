@@ -2,6 +2,8 @@ const Order = require("../../models/Order");
 const User = require("../../models/User");
 const Service = require("../../models/Service");
 const PromoCode = require("../../models/Promocode");
+const Review = require("../../models/Review");
+const Content = require("../../models/Contect");
 const {
   successResponse,
   queryErrorRelatedResponse,
@@ -439,9 +441,58 @@ const getTopServicesAndAddons = async (req, res, next) => {
     next(error);
   }
 };
+
+const getSystemHealthAlerts = async (req, res, next) => {
+  try {
+    // 1. Count Pending Reviews (is_approved: false)
+    const pendingReviewsCount = await Review.countDocuments({
+      status: false,
+    });
+
+    // 2. Count Inactive Services (status: false or isDeleted: true)
+    const inactiveServicesCount = await Service.countDocuments({
+      $or: [{ status: false }, { isDeleted: true }],
+    });
+
+    // 3. Count Expired Promo Codes (expirationDate < current date)
+    const currentDate = new Date(); // April 11, 2025
+    const expiredPromoCodesCount = await PromoCode.countDocuments({
+      expirationDate: { $lt: currentDate },
+    });
+
+    const unseenContent = await Content.find({
+      seen: false,
+    });
+
+    // Combine into response
+    const alerts = {
+      pendingReviews: {
+        count: pendingReviewsCount,
+        message: `Pending Reviews: ${pendingReviewsCount}`,
+      },
+      inactiveServices: {
+        count: inactiveServicesCount,
+        message: `Inactive Services: ${inactiveServicesCount}`,
+      },
+      expiredPromoCodes: {
+        count: expiredPromoCodesCount,
+        message: `Expired Promo Codes: ${expiredPromoCodesCount}`,
+      },
+      unseenContent: {
+        count: unseenContent.length,
+        message: `Unseen User Contact message: ${unseenContent.length}`,
+      },
+    };
+
+    successResponse(res, alerts);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   getKPIMetrics,
   getRecentActivity,
   getOrderStatusBreakdown,
   getTopServicesAndAddons,
+  getSystemHealthAlerts,
 };

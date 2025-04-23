@@ -76,7 +76,7 @@ const Register = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setRegisterError(
         error?.response?.data?.message || "Something went wrong"
       );
@@ -112,7 +112,7 @@ const Register = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setOtpError(error?.response?.data?.message || "Something went wrong");
     } finally {
       setIsLoading(false);
