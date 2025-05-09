@@ -10,7 +10,6 @@ import {
   CCardBody,
   CForm,
   CFormInput,
-  CFormTextarea,
   CFormFeedback,
   CButton,
   CSpinner,
@@ -35,6 +34,7 @@ const Appsetting = () => {
   const [logo, setLogo] = useState(null)
   const [favicon, setFavicon] = useState(null)
   const [footerLogo, setFooterLogo] = useState(null)
+
   const fetchAppSetting = async () => {
     try {
       setLoading(true)
@@ -47,7 +47,6 @@ const Appsetting = () => {
         setValue('name', res.data.info.name)
         setValue('currency', res.data.info.currency)
         setValue('currency_symbol', res.data.info.currency_symbol)
-        // setValue('workinghours', res.data.info.workinghours)
         setValue('copyright', res.data.info.copyright)
         setValue('facebook', res.data.info.facebook)
         setValue('instagram', res.data.info.instagram)
@@ -56,7 +55,8 @@ const Appsetting = () => {
         setValue('google_map_api_key', res.data.info.google_map_api_key)
         setValue('smtp_mail', res.data.info.smtp_mail)
         setValue('smtp_password', res.data.info.smtp_password)
-        setValue('smtp_service', res.data.info.smtp_service)
+        setValue('smtp_port', res.data.info.smtp_port)
+        setValue('smtp_host', res.data.info.smtp_host)
         setValue('google_client_id', res.data.info.google_client_id)
         setValue('service_tax', res.data.info.service_tax)
         setValue('stripe_secret_key', res.data.info.stripe_secret_key)
@@ -69,6 +69,7 @@ const Appsetting = () => {
       setLoading(false)
     }
   }
+
   const handleSingleImgChange = (e, key) => {
     const file = e.target.files[0]
     if (file) {
@@ -126,320 +127,405 @@ const Appsetting = () => {
     <div>
       <ToastContainer />
       <CRow>
-        <CCol lg={8} md={12} sm={12}>
+        <CCol lg={12} md={12} sm={12}>
           <CCard>
             <CCardHeader className="formcardheader">
-              <CCardTitle>App Setting</CCardTitle>
+              <CCardTitle>App Settings</CCardTitle>
             </CCardHeader>
             <CCardBody>
               <CForm className="row g-3" onSubmit={handleSubmit(onSubmit)}>
-                <CCol xl={6} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="App Name"
-                    name="appName"
-                    {...register('name', { required: 'App Name is required' })}
-                    invalid={!!errors.name}
-                  />
-                  {errors.name && (
-                    <CFormFeedback className="text-danger">{errors.name.message}</CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={3} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Currency"
-                    name="currency"
-                    {...register('currency', { required: 'Currency is required' })}
-                    invalid={!!errors.currency}
-                  />
-                  {errors.currency && (
-                    <CFormFeedback className="text-danger">{errors.currency.message}</CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={3} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Currency Symbol"
-                    name="currencySymbol"
-                    {...register('currency_symbol', { required: 'Currency Symbol is required' })}
-                    invalid={!!errors.currency_symbol}
-                  />
-                  {errors.currency_symbol && (
-                    <CFormFeedback className="text-danger">
-                      {errors.currency_symbol.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={6} md={12}>
-                  <CFormLabel>Service Tax</CFormLabel>
-                  <CInputGroup>
-                    <CFormInput
-                      type="number"
-                      name="service_tax"
-                      {...register('service_tax', { required: 'Service Tax is required' })}
-                      invalid={!!errors.service_tax}
-                    />
-                    <CInputGroupText>%</CInputGroupText>
-                  </CInputGroup>
-                  {errors.service_tax && (
-                    <CFormFeedback className="text-danger">
-                      {errors.service_tax.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                {/* <CCol xl={12} md={12}>
-                  <CFormTextarea
-                    label="Working Hours"
-                    name="workingHours"
-                    {...register('workinghours', { required: 'Working Hours is required' })}
-                    invalid={!!errors.workinghours}
-                  />
-                  {errors.workinghours && (
-                    <CFormFeedback className="text-danger">
-                      {errors.workinghours.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>*/}
-                <CCol xl={12} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Copyright"
-                    name="copyright"
-                    {...register('copyright', { required: 'Copyright is required' })}
-                    invalid={!!errors.copyright}
-                  />
-                  {errors.copyright && (
-                    <CFormFeedback className="text-danger">
-                      {errors.copyright.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={6} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Facebook"
-                    name="facebook"
-                    {...register('facebook', { required: 'Facebook is required' })}
-                    invalid={!!errors.facebook}
-                  />
-                  {errors.facebook && (
-                    <CFormFeedback className="text-danger">{errors.facebook.message}</CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={6} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Instagram"
-                    name="instagram"
-                    {...register('instagram', { required: 'Instagram is required' })}
-                    invalid={!!errors.instagram}
-                  />
-                  {errors.instagram && (
-                    <CFormFeedback className="text-danger">
-                      {errors.instagram.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={6} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Twitter"
-                    name="twitter"
-                    {...register('twitter', { required: 'Twitter is required' })}
-                    invalid={!!errors.twitter}
-                  />
-                  {errors.twitter && (
-                    <CFormFeedback className="text-danger">{errors.twitter.message}</CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={6} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Youtube"
-                    name="youtube"
-                    {...register('youtube', { required: 'Youtube is required' })}
-                    invalid={!!errors.youtube}
-                  />
-                  {errors.youtube && (
-                    <CFormFeedback className="text-danger">{errors.youtube.message}</CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={12} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Google Map API Key"
-                    name="google_map_api_key"
-                    {...register('google_map_api_key', {
-                      required: 'Google Map API Key is required',
-                    })}
-                    invalid={!!errors.google_map_api_key}
-                  />
-                  {errors.google_map_api_key && (
-                    <CFormFeedback className="text-danger">
-                      {errors.google_map_api_key.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={12} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Google Client ID"
-                    name="google_client_id"
-                    {...register('google_client_id', { required: 'Google Client ID is required' })}
-                    invalid={!!errors.google_client_id}
-                  />
-                  {errors.google_client_id && (
-                    <CFormFeedback className="text-danger">
-                      {errors.google_client_id.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={4} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="SMTP Mail"
-                    name="smtp_mail"
-                    {...register('smtp_mail', { required: 'SMTP Mail is required' })}
-                    invalid={!!errors.smtp_mail}
-                  />
-                  {errors.smtp_mail && (
-                    <CFormFeedback className="text-danger">
-                      {errors.smtp_mail.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={4} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="SMTP Password"
-                    name="smtp_password"
-                    {...register('smtp_password', { required: 'SMTP Password is required' })}
-                    invalid={!!errors.smtp_password}
-                  />
-                  {errors.smtp_password && (
-                    <CFormFeedback className="text-danger">
-                      {errors.smtp_password.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={4} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="SMTP Service"
-                    name="smtp_service"
-                    {...register('smtp_service', { required: 'SMTP Service is required' })}
-                    invalid={!!errors.smtp_service}
-                  />
-                  {errors.smtp_service && (
-                    <CFormFeedback className="text-danger">
-                      {errors.smtp_service.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={12} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Stripe Secret Key"
-                    name="stripe_secret_key"
-                    {...register('stripe_secret_key', {
-                      required: 'Stripe Secret Key is required',
-                    })}
-                    invalid={!!errors.stripe_secret_key}
-                  />
-                  {errors.stripe_secret_key && (
-                    <CFormFeedback className="text-danger">
-                      {errors.stripe_secret_key.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={12} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Stripe Publishable Key"
-                    name="stripe_publishable_key"
-                    {...register('stripe_publishable_key', {
-                      required: 'Stripe Publishable Key is required',
-                    })}
-                    invalid={!!errors.stripe_publishable_key}
-                  />
-                  {errors.stripe_publishable_key && (
-                    <CFormFeedback className="text-danger">
-                      {errors.stripe_publishable_key.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={12} md={12}>
-                  <CFormInput
-                    type="text"
-                    label="Stripe Webhook Secret"
-                    name="stripe_webhook_secret"
-                    {...register('stripe_webhook_secret', {
-                      required: 'Stripe Webhook Secret is required',
-                    })}
-                    invalid={!!errors.stripe_webhook_secret}
-                  />
-                  {errors.stripe_webhook_secret && (
-                    <CFormFeedback className="text-danger">
-                      {errors.stripe_webhook_secret.message}
-                    </CFormFeedback>
-                  )}
-                </CCol>
-                <CCol xl={6} md={12}>
-                  <CFormInput
-                    type="file"
-                    label="Logo"
-                    name="logo"
-                    {...register(
-                      'logo',
-                      logo ? { required: false } : { required: 'Logo is required' },
-                    )}
-                    invalid={!!errors.logo}
-                    onChange={(e) => handleSingleImgChange(e, 'logo')}
-                  />
-                  {errors.logo && (
-                    <CFormFeedback className="text-danger">{errors.logo.message}</CFormFeedback>
-                  )}
-                  <img src={logo} alt="logo" className="img-fluid mt-2" />
-                </CCol>
+                {/* App Setting Card */}
+                <CCard className="mb-4  p-0">
+                  <CCardHeader>
+                    <CCardTitle>App Setting</CCardTitle>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol xl={6} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="App Name"
+                          name="appName"
+                          {...register('name', { required: 'App Name is required' })}
+                          invalid={!!errors.name}
+                        />
+                        {errors.name && (
+                          <CFormFeedback className="text-danger">
+                            {errors.name.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={3} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Currency"
+                          name="currency"
+                          {...register('currency', { required: 'Currency is required' })}
+                          invalid={!!errors.currency}
+                        />
+                        {errors.currency && (
+                          <CFormFeedback className="text-danger">
+                            {errors.currency.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={3} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Currency Symbol"
+                          name="currencySymbol"
+                          {...register('currency_symbol', {
+                            required: 'Currency Symbol is required',
+                          })}
+                          invalid={!!errors.currency_symbol}
+                        />
+                        {errors.currency_symbol && (
+                          <CFormFeedback className="text-danger">
+                            {errors.currency_symbol.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={6} md={12}>
+                        <CFormLabel>Service Tax</CFormLabel>
+                        <CInputGroup>
+                          <CFormInput
+                            type="number"
+                            name="service_tax"
+                            {...register('service_tax', { required: 'Service Tax is required' })}
+                            invalid={!!errors.service_tax}
+                          />
+                          <CInputGroupText>%</CInputGroupText>
+                        </CInputGroup>
+                        {errors.service_tax && (
+                          <CFormFeedback className="text-danger">
+                            {errors.service_tax.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={12} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Copyright"
+                          name="copyright"
+                          {...register('copyright', { required: 'Copyright is required' })}
+                          invalid={!!errors.copyright}
+                        />
+                        {errors.copyright && (
+                          <CFormFeedback className="text-danger">
+                            {errors.copyright.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
 
-                <CCol xl={6} md={12}>
-                  <CFormInput
-                    type="file"
-                    label="Favicon"
-                    name="favicon"
-                    {...register(
-                      'favicon',
-                      favicon ? { required: false } : { required: 'Favicon is required' },
-                    )}
-                    invalid={!!errors.favicon}
-                    onChange={(e) => handleSingleImgChange(e, 'favicon')}
-                  />
-                  {errors.favicon && (
-                    <CFormFeedback className="text-danger">{errors.favicon.message}</CFormFeedback>
-                  )}
-                  <img src={favicon} alt="favicon" className="img-fluid mt-2" />
-                </CCol>
+                {/* Social Links Card */}
+                <CCard className="mb-4  p-0">
+                  <CCardHeader>
+                    <CCardTitle>Social Links</CCardTitle>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol xl={6} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Facebook"
+                          name="facebook"
+                          {...register('facebook', { required: 'Facebook is required' })}
+                          invalid={!!errors.facebook}
+                        />
+                        {errors.facebook && (
+                          <CFormFeedback className="text-danger">
+                            {errors.facebook.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={6} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Instagram"
+                          name="instagram"
+                          {...register('instagram', { required: 'Instagram is required' })}
+                          invalid={!!errors.instagram}
+                        />
+                        {errors.instagram && (
+                          <CFormFeedback className="text-danger">
+                            {errors.instagram.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={6} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Twitter"
+                          name="twitter"
+                          {...register('twitter', { required: 'Twitter is required' })}
+                          invalid={!!errors.twitter}
+                        />
+                        {errors.twitter && (
+                          <CFormFeedback className="text-danger">
+                            {errors.twitter.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={6} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Youtube"
+                          name="youtube"
+                          {...register('youtube', { required: 'Youtube is required' })}
+                          invalid={!!errors.youtube}
+                        />
+                        {errors.youtube && (
+                          <CFormFeedback className="text-danger">
+                            {errors.youtube.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
 
-                <CCol xl={6} md={12}>
-                  <CFormInput
-                    type="file"
-                    label="Footer Logo"
-                    name="footerLogo"
-                    {...register(
-                      'footerlogo',
-                      footerLogo ? { required: false } : { required: 'Footer Logo is required' },
-                    )}
-                    invalid={!!errors.footerlogo}
-                    onChange={(e) => handleSingleImgChange(e, 'footerlogo')}
-                  />
-                  {errors.footerlogo && (
-                    <CFormFeedback className="text-danger">
-                      {errors.footerlogo.message}
-                    </CFormFeedback>
-                  )}
-                  <img src={footerLogo} alt="footerLogo" className="img-fluid mt-2" />
-                </CCol>
+                {/* Google Secret Key Card */}
+                <CCard className="mb-4  p-0">
+                  <CCardHeader>
+                    <CCardTitle>Google Secret Key</CCardTitle>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol xl={12} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Google Map API Key"
+                          name="google_map_api_key"
+                          {...register('google_map_api_key', {
+                            required: 'Google Map API Key is required',
+                          })}
+                          invalid={!!errors.google_map_api_key}
+                        />
+                        {errors.google_map_api_key && (
+                          <CFormFeedback className="text-danger">
+                            {errors.google_map_api_key.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={12} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Google Client ID"
+                          name="google_client_id"
+                          {...register('google_client_id', {
+                            required: 'Google Client ID is required',
+                          })}
+                          invalid={!!errors.google_client_id}
+                        />
+                        {errors.google_client_id && (
+                          <CFormFeedback className="text-danger">
+                            {errors.google_client_id.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
+
+                {/* SMTP Setting Card */}
+                <CCard className="mb-4 p-0">
+                  <CCardHeader>
+                    <CCardTitle>SMTP Setting</CCardTitle>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol xl={4} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="SMTP Mail"
+                          name="smtp_mail"
+                          {...register('smtp_mail', { required: 'SMTP Mail is required' })}
+                          invalid={!!errors.smtp_mail}
+                        />
+                        {errors.smtp_mail && (
+                          <CFormFeedback className="text-danger">
+                            {errors.smtp_mail.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={4} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="SMTP Password"
+                          name="smtp_password"
+                          {...register('smtp_password', { required: 'SMTP Password is required' })}
+                          invalid={!!errors.smtp_password}
+                        />
+                        {errors.smtp_password && (
+                          <CFormFeedback className="text-danger">
+                            {errors.smtp_password.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={4} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="SMTP Host"
+                          name="smtp_host"
+                          {...register('smtp_host', { required: 'SMTP Host is required' })}
+                          invalid={!!errors.smtp_host}
+                        />
+                        {errors.smtp_host && (
+                          <CFormFeedback className="text-danger">
+                            {errors.smtp_host.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={4} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="SMTP Port"
+                          name="smtp_port"
+                          {...register('smtp_port', { required: 'SMTP Port is required' })}
+                          invalid={!!errors.smtp_port}
+                        />
+                        {errors.smtp_port && (
+                          <CFormFeedback className="text-danger">
+                            {errors.smtp_port.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
+
+                {/* Stripe Credentials Card */}
+                <CCard className="mb-4  p-0">
+                  <CCardHeader>
+                    <CCardTitle>Stripe Credentials</CCardTitle>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol xl={12} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Stripe Secret Key"
+                          name="stripe_secret_key"
+                          {...register('stripe_secret_key', {
+                            required: 'Stripe Secret Key is required',
+                          })}
+                          invalid={!!errors.stripe_secret_key}
+                        />
+                        {errors.stripe_secret_key && (
+                          <CFormFeedback className="text-danger">
+                            {errors.stripe_secret_key.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={12} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Stripe Publishable Key"
+                          name="stripe_publishable_key"
+                          {...register('stripe_publishable_key', {
+                            required: 'Stripe Publishable Key is required',
+                          })}
+                          invalid={!!errors.stripe_publishable_key}
+                        />
+                        {errors.stripe_publishable_key && (
+                          <CFormFeedback className="text-danger">
+                            {errors.stripe_publishable_key.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                      <CCol xl={12} md={12}>
+                        <CFormInput
+                          type="text"
+                          label="Stripe Webhook Secret"
+                          name="stripe_webhook_secret"
+                          {...register('stripe_webhook_secret', {
+                            required: 'Stripe Webhook Secret is required',
+                          })}
+                          invalid={!!errors.stripe_webhook_secret}
+                        />
+                        {errors.stripe_webhook_secret && (
+                          <CFormFeedback className="text-danger">
+                            {errors.stripe_webhook_secret.message}
+                          </CFormFeedback>
+                        )}
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
+
+                {/* Image Uploads Card */}
+                <CCard className="mb-4 p-0">
+                  <CCardHeader>
+                    <CCardTitle>Image Uploads</CCardTitle>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol xl={6} md={12}>
+                        <CFormInput
+                          type="file"
+                          label="Logo"
+                          name="logo"
+                          {...register(
+                            'logo',
+                            logo ? { required: false } : { required: 'Logo is required' },
+                          )}
+                          invalid={!!errors.logo}
+                          onChange={(e) => handleSingleImgChange(e, 'logo')}
+                        />
+                        {errors.logo && (
+                          <CFormFeedback className="text-danger">
+                            {errors.logo.message}
+                          </CFormFeedback>
+                        )}
+                        <img src={logo} alt="logo" className="img-fluid mt-2" />
+                      </CCol>
+                      <CCol xl={6} md={12}>
+                        <CFormInput
+                          type="file"
+                          label="Favicon"
+                          name="favicon"
+                          {...register(
+                            'favicon',
+                            favicon ? { required: false } : { required: 'Favicon is required' },
+                          )}
+                          invalid={!!errors.favicon}
+                          onChange={(e) => handleSingleImgChange(e, 'favicon')}
+                        />
+                        {errors.favicon && (
+                          <CFormFeedback className="text-danger">
+                            {errors.favicon.message}
+                          </CFormFeedback>
+                        )}
+                        <img src={favicon} alt="favicon" className="img-fluid mt-2" />
+                      </CCol>
+                      <CCol xl={6} md={12}>
+                        <CFormInput
+                          type="file"
+                          label="Footer Logo"
+                          name="footerLogo"
+                          {...register(
+                            'footerlogo',
+                            footerLogo
+                              ? { required: false }
+                              : { required: 'Footer Logo is required' },
+                          )}
+                          invalid={!!errors.footerlogo}
+                          onChange={(e) => handleSingleImgChange(e, 'footerlogo')}
+                        />
+                        {errors.footerlogo && (
+                          <CFormFeedback className="text-danger">
+                            {errors.footerlogo.message}
+                          </CFormFeedback>
+                        )}
+                        <img src={footerLogo} alt="footerLogo" className="img-fluid mt-2" />
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
+
                 <CCol xl={12} md={12} className="text-center">
                   <CButton disabled={loading} type="submit" className="submit-button">
                     {loading ? <CSpinner /> : 'Save'}

@@ -39,6 +39,7 @@ import {
   CREATE_CHECKOUT_SESSION,
   ADD_REVIEW,
   DISPLAY_REVIEW,
+  GET_POPUP_IMAGE_API,
 } from "./Apilist";
 
 /*-----------------------------------   AppSetting    -----------------------------------*/
@@ -51,16 +52,13 @@ export const getBusinessHour = () => axios.get(MAIN_URL + GET_BUSINESS_HOUR);
 /*----------------------------------- End AppSetting    -----------------------------------*/
 /*-----------------------------------   Service    -----------------------------------*/
 export const getAllService = () => axios.get(MAIN_URL + GET_ALL_SERVICE);
-export const getServiceById = (request) =>
-  axios.post(MAIN_URL + GET_SERVICE_BY_ID, request);
-export const getAddonByServiceId = (request) =>
-  axios.post(MAIN_URL + GET_ADDON_BY_SERVICE_ID, request);
+export const getServiceById = (request) => axios.post(MAIN_URL + GET_SERVICE_BY_ID, request);
+export const getAddonByServiceId = (request) => axios.post(MAIN_URL + GET_ADDON_BY_SERVICE_ID, request);
 export const getCartype = () => axios.get(MAIN_URL + GET_CARTYPE);
 /*----------------------------------- End Service    -----------------------------------*/
 
 /*-----------------------------------   Blog    -----------------------------------*/
-export const getAllBlog = (request) =>
-  axios.post(MAIN_URL + GET_ALL_BLOG, request);
+export const getAllBlog = (request) => axios.post(MAIN_URL + GET_ALL_BLOG, request);
 export const getBlogById = (id) => axios.get(MAIN_URL + GET_BLOG_BY_ID + id);
 /*----------------------------------- End Blog    -----------------------------------*/
 
@@ -73,17 +71,12 @@ export const getAllBanner = () => axios.get(MAIN_URL + GET_BANNER);
 /*----------------------------------- End Banner    -----------------------------------*/
 
 /*-----------------------------------   Auth    -----------------------------------*/
-export const RegisterApi = (request) =>
-  axios.post(MAIN_URL + REGISTER, request);
-export const VerifyEmailApi = (request) =>
-  axios.post(MAIN_URL + VERIFY_EMAIL, request);
+export const RegisterApi = (request) => axios.post(MAIN_URL + REGISTER, request);
+export const VerifyEmailApi = (request) => axios.post(MAIN_URL + VERIFY_EMAIL, request);
 export const LoginApi = (request) => axios.post(MAIN_URL + LOGIN, request);
-export const CheckEmailIdApi = (request) =>
-  axios.post(MAIN_URL + CHECK_EMAIL_ID_SEND_OTP, request);
-export const VerifyOtpApi = (request) =>
-  axios.post(MAIN_URL + VERIFY_OTP, request);
-export const ForgotPasswordApi = (request) =>
-  axios.post(MAIN_URL + FORGOT_PASSWORD, request);
+export const CheckEmailIdApi = (request) => axios.post(MAIN_URL + CHECK_EMAIL_ID_SEND_OTP, request);
+export const VerifyOtpApi = (request) => axios.post(MAIN_URL + VERIFY_OTP, request);
+export const ForgotPasswordApi = (request) => axios.post(MAIN_URL + FORGOT_PASSWORD, request);
 export const EditProfileApi = (request) =>
   axios.post(MAIN_URL + EDIT_PROFILE, request, {
     headers: {
@@ -96,8 +89,7 @@ export const GoogleLoginApi = (accessToken) =>
       Authorization: `Bearer ${accessToken}`,
     },
   });
-export const SocialLoginApi = (request) =>
-  axios.post(MAIN_URL + SOCIAL_LOGIN, request);
+export const SocialLoginApi = (request) => axios.post(MAIN_URL + SOCIAL_LOGIN, request);
 export const getProfile = () =>
   axios.get(MAIN_URL + GET_PROFILE, {
     headers: {
@@ -108,8 +100,7 @@ export const getProfile = () =>
 
 /*-----------------------------------   Contact Us    -----------------------------------*/
 export const getAddress = () => axios.get(MAIN_URL + GET_ADDRESS);
-export const addContent = (request) =>
-  axios.post(MAIN_URL + ADD_CONTENT, request);
+export const addContent = (request) => axios.post(MAIN_URL + ADD_CONTENT, request);
 /*----------------------------------- End Contact Us    -----------------------------------*/
 
 /*-----------------------------------   Booking    -----------------------------------*/
@@ -205,3 +196,4 @@ export const displayReview = () =>
     },
   });
 /*----------------------------------- End Review    -----------------------------------*/
+export const getPopupImageApi = () => axios.get(MAIN_URL + GET_POPUP_IMAGE_API);

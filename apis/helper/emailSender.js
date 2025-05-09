@@ -8,12 +8,9 @@ const { queryErrorRelatedResponse, successResponse } = require("./sendResponse")
 const sendMail = async (data, req, res) => {
   const mail = await AppSetting.findOne();
   var transporter = nodemailer.createTransport({
-    service: mail.smtp_service,
+    host: mail.smtp_host,
+    port: mail.smtp_port,
     secure: true,
-    // auth: {
-    //   user: mail.email,
-    //   pass: mail.password,
-    // },
     auth: {
       user: mail.smtp_mail,
       pass: mail.smtp_password,
@@ -22,7 +19,7 @@ const sendMail = async (data, req, res) => {
 
   fs.readFile(data.htmlFile, { encoding: "utf-8" }, function (err, html) {
     if (err) {
-      // console.log(err);
+      console.log(err);
     } else {
       var template = handlebars.compile(html);
       var replacements = {
@@ -32,7 +29,7 @@ const sendMail = async (data, req, res) => {
         useremail: data.extraData.useremail,
         usermo: data.extraData.usermo,
         question: data.extraData.question,
-        copyrighttext: "© 2025 Car Auto Wash. All rights reserved.",
+        copyrighttext: mail.copyright,
       };
       var htmlToSend = template(replacements);
 
@@ -43,13 +40,13 @@ const sendMail = async (data, req, res) => {
         subject: data.sub,
         html: htmlToSend,
       };
-
       transporter.sendMail(mailOptions, function (err, info) {
         if (err) {
-          // console.log(err, "err");
+          console.log("err", err);
           return queryErrorRelatedResponse(res, 500, "Something went wrong");
           // return 0;
         } else {
+          console.log("done");
           return successResponse(res, "Check your email");
           // return "done";
         }

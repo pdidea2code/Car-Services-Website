@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSelector } from "react-redux";
+import PopupModel from "./popupmodel";
 
 const AppRoutes = () => {
   const appsrting = useSelector((state) => state.appSetting.appSetting);
@@ -21,6 +22,8 @@ const AppRoutes = () => {
       <Elements stripe={stripePromise}>
         <RouteList style={{ flex: 1 }} />
       </Elements>
+      <PopupModel />
+
       <Footer />
     </>
   );

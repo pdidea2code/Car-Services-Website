@@ -2,15 +2,21 @@
 
 // Here you can add other styles
 /* -------------------------- datatable responsive media query-------------------------- */
-.css-1ygil4i-MuiToolbar-root {
-  background-color: var(--color-three) !important;
-}
-.css-1xtozoh-MuiTableRow-root:hover {
-  background-color: var(--color-three) !important;
-}
+// .css-1ygil4i-MuiToolbar-root {
+//   background-color: var(--color-three) !important;
+// }
+// .css-1xtozoh-MuiTableRow-root:hover {
+//   background-color: var(--color-three) !important;
+// }
 // .MuiTableHead-root {
 //   background-color: var(--color-three) !important;
 // }
+
+.MuiTableBody-root {
+  .MuiTableRow-root:nth-child(odd) {
+    background-color: #f0f0f0 !important; // Gray background for even rows
+  }
+}
 
 @media (max-width: 900px) {
   .MuiTableHead-root {

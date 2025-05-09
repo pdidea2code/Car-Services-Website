@@ -52,8 +52,7 @@ export const CARD_PAYMENT = "/api/user/booking/cardpayment";
 export const VERIFY_PAYMENT = "/api/user/booking/verifypayment";
 export const REFUND_PAYMENT = "/api/user/booking/refundpayment";
 export const GET_ORDER_DETAILS = "/api/user/booking/getorderdetails";
-export const CREATE_CHECKOUT_SESSION =
-  "/api/user/booking/createcheckoutsession";
+export const CREATE_CHECKOUT_SESSION = "/api/user/booking/createcheckoutsession";
 /*----------------------------------- End Booking    -----------------------------------*/
 
 /*-----------------------------------   Card    -----------------------------------*/
@@ -67,3 +66,4 @@ export const DELETE_CARD = "/api/user/card/deletecard";
 export const ADD_REVIEW = "/api/user/review/addreview";
 export const DISPLAY_REVIEW = "/api/user/review/displayreview";
 /*----------------------------------- End Review    -----------------------------------*/
+export const GET_POPUP_IMAGE_API = "/api/user/auth/getpopupimage";

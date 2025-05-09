@@ -111,6 +111,11 @@ const _nav = [
         name: 'Business Hour',
         to: '/businesshour',
       },
+      {
+        component: CNavItem,
+        name: 'Popup Image',
+        to: '/popupimage',
+      },
     ],
   },
   {

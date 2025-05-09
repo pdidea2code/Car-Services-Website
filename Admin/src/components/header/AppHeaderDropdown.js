@@ -49,8 +49,13 @@ const AppHeaderDropdown = () => {
         <CAvatar src={profile} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-2 m-2" placement="bottom-end">
+        <CDropdownItem onClick={() => navigate('/changepassword')}>
+          <CIcon icon={cilLockLocked} className="me-2" />
+          Change Password
+        </CDropdownItem>
+
         <CDropdownItem href="#" onClick={() => Logout()}>
-          <CIcon icon={cilLockLocked} className="" />
+          <CIcon icon={cilLockLocked} className="me-2" />
           Logout
         </CDropdownItem>
       </CDropdownMenu>

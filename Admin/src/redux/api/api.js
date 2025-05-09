@@ -66,6 +66,10 @@ import {
   GET_CONTENT_API,
   DELETE_CONTENT_API,
   UPDATE_CONTENT_API,
+  GET_ALL_POPUP_IMAGE_API,
+  ADD_POPUP_IMAGE_API,
+  UPDATE_POPUP_IMAGE_API,
+  CHANGEPASSEORD_API,
 } from '../../constant'
 import Cookies from 'js-cookie'
 axios.interceptors.response.use(
@@ -127,6 +131,10 @@ axios.interceptors.response.use(
 
 /* ---------------------------- END Auth API ---------------------------- */
 export const LoginApi = async (data) => axios.post(MAIN_URL + LOGIN_API, data)
+export const ChangePasswordapi = (data) =>
+  axios.post(MAIN_URL + CHANGEPASSEORD_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('token')}` },
+  })
 
 /* ---------------------------- END User API ---------------------------- */
 export const getAllUserApi = async () =>
@@ -554,3 +562,20 @@ export const updateContentApi = async (data) =>
     },
   })
 /* ---------------------------- END Content API ---------------------------- */
+
+/* ---------------------------- ALL Popup Image API ---------------------------- */
+export const getAllPopupImageApi = () =>
+  axios.get(MAIN_URL + GET_ALL_POPUP_IMAGE_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('token')}` },
+  })
+
+export const addPopupImageApi = (data) =>
+  axios.post(MAIN_URL + ADD_POPUP_IMAGE_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('token')}` },
+  })
+
+export const updatePopupImageApi = (data) =>
+  axios.post(MAIN_URL + UPDATE_POPUP_IMAGE_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('token')}` },
+  })
+/* ---------------------------- END Popup Image API ---------------------------- */

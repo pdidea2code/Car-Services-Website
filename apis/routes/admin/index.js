@@ -18,6 +18,8 @@ const bookingRoutes = require("./booking.routes");
 const reviewRoutes = require("./review.routes");
 const dashbordRoutes = require("./dashbord.routes");
 const contentRoutes = require("./contect.routes");
+const popupimageRouter = require("./popupimage.routes");
+
 router.use("/auth", authRoutes);
 router.use("/address", addressRoutes);
 router.use("/cartype", cartypeRoutes);
@@ -36,4 +38,6 @@ router.use("/booking", bookingRoutes);
 router.use("/review", reviewRoutes);
 router.use("/dashbord", dashbordRoutes);
 router.use("/content", contentRoutes);
+router.use("/popupimage", popupimageRouter);
+
 module.exports = router;

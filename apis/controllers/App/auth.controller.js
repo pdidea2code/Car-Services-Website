@@ -1,7 +1,4 @@
-const {
-  queryErrorRelatedResponse,
-  successResponse,
-} = require("../../helper/sendResponse");
+const { queryErrorRelatedResponse, successResponse } = require("../../helper/sendResponse");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { sendMail } = require("../../helper/emailSender");
@@ -9,6 +6,7 @@ const User = require("../../models/User");
 require("dotenv").config();
 const AppSetting = require("../../models/AppSetting");
 const deleteFiles = require("../../helper/deleteFiles");
+const Popimage = require("../../models/Popimage");
 
 const Register = async (req, res, next) => {
   try {
@@ -17,28 +15,16 @@ const Register = async (req, res, next) => {
     //   return queryErrorRelatedResponse(res, 400, "All fields are required");
     // }
     if (password !== confpassword) {
-      return queryErrorRelatedResponse(
-        res,
-        400,
-        "The passwords you entered do not match. Please try again."
-      );
+      return queryErrorRelatedResponse(res, 400, "The passwords you entered do not match. Please try again.");
     }
     const alreadyUser = await User.findOne({ email });
 
     if (alreadyUser && alreadyUser.isverified) {
-      return queryErrorRelatedResponse(
-        res,
-        400,
-        "This user is already registered. Try another."
-      );
+      return queryErrorRelatedResponse(res, 400, "This user is already registered. Try another.");
     }
     if (alreadyUser && !alreadyUser.isverified) {
       if (alreadyUser.status === false)
-        return queryErrorRelatedResponse(
-          res,
-          401,
-          "User is blocked please contact admin"
-        );
+        return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
       const appSetting = await AppSetting.findOne({});
       const otp = crypto.randomInt(1000, 9999);
       const otpExpiry = Date.now() + 1 * 60 * 1000; //otp expire in two minute
@@ -100,17 +86,10 @@ const verifyEmail = async (req, res, next) => {
     const { email, otp } = req.body;
     const user = await User.findOne({ email });
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
-    if (user.status === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "User is blocked please contact admin"
-      );
-    if (user.otp_expiry < Date.now())
-      return queryErrorRelatedResponse(res, 401, "OTP expired");
+    if (user.status === false) return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
+    if (user.otp_expiry < Date.now()) return queryErrorRelatedResponse(res, 401, "OTP expired");
 
-    if (user.otp !== otp)
-      return queryErrorRelatedResponse(res, 401, "Invalid OTP");
+    if (user.otp !== otp) return queryErrorRelatedResponse(res, 401, "Invalid OTP");
     user.otp_expiry = null;
     user.otp = null;
     user.isverified = true;
@@ -124,8 +103,7 @@ const verifyEmail = async (req, res, next) => {
       email: user.email,
       name: user.name,
     });
-    const baseUrl =
-      req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
     user.token = token;
     const data = {
       token: token,
@@ -151,23 +129,11 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
-    if (user.status === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "User is blocked please contact admin"
-      );
-    if (!user.isverified)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "Email not verified go to Register"
-      );
-    if (!user.password)
-      return queryErrorRelatedResponse(res, 401, "Password not set");
+    if (user.status === false) return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
+    if (!user.isverified) return queryErrorRelatedResponse(res, 401, "Email not verified go to Register");
+    if (!user.password) return queryErrorRelatedResponse(res, 401, "Password not set");
     const isMatch = await user.comparePassword(password);
-    if (!isMatch)
-      return queryErrorRelatedResponse(res, 401, "Invalid Password");
+    if (!isMatch) return queryErrorRelatedResponse(res, 401, "Invalid Password");
     const token = user.generateAuthToken({
       id: user._id,
       email: user.email,
@@ -180,8 +146,7 @@ const login = async (req, res, next) => {
     });
     user.token = token;
     await user.save();
-    const baseUrl =
-      req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
     const data = {
       token: token,
       refreshToken: refreshToken,
@@ -212,11 +177,7 @@ const socialLogin = async (req, res, next) => {
     });
 
     if (user && user.status === false) {
-      return queryErrorRelatedResponse(
-        res,
-        400,
-        "Your account is not active. Please contact the administrator."
-      );
+      return queryErrorRelatedResponse(res, 400, "Your account is not active. Please contact the administrator.");
     }
     if (!user) {
       const emailExist = await User.findOne({ email: email });
@@ -267,8 +228,7 @@ const socialLogin = async (req, res, next) => {
       email: user.email,
       name: user.name,
     });
-    const baseUrl =
-      req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
     const data = {
       token: token,
       refreshToken: refreshToken,
@@ -292,18 +252,8 @@ const checkEmailId = async (req, res, next) => {
     const user = await User.findOne({ email });
     const appSetting = await AppSetting.findOne({});
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
-    if (user.status === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "User is blocked please contact admin"
-      );
-    if (user.isverified === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "Email not verified go to Register"
-      );
+    if (user.status === false) return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
+    if (user.isverified === false) return queryErrorRelatedResponse(res, 401, "Email not verified go to Register");
 
     const otp = crypto.randomInt(1000, 9999);
     const otpExpiry = Date.now() + 1 * 60 * 1000; //otp expire in one minute
@@ -333,22 +283,10 @@ const verifyOtp = async (req, res, next) => {
     const { email, otp } = req.body;
     const user = await User.findOne({ email });
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
-    if (user.status === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "User is blocked please contact admin"
-      );
-    if (user.isverified === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "Email not verified go to Register"
-      );
-    if (user.otp_expiry < Date.now())
-      return queryErrorRelatedResponse(res, 401, "OTP expired");
-    if (user.otp !== otp)
-      return queryErrorRelatedResponse(res, 401, "Invalid OTP");
+    if (user.status === false) return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
+    if (user.isverified === false) return queryErrorRelatedResponse(res, 401, "Email not verified go to Register");
+    if (user.otp_expiry < Date.now()) return queryErrorRelatedResponse(res, 401, "OTP expired");
+    if (user.otp !== otp) return queryErrorRelatedResponse(res, 401, "Invalid OTP");
     user.otp_expiry = null;
     await user.save();
     successResponse(res, "OTP verified successfully");
@@ -361,28 +299,13 @@ const ForgotPassword = async (req, res, next) => {
   try {
     const { email, password, confpassword, otp } = req.body;
     if (password !== confpassword) {
-      return queryErrorRelatedResponse(
-        res,
-        400,
-        "The passwords you entered do not match. Please try again."
-      );
+      return queryErrorRelatedResponse(res, 400, "The passwords you entered do not match. Please try again.");
     }
     const user = await User.findOne({ email });
-    if (user.status === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "User is blocked please contact admin"
-      );
-    if (user.isverified === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "Email not verified go to Register"
-      );
+    if (user.status === false) return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
+    if (user.isverified === false) return queryErrorRelatedResponse(res, 401, "Email not verified go to Register");
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
-    if (user.otp !== otp)
-      return queryErrorRelatedResponse(res, 401, "Invalid OTP");
+    if (user.otp !== otp) return queryErrorRelatedResponse(res, 401, "Invalid OTP");
     user.otp_expiry = null;
     user.otp = null;
     user.password = password;
@@ -398,18 +321,8 @@ const editProfile = async (req, res, next) => {
     const { name, phone_number } = req.body;
     const user = await User.findOne({ _id: req.user._id });
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
-    if (user.status === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "User is blocked please contact admin"
-      );
-    if (user.isverified === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "Email not verified go to Register"
-      );
+    if (user.status === false) return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
+    if (user.isverified === false) return queryErrorRelatedResponse(res, 401, "Email not verified go to Register");
     if (name) user.name = name;
     if (req.file && req.file.filename) {
       const oldImage = user.image;
@@ -451,12 +364,7 @@ const getProfile = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.user._id });
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
-    if (user.status === false)
-      return queryErrorRelatedResponse(
-        res,
-        401,
-        "User is blocked please contact admin"
-      );
+    if (user.status === false) return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
     const baseUrl = req.protocol + "://" + req.get("host") + "/userprofileimg/";
     const data = {
       user: {
@@ -473,6 +381,20 @@ const getProfile = async (req, res, next) => {
   }
 };
 
+const popupImage = async (req, res, next) => {
+  try {
+    const popupimage = await Popimage.findOne({});
+    if (!popupimage) {
+      return queryErrorRelatedResponse(res, 400, "No popup image found");
+    }
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.POPUP_IMAGE;
+    popupimage.image = baseUrl + popupimage.image;
+    popupimage.mobileimage = baseUrl + popupimage.mobileimage;
+    successResponse(res, popupimage);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   Register,
   verifyEmail,
@@ -483,4 +405,5 @@ module.exports = {
   editProfile,
   socialLogin,
   getProfile,
+  popupImage,
 };

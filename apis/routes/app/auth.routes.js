@@ -10,6 +10,7 @@ const {
   editProfile,
   socialLogin,
   getProfile,
+  popupImage,
 } = require("../../controllers/App/auth.controller");
 const { singleFileUpload } = require("../../helper/imageUpload");
 const verifyAppToken = require("../../helper/verifyAppToken");
@@ -22,12 +23,7 @@ router.post("/forgotpassword", ForgotPassword);
 router.post(
   "/editprofile",
   verifyAppToken,
-  singleFileUpload(
-    "public/userprofileimg",
-    ["image/png", "image/jpeg", "image/jpg"],
-    1024 * 1024,
-    "image"
-  ),
+  singleFileUpload("public/userprofileimg", ["image/png", "image/jpeg", "image/jpg"], 1024 * 1024, "image"),
   editProfile
 );
 router.post(
@@ -36,4 +32,6 @@ router.post(
   socialLogin
 );
 router.get("/getprofile", verifyAppToken, getProfile);
+router.get("/getpopupimage", popupImage);
+
 module.exports = router;

@@ -2,6 +2,7 @@ export const MAIN_URL = process.env.REACT_APP_API_URL
 /* ---------------------------- ALL Auth API ---------------------------- */
 
 export const LOGIN_API = '/api/admin/auth/login'
+export const CHANGEPASSEORD_API = '/api/admin/auth/changepassword'
 
 /* ---------------------------- END Auth API ---------------------------- */
 export const GET_ALL_USER_API = '/api/admin/user/getalluser'
@@ -102,3 +103,9 @@ export const GET_CONTENT_API = '/api/admin/content/getcontent'
 export const DELETE_CONTENT_API = '/api/admin/content/deletecontent'
 export const UPDATE_CONTENT_API = '/api/admin/content/updatecontent'
 /* ---------------------------- END Content API ---------------------------- */
+
+/* ---------------------------- ALL Popup Image API ---------------------------- */
+export const ADD_POPUP_IMAGE_API = '/api/admin/popupimage/addpopupimage'
+export const GET_ALL_POPUP_IMAGE_API = '/api/admin/popupimage/getpopupimage'
+export const UPDATE_POPUP_IMAGE_API = '/api/admin/popupimage/updatepopupimage'
+/* ---------------------------- END Popup Image API ---------------------------- */

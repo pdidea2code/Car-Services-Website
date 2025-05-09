@@ -1,0 +1,4488 @@
+{
+	"info": {
+		"_postman_id": "69dc942b-9252-40e0-b38d-18a202960cc7",
+		"name": "Car Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36469971"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "createadmin",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"test\",\n    \"email\":\"admin@gmail.com\",\n    \"password\":\"12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/auth/createadmin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"auth",
+										"createadmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(pm.environment.replaceIn('OLD - Token:- {{token}}'));",
+											"",
+											"const res = pm.response.json()",
+											"pm.environment.set(\"token\", res.info.token);",
+											"",
+											"console.log(pm.environment.replaceIn('NEW - Token:- {{token}}'));"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"admin@gmail.com\",\n    \"password\":\"12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refreshtoken",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(pm.environment.replaceIn('OLD - Token:- {{token}}'));",
+											"",
+											"const res = pm.response.json()",
+											"pm.environment.set(\"token\", res.info);",
+											"",
+											"console.log(pm.environment.replaceIn('NEW - Token:- {{token}}'));"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY3Y2JkODk2ODNjMGZhZGVlYWM0ZjZmMSIsImlhdCI6MTc0MTQxMjg0OX0.qpXeOh76aC3IV3-mDQuZEho980cPn5s9WXR3T1v_lEY\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/auth/refreshtoken",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"auth",
+										"refreshtoken"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "changepassword",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\":\"1234\",\n    \"newPassword\":\"12345678\",\n    \"confirmPassword\":\"12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/auth/changepassword",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"auth",
+										"changepassword"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Address",
+					"item": [
+						{
+							"name": "addaddress",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\n{\n    \"city\":\"Las Vegas\",\n    \"address\":\"1234 Elm Street,Springfield,\",\n    \"zipCode\":\"LV 62701\",\n    \"country\":\"USA\",\n    \"phone\":\"8881234567\",\n    \"email\":\"example@gmail.com\",\n    \"latitude\":\"37.157834\",\n    \"longitude\":\"-93.319589\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/address/addaddress",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"address",
+										"addaddress"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editaddress",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\n{\n    \"id\":\"67ce5ceb9d2b7c8606970bb8\",\n    \"city\":\"Las Vegas\",\n    \"address\":\"12 Elm Street,Springfield,\",\n    \"zipCode\":\"LV 62701\",\n    \"country\":\"USA\",\n    \"phone\":\"8881234567\",\n    \"email\":\"example@gmail.com\",\n    \"latitude\":\"37.157834\",\n    \"longitude\":\"-93.319589\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/address/editaddress",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"address",
+										"editaddress"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getalladdress",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/address/getalladdress",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"address",
+										"getalladdress"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteaddress",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67ce5ac4bafa54248d47500d\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/address/deleteaddress",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"address",
+										"deleteaddress"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Car Type",
+					"item": [
+						{
+							"name": "addcartype",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"SUV\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/cartype/addcartype",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"cartype",
+										"addcartype"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getallcartype",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/cartype/getallcartype",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"cartype",
+										"getallcartype"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editcartype",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67d01bbfa3e7d3b2d27a54df\",\n    \"name\":\"Sadan\"   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/cartype/editcartype",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"cartype",
+										"editcartype"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletecartype",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67ce6082ba302a2d296d2f43\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/cartype/deletecartype",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"cartype",
+										"deletecartype"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Showcase image",
+					"item": [
+						{
+							"name": "addshowcase",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Music/image1.jpeg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/showcase/addshowcase",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"showcase",
+										"addshowcase"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getallshowcase",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/showcase/getallshowcase",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"showcase",
+										"getallshowcase"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editshowcase",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "67ce6cc97ca98fa57c4a93a6",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Music/image1.jpeg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/showcase/editshowcase",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"showcase",
+										"editshowcase"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteshowcase",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67ce6cc97ca98fa57c4a93a6\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/showcase/deleteshowcase",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"showcase",
+										"deleteshowcase"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "getalluser",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/user/getalluser",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"user",
+										"getalluser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "changestatus",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userid\":\"67cc18d2e7ef3ce4de046eae\",\n    \"status\":\"false\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/user/changestatus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"user",
+										"changestatus"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Service",
+					"item": [
+						{
+							"name": "addservice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Interior Detailing Service",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "Restoring your car's interior to its pristine condition with expert care.",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Our Interior Detailing Service is designed to bring your car's interior back to life, ensuring a deep, thorough cleaning that creates a fresh, hygienic environment. We take extra care to clean every corner of your car’s interior, leaving it spotless and refreshed. Whether it's the seats, carpets, dashboard, or even the smallest crevices, our professionals use high-quality tools and products to clean, protect, and restore your car’s interior to its original condition.",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Downloads/cleaning-car-interior-with-vacuum-cleaner.png"
+										},
+										{
+											"key": "price",
+											"value": "225",
+											"type": "text"
+										},
+										{
+											"key": "time",
+											"value": "45",
+											"type": "text"
+										},
+										{
+											"key": "include",
+											"value": "Deep Vacuuming",
+											"type": "text"
+										},
+										{
+											"key": "whyChooseqImage",
+											"type": "file",
+											"src": "/home/paras/Downloads/2148194146.png"
+										},
+										{
+											"key": "whyChooseqTitle",
+											"value": "Why Choose Our Interior Detailing Service?",
+											"type": "text"
+										},
+										{
+											"key": "whyChooseqDescription",
+											"value": "Experience a spotless, refreshed interior with our professional detailing. We prioritize cleanliness, hygiene, and the longevity of your car's interior.",
+											"type": "text"
+										},
+										{
+											"key": "whyChooseqinclude",
+											"value": "Restores Like-New Condition",
+											"type": "text"
+										},
+										{
+											"key": "iconimage",
+											"type": "file",
+											"src": "/home/paras/Downloads/interior_11462485 1.svg"
+										},
+										{
+											"key": "include",
+											"value": "Side Pockets Cleaning",
+											"type": "text"
+										},
+										{
+											"key": "include",
+											"value": "Dashboard Cleaning",
+											"type": "text"
+										},
+										{
+											"key": "whyChooseqinclude",
+											"value": "Eliminates Allergens and Bacteria",
+											"type": "text"
+										},
+										{
+											"key": "whyChooseqinclude",
+											"value": "Prolongs Interior Material Life",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/service/addservice",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"service",
+										"addservice"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "allservice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/service/allservice",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"service",
+										"allservice"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editservice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Downloads/Instagram-06.png"
+										},
+										{
+											"key": "id",
+											"value": "67d7b20cf7a2c7c4eb10fd96",
+											"type": "text"
+										},
+										{
+											"key": "include",
+											"value": "Odor Removal Treatment",
+											"type": "text"
+										},
+										{
+											"key": "include",
+											"value": "Air Vent Cleaning",
+											"type": "text"
+										},
+										{
+											"key": "include",
+											"value": "Disinfecting & Sanitizing",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/service/editservice",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"service",
+										"editservice"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "softdeleteservice",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/service/softdeleteservice",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"service",
+										"softdeleteservice"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "servicebyid",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67d7b368e842f4ca0abc4186\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/service/servicebyid",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"service",
+										"servicebyid"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Add ons",
+					"item": [
+						{
+							"name": "addaddons",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Downloads/lotion_11014976 1 (1).svg"
+										},
+										{
+											"key": "name",
+											"value": "Leather Treatment",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "45",
+											"type": "text"
+										},
+										{
+											"key": "time",
+											"value": "15",
+											"type": "text"
+										},
+										{
+											"key": "serviceid",
+											"value": "67d7b368e842f4ca0abc4186",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/addons/addaddons",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"addons",
+										"addaddons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getalladdons",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/addons/getalladdons",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"addons",
+										"getalladdons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editaddons",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "67d80e70272300fc3c7c244d",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Leather Treatment",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Downloads/lotion_11014976 1 (1).svg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/addons/editaddons",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"addons",
+										"editaddons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getaddonsbyService",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"serviceid\":\"67d7b368e842f4ca0abc4186\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/addons/getaddonsbyService",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"addons",
+										"getaddonsbyService"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteaddons",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67d80e70272300fc3c7c244d\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/addons/deleteaddons",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"addons",
+										"deleteaddons"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "AppSetting",
+					"item": [
+						{
+							"name": "addappsetting",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "logo",
+											"type": "file",
+											"src": "/home/paras/Downloads/a-sleek-professional-logo-for-car-auto-w_WgjbYT0tT3qQbdDCmFHihQ_GZIFXPtvTseYt76OnwLO8Q-Photoroom12 1.png"
+										},
+										{
+											"key": "footerlogo",
+											"type": "file",
+											"src": "/home/paras/Downloads/a-sleek-professional-logo-for-car-auto-w_WgjbYT0tT3qQbdDCmFHihQ_GZIFXPtvTseYt76OnwLO8Q-Photoroom12 1.png"
+										},
+										{
+											"key": "favicon",
+											"type": "file",
+											"src": "/home/paras/Downloads/Fevicon Icon.png"
+										},
+										{
+											"key": "name",
+											"value": "Car Auto Wash",
+											"type": "text"
+										},
+										{
+											"key": "currency",
+											"value": "USD",
+											"type": "text"
+										},
+										{
+											"key": "currency_symbol",
+											"value": "$",
+											"type": "text"
+										},
+										{
+											"key": "workinghours",
+											"value": "Mon - Fri 8:00 AM - 6:00 PM\nSaturaday 8:00 AM - 1:00 PM\nSunday Closed",
+											"type": "text"
+										},
+										{
+											"key": "facebook",
+											"value": "https://www.facebook.com",
+											"type": "text"
+										},
+										{
+											"key": "instagram",
+											"value": "https://www.instagram.com",
+											"type": "text"
+										},
+										{
+											"key": "twitter",
+											"value": "https://x.com",
+											"type": "text"
+										},
+										{
+											"key": "youtube",
+											"value": "https://www.youtube.com",
+											"type": "text"
+										},
+										{
+											"key": "copyright",
+											"value": "© 2025 All Rights Reserved | Your Trusted Partner in Excellence",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/appsetting/addappsetting",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"appsetting",
+										"addappsetting"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editappsetting",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "logo",
+											"type": "file",
+											"src": "/home/paras/Downloads/a-sleek-professional-logo-for-car-auto-w_WgjbYT0tT3qQbdDCmFHihQ_GZIFXPtvTseYt76OnwLO8Q-Photoroom12 1.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/appsetting/editappsetting",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"appsetting",
+										"editappsetting"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getappsetting",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/appsetting/getappsetting",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"appsetting",
+										"getappsetting"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "FAQ",
+					"item": [
+						{
+							"name": "addfaq",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"question\":\"How Can I Tell If My Car Needs Maintenance?\",\n    \"answer\":\"You can tell if your car needs maintenance by watching for warning signs like dashboard lights, unusual noises, or fluid leaks. Reduced fuel efficiency or vibrations while driving may also indicate potential issues. Regular maintenance, such as oil changes and tire checks, helps prevent major repairs. Keeping up with servicing ensures your car runs safely and efficiently.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/faq/addfaq",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"faq",
+										"addfaq"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getallfaq",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/faq/getallfaq",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"faq",
+										"getallfaq"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editfaq",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67d8fdd38b3dc8d819be0248\",\n    \"status\":\"false\",\n    \"question\":\"asdf\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/faq/editfaq",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"faq",
+										"editfaq"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletefaq",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67d8fdd38b3dc8d819be0248\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/faq/deletefaq",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"faq",
+										"deletefaq"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Theme",
+					"item": [
+						{
+							"name": "addadmintheme",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"color1\":\"#0E0821\",\n    \"color2\":\"#A120FE\",\n    \"color3\":\"#A120FE\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/theme/addadmintheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"theme",
+										"addadmintheme"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getadmintheme",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/theme/getadmintheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"theme",
+										"getadmintheme"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editadmintheme",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"color3\":\"#F7F5FC\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/theme/editadmintheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"theme",
+										"editadmintheme"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Blog",
+					"item": [
+						{
+							"name": "getallblog",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/blog/getallblog",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"blog",
+										"getallblog"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getblogbyid",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67da6d8989d89fd450840075\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/blog/getblogbyid",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"blog",
+										"getblogbyid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteblog",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67d947b1a0a06e1561b0fa6b\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/blog/deleteblog",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"blog",
+										"deleteblog"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createblog",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"\",\n    \"mainimage\":\"\",\n    \"description\":\"\",\n    \"content\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/blog/createblog",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"blog",
+										"createblog"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateblog",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"\",\n    \"title\":\"\",\n    \"mainimage\":\"\",\n    \"description\":\"\",\n    \"content\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/blog/updateblog",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"blog",
+										"updateblog"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Business hour",
+					"item": [
+						{
+							"name": "createbusinesshour",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"day\":\"Sunday\",\n    \"is_closed\":\"true\"\n    // \"open\":\"8:00\",\n    // \"close\":\"13:00\",\n    // \"duration\":\"30\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/businesshour/createbusinesshour",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"businesshour",
+										"createbusinesshour"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getallbusinesshour",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/businesshour/getallbusinesshour",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"businesshour",
+										"getallbusinesshour"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatebusinesshour",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67dce1262105740f8d7e9adc\",\n    \"day\":\"Mon - Fri\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/businesshour/updatebusinesshour",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"businesshour",
+										"updatebusinesshour"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletebusinesshour",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67dcf1eceef8de532811a58e\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/businesshour/deletebusinesshour",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"businesshour",
+										"deletebusinesshour"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Them",
+					"item": [
+						{
+							"name": "getallusertheme",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/usertheme/getallusertheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"usertheme",
+										"getallusertheme"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addusertheme",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Default",
+											"type": "text"
+										},
+										{
+											"key": "color1",
+											"value": "#0E0821",
+											"type": "text"
+										},
+										{
+											"key": "color2",
+											"value": "#A120FE",
+											"type": "text"
+										},
+										{
+											"key": "color3",
+											"value": "#F7F5FC",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "true",
+											"type": "text"
+										},
+										{
+											"key": "mainimage",
+											"type": "file",
+											"src": "/home/paras/Pictures/theme1/image1.jpeg"
+										},
+										{
+											"key": "headerimage",
+											"type": "file",
+											"src": "/home/paras/Pictures/theme1/image4.png"
+										},
+										{
+											"key": "workingimage",
+											"type": "file",
+											"src": "/home/paras/Pictures/theme1/image2.png"
+										},
+										{
+											"key": "springimage",
+											"type": "file",
+											"src": "/home/paras/Pictures/theme1/image3.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/usertheme/addusertheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"usertheme",
+										"addusertheme"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateusertheme",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "mainimage",
+											"type": "file",
+											"src": "/home/paras/Pictures/theme1/image1.jpeg"
+										},
+										{
+											"key": "id",
+											"value": "67dd132cfda7c77c98e2f5de",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/usertheme/updateusertheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"usertheme",
+										"updateusertheme"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteusertheme",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67dd132cfda7c77c98e2f5de\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/usertheme/deleteusertheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"usertheme",
+										"deleteusertheme"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "setactiveusertheme",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67dd149a1179c5f0d06b73d0\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/usertheme/setactiveusertheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"usertheme",
+										"setactiveusertheme"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Promocode",
+					"item": [
+						{
+							"name": "addpromocode",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"code\": \"SUMMER25\",\n  \"discountType\": \"PERCENTAGE\",\n  \"discountValue\": 5,\n  \"maxUses\": 100,\n  \"startDate\": \"2025-04-03\",\n  \"expirationDate\": \"2025-06-30\",\n  \"minimumOrderAmount\": 50\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/promocode/addpromocode",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"promocode",
+										"addpromocode"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getallpromocode",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/promocode/getallpromocode",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"promocode",
+										"getallpromocode"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editpromocode",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": \"67ee1118addf1c2d4de6e07d\",\n  \"isActive\": false,\n  \"startDate\":\"2025-04-02\",\n  \"maxUses\":\"-1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/promocode/editpromocode",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"promocode",
+										"editpromocode"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletepromocode",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67ee1118addf1c2d4de6e07d\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/promocode/deletepromocode",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"promocode",
+										"deletepromocode"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Orders",
+					"item": [
+						{
+							"name": "getorder",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/booking/getorder",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"booking",
+										"getorder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateOrderStatus",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"\",\n    \"order_status\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/booking/updateOrderStatus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"booking",
+										"updateOrderStatus"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getupcomingorder",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/booking/getupcomingorder",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"booking",
+										"getupcomingorder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getpastorder",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/booking/getpastorder",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"booking",
+										"getpastorder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gettodayorder",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/booking/gettodayorder",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"booking",
+										"gettodayorder"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Review",
+					"item": [
+						{
+							"name": "getallreviews",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/review/getallreviews",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"review",
+										"getallreviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "changereviewstatus",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"review_id\":\"67f78309dab3fe55d042379d\",\n    \"status\":\"true\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/review/changereviewstatus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"review",
+										"changereviewstatus"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletereview",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"review_id\":\"67f7907ba429a4914a48a32e\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/review/deletereview",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"review",
+										"deletereview"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Dashboard",
+					"item": [
+						{
+							"name": "kpimetrics",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/dashbord/kpimetrics",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"dashbord",
+										"kpimetrics"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "recentactivity",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/dashbord/recentactivity",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"dashbord",
+										"recentactivity"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "orderstatusbreakdown",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/dashbord/orderstatusbreakdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"dashbord",
+										"orderstatusbreakdown"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "topservicesandaddons",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/dashbord/topservicesandaddons",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"dashbord",
+										"topservicesandaddons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "systemhealthalerts",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/dashbord/systemhealthalerts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"dashbord",
+										"systemhealthalerts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Cintectus message",
+					"item": [
+						{
+							"name": "]getcontent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/content/getcontent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"content",
+										"getcontent"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletecontent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67eb770a29b2b48e5fba9970\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/content/deletecontent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"content",
+										"deletecontent"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatecontent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67eb76d529b2b48e5fba996c\",\n    \"status\":\"false\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/content/updatecontent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"content",
+										"updatecontent"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Popupimage",
+					"item": [
+						{
+							"name": "addpopupimage",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Downloads/Demo Website Notice (3).png"
+										},
+										{
+											"key": "mobileimage",
+											"type": "file",
+											"src": "/home/paras/Downloads/Demo Website Notice (2).png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/popupimage/addpopupimage",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"popupimage",
+										"addpopupimage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getpopupimage",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/admin/popupimage/getpopupimage",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"popupimage",
+										"getpopupimage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatepopupimage",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Downloads/Demo Website Notice (2).png"
+										},
+										{
+											"key": "mobileimage",
+											"type": "file",
+											"src": "/home/paras/Downloads/Demo Website Notice (3).png"
+										},
+										{
+											"key": "status",
+											"value": "false",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "681c562c7045d08371b8563e",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/popupimage/updatepopupimage",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"popupimage",
+										"updatepopupimage"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "register",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"pd.idea2code@gmail.com\",\n    \"name\":\"test\",\n    \"password\":\"Test@123\",\n    \"confpassword\":\"Test@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "verifyemail",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n     \"email\":\"pd.idea2code@gmail.com\",\n     \"otp\":\"1662\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/verifyemail",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"verifyemail"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(pm.environment.replaceIn('OLD - Token:- {{usertoken}}'));",
+											"",
+											"const res = pm.response.json()",
+											"pm.environment.set(\"usertoken\", res.info.token);",
+											"",
+											"console.log(pm.environment.replaceIn('NEW - Token:- {{usertoken}}'));"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"pd.idea2code@gmail.com\",\n    \"password\":\"Test@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "checkemailid and send forgot password mail",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"pd.idea2code@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/checkemailid",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"checkemailid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "verifyotp",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"pd.idea2code@gmail.com\",\n    \"otp\":\"6609\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/verifyotp",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"verifyotp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "forgotpassword",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"pd.idea2code@gmail.com\",\n    \"otp\":\"6609\",\n    \"password\":\"Test@123\",\n    \"confpassword\":\"Test@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/forgotpassword",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"forgotpassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editprofile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/paras/Music/download.jpeg"
+										},
+										{
+											"key": "name",
+											"value": "Test User",
+											"type": "text"
+										},
+										{
+											"key": "phoneno",
+											"value": "963852741",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/editprofile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"editprofile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sociallogin",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/sociallogin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"sociallogin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getprofile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/getprofile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"getprofile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Service",
+					"item": [
+						{
+							"name": "getallservice",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/service/getallservice",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"service",
+										"getallservice"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getservicebyid",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"67d7cc03ad02e40d9b561a0b\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/service/getservicebyid",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"service",
+										"getservicebyid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getaddonbyserviceid",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"serviceid\":\"67d7b368e842f4ca0abc4186\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/service/getaddonbyserviceid",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"service",
+										"getaddonbyserviceid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getcartype",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/service/getcartype",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"service",
+										"getcartype"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Banner",
+					"item": [
+						{
+							"name": "getallbanner",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/banner/getallbanner",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"banner",
+										"getallbanner"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbanner",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/appsetting/getbanner",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"appsetting",
+										"getbanner"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Blog",
+					"item": [
+						{
+							"name": "getallblog",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/blog/getallblog",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"blog",
+										"getallblog"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getblogbyid",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/blog/getblogbyid/67da6d8989d89fd450840075",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"blog",
+										"getblogbyid",
+										"67da6d8989d89fd450840075"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Faq",
+					"item": [
+						{
+							"name": "getallfaq",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/faq/getallfaq",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"faq",
+										"getallfaq"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Settings",
+					"item": [
+						{
+							"name": "getappsetting",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/appsetting/getappsetting",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"appsetting",
+										"getappsetting"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gettheme",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/appsetting/gettheme",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"appsetting",
+										"gettheme"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getbusinesshour",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/appsetting/getbusinesshour",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"appsetting",
+										"getbusinesshour"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Contectus",
+					"item": [
+						{
+							"name": "getaddress",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/contectus/getaddress",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"contectus",
+										"getaddress"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addcontent",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"\",\n    \"email\":\"\",\n    \"message\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/contectus/addcontent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"contectus",
+										"addcontent"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Booking",
+					"item": [
+						{
+							"name": "verifypromocode",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\":\"SUMMER25\",\n    \"orderAmount\":\"200\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/booking/verifypromocode",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"booking",
+										"verifypromocode"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createorder",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/booking/createorder",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"booking",
+										"createorder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getorder",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/booking/getorder",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"booking",
+										"getorder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cardpayment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service_id\": \"67d7b368e842f4ca0abc4186\",\n    \"addons_id\": [\n        \"67d810abf52f677c93134812\"\n    ],\n    \"cartype_id\": \"67d02a8dd76038dceafd40fd\",\n    \"date\": \"2025-04-11\",\n    \"time\": \"09:30\",\n    \"additionalinfo\": \"\",\n    \"name\": \"Texas\",\n    \"email\": \"admin@gmail.com\",\n    \"phone\": \"9638527412\",\n    \"service_amount\": 270,\n    \"tax_amount\": 5.4,\n    \"total_amount\": 275.4,\n    \"pickupanddrop\": true,\n    \"carname\": \"test\",\n    \"carnumber\": \"3423432\",\n    \"city\": \"Las Vegas\",\n    \"pincode\": \"343\",\n    \"colony\": \"3423\",\n    \"house_no\": \"234\",\n    \"paymentmode\": \"ONLINE\",\n    \"cardId\":\"67f4f193eb23c5ccd6a5dd6f\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/booking/cardpayment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"booking",
+										"cardpayment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refundpayment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"order_id\":\"67f5ee6a7f206253b5ce5082\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/booking/refundpayment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"booking",
+										"refundpayment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getorderdetails",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"order_id\":\"67f614e24512d8b6f22a530e\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/booking/getorderdetails",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"booking",
+										"getorderdetails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createcheckoutsession",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service_id\": \"67d7b368e842f4ca0abc4186\",\n    \"addons_id\": [\n        \"67d810abf52f677c93134812\"\n    ],\n    \"cartype_id\": \"67d02a8dd76038dceafd40fd\",\n    \"date\": \"2025-04-11\",\n    \"time\": \"09:30\",\n    \"additionalinfo\": \"\",\n    \"name\": \"Texas\",\n    \"email\": \"admin@gmail.com\",\n    \"phone\": \"9638527412\",\n    \"service_amount\": 270,\n    \"tax_amount\": 5.4,\n    \"total_amount\": 275.4,\n    \"pickupanddrop\": true,\n    \"carname\": \"test\",\n    \"carnumber\": \"3423432\",\n    \"city\": \"Las Vegas\",\n    \"pincode\": \"343\",\n    \"address_id\":\"67dabc426082b80f89af0440\",\n    \"colony\": \"3423\",\n    \"house_no\": \"234\",\n    \"paymentmode\": \"ONLINE\",\n    \"payment_method\":\"upi\",\n    \"success_url\":\"http://localhost:3001/\",\n    \"cancel_url\":\"http://localhost:3001/\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/booking/createcheckoutsession",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"booking",
+										"createcheckoutsession"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "webhook",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/webhook",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"webhook"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Card",
+					"item": [
+						{
+							"name": "addcard",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cardId\": \"67f34c60434a4ddd0cc4ede8\",\n    \"amount\": 100\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/card/addcard",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"card",
+										"addcard"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "savecard",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/card/savecard",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"card",
+										"savecard"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getcard",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/card/getcard",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"card",
+										"getcard"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletecard",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/card/deletecard",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"card",
+										"deletecard"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Review",
+					"item": [
+						{
+							"name": "addreview",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service_id\":\"67d7b368e842f4ca0abc4186\",\n    \"review\":\"Working with this team has truly been a game-changer for our business! From the very beginning, their professionalism and dedication were evident. They took the time to understand our needs and delivered results that went beyond our expectations. Their attention to detail, along with a quick and efficient turnaround time, made the entire process smooth and stress-free. I am incredibly impressed with their work and would highly recommend their services to anyone looking to elevate their business!\",\n    \"name\":\"Sarah Thompson\",\n    \"email\":\"sarahthompson@gmail.com\",\n    \"designation\":\"Marketing Manager\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/user/review/addreview",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"review",
+										"addreview"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "displayreview",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/review/displayreview",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"review",
+										"displayreview"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
