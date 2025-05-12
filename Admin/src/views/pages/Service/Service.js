@@ -1,14 +1,19 @@
-// Service.jsx
 import { useState, useEffect } from 'react'
-import { getAllServiceApi, softDeleteServiceApi, editServiceApi } from 'src/redux/api/api'
+import {
+  getAllServiceApi,
+  softDeleteServiceApi,
+  editServiceApi,
+  DeleteMultipleServiceApi,
+} from 'src/redux/api/api'
 import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MUIDataTable from 'mui-datatables'
-import { Button, Switch, Tooltip } from '@mui/material'
+import { Button, Switch, Tooltip, IconButton } from '@mui/material'
 import * as Icons from '@mui/icons-material'
 import swal from 'sweetalert'
 import { CSpinner } from '@coreui/react'
+import PropTypes from 'prop-types' // Import PropTypes
 
 const Service = () => {
   const [service, setService] = useState([])
@@ -61,6 +66,47 @@ const Service = () => {
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Something went wrong')
     }
+  }
+
+  const deleteMultipleService = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => service[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected services?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        setIsLoading(true)
+        const response = await DeleteMultipleServiceApi({ ids })
+        if (response.status === 200) {
+          toast.success('Services deleted successfully!')
+          setService((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Something went wrong!')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultipleService(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
   }
 
   useEffect(() => {
@@ -161,12 +207,14 @@ const Service = () => {
   ]
 
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
     responsive: 'standard',
     print: false,
     download: true,
     filter: true,
     search: true,
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
 
   return (

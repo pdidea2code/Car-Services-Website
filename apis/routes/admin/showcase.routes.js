@@ -5,6 +5,7 @@ const {
   editShowcase,
   getAllShowcase,
   deleteShowcase,
+  deleteMultipleShowcase,
 } = require("../../controllers/Admin/showcase.controller");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
 const { singleFileUpload } = require("../../helper/imageUpload");
@@ -23,5 +24,6 @@ router.post(
 );
 router.get("/getallshowcase", verifyAdminToken, getAllShowcase);
 router.post("/deleteshowcase", verifyAdminToken, deleteShowcase);
+router.post("/deletemultipleshowcase", verifyAdminToken, deleteMultipleShowcase);
 
 module.exports = router;

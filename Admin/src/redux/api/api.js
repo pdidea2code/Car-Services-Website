@@ -70,6 +70,16 @@ import {
   ADD_POPUP_IMAGE_API,
   UPDATE_POPUP_IMAGE_API,
   CHANGEPASSEORD_API,
+  DELETE_MULTI_CAR_TYPE_API,
+  DELETE_MULTI_SHOWCASE_API,
+  DELETE_MULTI_SERVICE_API,
+  DELETE_MULTI_BLOG_API,
+  DELETE_MULTI_ADDONS_API,
+  DELETE_MULTI_ADDRESS_API,
+  DELETE_MULTI_PROMOCODE_API,
+  DELETE_MULTI_REVIEW_API,
+  DELETE_MULTI_CONTENT_API,
+  DELETE_MULTI_FAQ_API,
 } from '../../constant'
 import Cookies from 'js-cookie'
 axios.interceptors.response.use(
@@ -176,6 +186,13 @@ export const deleteCarTypeApi = async (data) =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+
+export const deleteMultipleCarTypeApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_CAR_TYPE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
 /* ---------------------------- END Car Type API ---------------------------- */
 /* ---------------------------- Showcase API ---------------------------- */
 export const getAllShowcaseApi = async () =>
@@ -200,6 +217,12 @@ export const editShowcaseApi = async (data) =>
 
 export const deleteShowcaseApi = async (data) =>
   axios.post(MAIN_URL + DELETE_SHOWCASE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deleteMultipleShowcaseApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_SHOWCASE_API, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
@@ -237,6 +260,13 @@ export const getServiceByIdApi = async (data) =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+
+export const DeleteMultipleServiceApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_SERVICE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
 /* ---------------------------- END Service API ---------------------------- */
 /* ---------------------------- Addons API ---------------------------- */
 export const getAllAddonsApi = async () =>
@@ -263,12 +293,20 @@ export const deleteAddonsApi = async (data) =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+
+export const deleteMultipleAddonsApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_ADDONS_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
 export const getAddonsByServiceApi = async (data) =>
   axios.post(MAIN_URL + GET_ADDONS_BY_SERVICE_API, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+
 /* ---------------------------- END Addons API ---------------------------- */
 /* ---------------------------- App Setting API ---------------------------- */
 export const getAllAppSettingApi = async () =>
@@ -305,6 +343,12 @@ export const editFaqApi = async (data) =>
   })
 export const deleteFaqApi = async (data) =>
   axios.post(MAIN_URL + DELETE_FAQ_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deleteMultipleFaqApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_FAQ_API, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
@@ -362,6 +406,12 @@ export const deleteBlogApi = async (data) =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+export const deleteMultipleBlogApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_BLOG_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
 /* ---------------------------- END Blog API ---------------------------- */
 /* ---------------------------- Address API ---------------------------- */
 export const getAllAddressApi = async () =>
@@ -384,6 +434,12 @@ export const editAddressApi = async (data) =>
   })
 export const deleteAddressApi = async (data) =>
   axios.post(MAIN_URL + DELETE_ADDRESS_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deleteMultipleAddressApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_ADDRESS_API, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
@@ -456,6 +512,12 @@ export const deletePromocodeApi = async (data) =>
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   })
+export const deleteMultiplePromocodeApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_PROMOCODE_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
 /* ---------------------------- END Promocode API ---------------------------- */
 /* ---------------------------- Order API ---------------------------- */
 export const getAllOrdersApi = async () =>
@@ -504,6 +566,12 @@ export const changeReviewStatusApi = async (data) =>
   })
 export const deleteReviewApi = async (data) =>
   axios.post(MAIN_URL + DELETE_REVIEW_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deleteMultipleReviewsApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_REVIEW_API, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
@@ -557,6 +625,12 @@ export const deleteContentApi = async (data) =>
   })
 export const updateContentApi = async (data) =>
   axios.post(MAIN_URL + UPDATE_CONTENT_API, data, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+  })
+export const deleteMultipleContentApi = async (data) =>
+  axios.post(MAIN_URL + DELETE_MULTI_CONTENT_API, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },

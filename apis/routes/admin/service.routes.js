@@ -5,6 +5,7 @@ const {
   getAllService,
   softDeleteService,
   servicebyid,
+  deleteMultipleService,
 } = require("../../controllers/Admin/service.controller");
 const { multiDiffFileUpload } = require("../../helper/imageUpload");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
@@ -55,4 +56,5 @@ router.post(
 router.get("/allservice", verifyAdminToken, getAllService);
 router.post("/softdeleteservice", verifyAdminToken, softDeleteService);
 router.post("/servicebyid", verifyAdminToken, servicebyid);
+router.post("/deletemultipleservice", verifyAdminToken, deleteMultipleService);
 module.exports = router;

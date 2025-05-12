@@ -1,8 +1,5 @@
 const Order = require("../../models/Order");
-const {
-  successResponse,
-  queryErrorRelatedResponse,
-} = require("../../helper/sendResponse");
+const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
 
 const getOrder = async (req, res, next) => {
   try {
@@ -24,19 +21,13 @@ const getUpcomingOrder = async (req, res, next) => {
   try {
     const currentDateTime = new Date();
 
-    // Find orders where the combined date and time is in the future
     const orders = await Order.find({
       $expr: {
         $gte: [
           {
             $dateFromString: {
               dateString: {
-                $concat: [
-                  { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-                  "T",
-                  "$time",
-                  ":00.000Z",
-                ],
+                $concat: [{ $dateToString: { format: "%Y-%m-%d", date: "$date" } }, "T", "$time", ":00.000Z"],
               },
             },
           },
@@ -110,11 +101,7 @@ const updateOrderStatus = async (req, res, next) => {
 
     // Validate input
     if (!id || !order_status) {
-      return queryErrorRelatedResponse(
-        res,
-        400,
-        "Order ID and status are required"
-      );
+      return queryErrorRelatedResponse(res, 400, "Order ID and status are required");
     }
 
     // Check if the status is valid

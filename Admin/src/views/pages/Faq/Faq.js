@@ -1,6 +1,11 @@
-import { getAllFaqApi, editFaqApi, deleteFaqApi } from '../../../redux/api/api'
+import {
+  getAllFaqApi,
+  editFaqApi,
+  deleteFaqApi,
+  deleteMultipleFaqApi,
+} from '../../../redux/api/api'
 import { useState, useEffect } from 'react'
-import { Button, Switch } from '@mui/material'
+import { Button, Switch, IconButton } from '@mui/material'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MUIDataTable from 'mui-datatables'
@@ -8,6 +13,7 @@ import * as Icons from '@mui/icons-material'
 import swal from 'sweetalert'
 import { CSpinner } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 const Faq = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -27,6 +33,7 @@ const Faq = () => {
       setIsLoading(false)
     }
   }
+
   const handleChangeStatus = async (data) => {
     try {
       const requestData = {
@@ -41,10 +48,9 @@ const Faq = () => {
     } catch (error) {
       console.error(error)
       toast.error(error?.response?.data?.message || 'Something went wrong')
-    } finally {
-      setIsLoading(false)
     }
   }
+
   const handleDelete = async (id) => {
     try {
       setIsLoading(true)
@@ -63,9 +69,52 @@ const Faq = () => {
       setIsLoading(false)
     }
   }
+
+  const deleteMultipleFaqs = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => faq[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected FAQs?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        setIsLoading(true)
+        const response = await deleteMultipleFaqApi({ ids })
+        if (response.status === 200) {
+          toast.success('FAQs deleted successfully!')
+          setFaq((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Something went wrong!')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultipleFaqs(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
+  }
+
   useEffect(() => {
     fetchFaq()
   }, [])
+
   const columns = [
     {
       name: 'question',
@@ -125,9 +174,13 @@ const Faq = () => {
       },
     },
   ]
+
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
+
   return (
     <>
       {isLoading ? (

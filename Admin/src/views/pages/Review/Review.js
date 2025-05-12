@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Switch } from '@mui/material'
+import { Button, Switch, IconButton } from '@mui/material'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {
@@ -16,9 +16,15 @@ import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import swal from 'sweetalert'
 import { useState, useEffect } from 'react'
-import { getAllReviewsApi, changeReviewStatusApi, deleteReviewApi } from 'src/redux/api/api'
+import {
+  getAllReviewsApi,
+  changeReviewStatusApi,
+  deleteReviewApi,
+  deleteMultipleReviewsApi,
+} from 'src/redux/api/api'
+import PropTypes from 'prop-types' // Import PropTypes
 
-const CarType = () => {
+const Reviews = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [reviews, setReviews] = useState([])
@@ -75,6 +81,47 @@ const CarType = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const deleteMultipleReviews = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => reviews[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected reviews?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        setIsLoading(true)
+        const response = await deleteMultipleReviewsApi({ ids })
+        if (response.status === 200) {
+          toast.success('Reviews deleted successfully!')
+          setReviews((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Something went wrong!')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultipleReviews(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
   }
 
   const handleOpenModal = (review) => {
@@ -159,9 +206,11 @@ const CarType = () => {
   ]
 
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
     responsive: 'standard',
     rowsPerPage: 10,
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
 
   return (
@@ -235,4 +284,4 @@ const CarType = () => {
   )
 }
 
-export default CarType
+export default Reviews

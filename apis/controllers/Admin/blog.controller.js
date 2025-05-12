@@ -1,9 +1,6 @@
 const Blog = require("../../models/Blog");
 const deleteFiles = require("../../helper/deleteFiles");
-const {
-  successResponse,
-  queryErrorRelatedResponse,
-} = require("../../helper/sendResponse");
+const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
 // const createBlog = async (req, res, next) => {
 //   try {
 //     const { title, description, content } = req.body;
@@ -31,25 +28,19 @@ const createBlog = async (req, res, next) => {
   try {
     const { title, description, content } = req.body;
 
-    const baseUrl = `${req.protocol}://${req.get("host")}${
-      process.env.BLOG_IMAGE_PATH
-    }`;
+    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
 
     // Get uploaded image filenames
-    const imageUrls =
-      req?.files?.images?.map((file) => `${file.filename}`) || [];
+    const imageUrls = req?.files?.images?.map((file) => `${file.filename}`) || [];
 
     // Replace base64 images with uploaded image URLs
     let updatedContent = content;
 
     if (imageUrls.length > 0) {
-      updatedContent = updatedContent.replace(
-        /<img[^>]*src="data:image\/[^"]*"/g,
-        () => {
-          const imgUrl = imageUrls.shift();
-          return `<img src="${imgUrl}"`;
-        }
-      );
+      updatedContent = updatedContent.replace(/<img[^>]*src="data:image\/[^"]*"/g, () => {
+        const imgUrl = imageUrls.shift();
+        return `<img src="${imgUrl}"`;
+      });
     }
 
     // Create the blog with the main image and content
@@ -57,9 +48,7 @@ const createBlog = async (req, res, next) => {
       title,
       description,
       content: updatedContent,
-      image: req?.files?.mainimage?.[0]?.filename
-        ? `${req.files.mainimage[0].filename}`
-        : null,
+      image: req?.files?.mainimage?.[0]?.filename ? `${req.files.mainimage[0].filename}` : null,
     });
 
     successResponse(res, blog);
@@ -87,18 +76,14 @@ const updateBlog = async (req, res, next) => {
       blog.image = req?.files?.mainimage[0]?.filename;
     }
 
-    const baseUrl = `${req.protocol}://${req.get("host")}${
-      process.env.BLOG_IMAGE_PATH
-    }`;
+    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
 
     // Extract all images from the existing blog content and the new content
     const extractImages = (html) => {
       const regex = /<img src="([^"]+)"/g;
       const images = [...html.matchAll(regex)].map((match) => match[1]);
 
-      const regularImages = images.filter(
-        (img) => img.startsWith("http://") || img.startsWith("https://")
-      );
+      const regularImages = images.filter((img) => img.startsWith("http://") || img.startsWith("https://"));
       const base64Images = images.filter((img) => img.startsWith("data:image"));
 
       return { regularImages, base64Images };
@@ -107,17 +92,13 @@ const updateBlog = async (req, res, next) => {
     const images1 = extractImages(blog.content || "");
     const images2 = extractImages(content);
 
-    const nonMatchingRegular = images1.regularImages.filter(
-      (img) => !images2.regularImages.includes(img)
-    );
+    const nonMatchingRegular = images1.regularImages.filter((img) => !images2.regularImages.includes(img));
 
     // Delete non-matching regular images
     if (nonMatchingRegular.length > 0) {
       await Promise.all(
         nonMatchingRegular.map(async (img) => {
-          await deleteFiles(
-            `${process.env.BLOG_IMAGE_PATH}/${img.split("/").pop()}`
-          );
+          await deleteFiles(`${process.env.BLOG_IMAGE_PATH}/${img.split("/").pop()}`);
         })
       );
     }
@@ -128,22 +109,16 @@ const updateBlog = async (req, res, next) => {
     if (images2.base64Images.length > 0 && req?.files?.images) {
       const imageUrls = req.files.images.map((file) => `${file.filename}`);
 
-      updatedContent = updatedContent.replace(
-        /<img[^>]*src="data:image\/[^"]*"/g,
-        () => {
-          const imgUrl = imageUrls.shift();
-          return `<img src="${imgUrl}"`;
-        }
-      );
+      updatedContent = updatedContent.replace(/<img[^>]*src="data:image\/[^"]*"/g, () => {
+        const imgUrl = imageUrls.shift();
+        return `<img src="${imgUrl}"`;
+      });
     }
 
     // Ensure all local images have the full base URL
-    updatedContent = updatedContent.replace(
-      /<img src="(?!http|https)(.*?)"/g,
-      (match, p1) => {
-        return `<img src="${p1.split("/").pop()}"`;
-      }
-    );
+    updatedContent = updatedContent.replace(/<img src="(?!http|https)(.*?)"/g, (match, p1) => {
+      return `<img src="${p1.split("/").pop()}"`;
+    });
 
     blog.content = updatedContent;
 
@@ -182,26 +157,17 @@ const deleteBlog = async (req, res, next) => {
       return queryErrorRelatedResponse(res, 404, "Blog not found");
     }
 
-    // Delete the main image
     if (blog.image) {
       await deleteFiles(`${process.env.BLOG_IMAGE_PATH}/${blog.image}`);
     }
 
-    // Delete all images in the content
     if (blog.content) {
-      // Extract image URLs properly
-      const images = [...blog.content.matchAll(/<img[^>]*src="([^"]+)"/g)].map(
-        (match) => match[1]
-      );
+      const images = [...blog.content.matchAll(/<img[^>]*src="([^"]+)"/g)].map((match) => match[1]);
 
       if (images.length > 0) {
         await Promise.all(
           images.map(async (img) => {
-            // Only delete local images, ignore external URLs (http/https)
-
-            await deleteFiles(
-              `${process.env.BLOG_IMAGE_PATH}/${img.split("/").pop()}`
-            );
+            await deleteFiles(`${process.env.BLOG_IMAGE_PATH}/${img.split("/").pop()}`);
           })
         );
       }
@@ -217,25 +183,17 @@ const deleteBlog = async (req, res, next) => {
 
 const getAllBlog = async (req, res, next) => {
   try {
-    const baseUrl = `${req.protocol}://${req.get("host")}${
-      process.env.BLOG_IMAGE_PATH
-    }`;
+    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
     const blogs = await Blog.find();
     const updatedBlogs = blogs.map((blog) => {
       let updatedContent = blog.content;
-      updatedContent = updatedContent.replace(
-        /<img>\s*src="(.*?)"/g,
-        (match, p1) => {
-          return `<img src="${baseUrl}${p1}">`;
-        }
-      );
+      updatedContent = updatedContent.replace(/<img>\s*src="(.*?)"/g, (match, p1) => {
+        return `<img src="${baseUrl}${p1}">`;
+      });
 
-      updatedContent = updatedContent.replace(
-        /<img src="(?!http)(.*?)"/g,
-        (match, p1) => {
-          return `<img src="${baseUrl}${p1}"`;
-        }
-      );
+      updatedContent = updatedContent.replace(/<img src="(?!http)(.*?)"/g, (match, p1) => {
+        return `<img src="${baseUrl}${p1}"`;
+      });
       return {
         ...blog._doc,
         image: `${baseUrl}${blog.image}`,
@@ -285,26 +243,18 @@ const getAllBlog = async (req, res, next) => {
 const getBlogById = async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.body.id);
-    const baseUrl = `${req.protocol}://${req.get("host")}${
-      process.env.BLOG_IMAGE_PATH
-    }`;
+    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
     const imageUrl = `${baseUrl}${blog.image}`;
     let updatedContent = blog.content;
     if (blog.content) {
-      updatedContent = updatedContent.replace(
-        /<img>\s*src="(.*?)"/g,
-        (match, p1) => {
-          return `<img src="${baseUrl}${p1}"`;
-        }
-      );
+      updatedContent = updatedContent.replace(/<img>\s*src="(.*?)"/g, (match, p1) => {
+        return `<img src="${baseUrl}${p1}"`;
+      });
 
       // Also handle properly formatted <img> tags without the base URL
-      updatedContent = updatedContent.replace(
-        /<img src="(?!http)(.*?)"/g,
-        (match, p1) => {
-          return `<img src="${baseUrl}${p1}"`;
-        }
-      );
+      updatedContent = updatedContent.replace(/<img src="(?!http)(.*?)"/g, (match, p1) => {
+        return `<img src="${baseUrl}${p1}"`;
+      });
     }
 
     const blogData = {
@@ -317,6 +267,47 @@ const getBlogById = async (req, res, next) => {
     next(error);
   }
 };
+
+const deleteMultipleBlog = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid or empty IDs array");
+    }
+
+    const blogs = await Blog.find({ _id: { $in: ids } });
+    if (blogs.length !== ids.length) {
+      return queryErrorRelatedResponse(res, 404, "One or more blogs not found");
+    }
+
+    for (const blog of blogs) {
+      if (blog.image) {
+        await deleteFiles(`${process.env.BLOG_IMAGE_PATH}/${blog.image}`);
+      }
+
+      if (blog.content) {
+        const images = [...blog.content.matchAll(/<img[^>]*src="([^"]+)"/g)].map((match) => match[1]);
+        if (images.length > 0) {
+          await Promise.all(
+            images.map(async (img) => {
+              if (!img.startsWith("http://") && !img.startsWith("https://")) {
+                await deleteFiles(`${process.env.BLOG_IMAGE_PATH}/${img.split("/").pop()}`);
+              }
+            })
+          );
+        }
+      }
+    }
+
+    await Blog.deleteMany({ _id: { $in: ids } });
+
+    successResponse(res, "Multiple blogs deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createBlog,
   getAllBlog,
@@ -324,4 +315,5 @@ module.exports = {
   updateBlog,
   updateStatus,
   deleteBlog,
+  deleteMultipleBlog,
 };

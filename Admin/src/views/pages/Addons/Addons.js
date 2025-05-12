@@ -3,16 +3,18 @@ import {
   editAddonsApi,
   deleteAddonsApi,
   getAddonsByServiceApi,
+  deleteMultipleAddonsApi,
 } from '../../../redux/api/api'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import MUIDataTable from 'mui-datatables'
-import { CButton, CSpinner } from '@coreui/react'
-import { Button, Switch } from '@mui/material'
+import { CSpinner } from '@coreui/react'
+import { Button, Switch, IconButton } from '@mui/material'
 import * as Icons from '@mui/icons-material'
 import swal from 'sweetalert'
+import PropTypes from 'prop-types' // Import PropTypes
 
 const Addons = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -52,6 +54,7 @@ const Addons = () => {
       setIsLoading(false)
     }
   }
+
   const handleChangeStatus = async (data) => {
     try {
       const request = {
@@ -80,13 +83,54 @@ const Addons = () => {
       }
       const response = await deleteAddonsApi(request)
       if (response.status === 200) {
-        toast.success('Addon deleted succes sfully')
+        toast.success('Addon deleted successfully')
         setAddons(addons.filter((addon) => addon._id !== id))
       }
     } catch (error) {
       console.error(error)
       toast.error(error?.response?.data?.message || 'Error deleting addon')
     }
+  }
+
+  const deleteMultipleAddons = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => addons[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected addons?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        setIsLoading(true)
+        const response = await deleteMultipleAddonsApi({ ids })
+        if (response.status === 200) {
+          toast.success('Addons deleted successfully!')
+          setAddons((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Error deleting addons')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultipleAddons(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
   }
 
   useEffect(() => {
@@ -108,7 +152,7 @@ const Addons = () => {
     },
     {
       name: 'time',
-      label: 'Time(in minutes)',
+      label: 'Time (in minutes)',
     },
     {
       name: 'servicename',
@@ -176,8 +220,11 @@ const Addons = () => {
       },
     },
   ]
+
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
 
   return (

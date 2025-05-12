@@ -24,9 +24,9 @@ const createAddress = async (req, res, next) => {
 const editAddress = async (req, res, next) => {
   try {
     const { id, city, address, zipCode, country, phone, email, latitude, longitude } = req.body;
- 
+
     const getAddress = await Address.findById(id);
-   
+
     if (!getAddress) {
       return queryErrorRelatedResponse(res, 404, "Address not found");
     }
@@ -73,4 +73,24 @@ const deleteAddress = async (req, res, next) => {
   }
 };
 
-module.exports = { createAddress, editAddress, getAllAddress, deleteAddress };
+const deleteMultipleAddress = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid or empty IDs array");
+    }
+
+    const addresses = await Address.find({ _id: { $in: ids } });
+    if (addresses.length !== ids.length) {
+      return queryErrorRelatedResponse(res, 404, "One or more addresses not found");
+    }
+
+    await Address.deleteMany({ _id: { $in: ids } });
+
+    successResponse(res, "Multiple addresses deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { createAddress, editAddress, getAllAddress, deleteAddress, deleteMultipleAddress };

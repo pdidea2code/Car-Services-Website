@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Switch } from '@mui/material'
+import { Button, Switch, IconButton } from '@mui/material'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { CSpinner } from '@coreui/react'
@@ -8,7 +8,13 @@ import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import swal from 'sweetalert'
 import { useState, useEffect } from 'react'
-import { getAllPromocodeApi, deletePromocodeApi, editPromocodeApi } from 'src/redux/api/api'
+import {
+  getAllPromocodeApi,
+  deletePromocodeApi,
+  editPromocodeApi,
+  deleteMultiplePromocodeApi,
+} from 'src/redux/api/api'
+import PropTypes from 'prop-types' // Import PropTypes
 
 const PromoCode = () => {
   const navigate = useNavigate()
@@ -65,6 +71,47 @@ const PromoCode = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const deleteMultiplePromoCodes = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => promoCodes[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected promo codes?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        setIsLoading(true)
+        const response = await deleteMultiplePromocodeApi({ ids })
+        if (response.status === 200) {
+          toast.success('Promo codes deleted successfully!')
+          setPromoCodes((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Something went wrong!')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultiplePromoCodes(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
   }
 
   useEffect(() => {
@@ -174,9 +221,11 @@ const PromoCode = () => {
   ]
 
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
     responsive: 'standard',
     tableBodyHeight: 'auto',
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
 
   return (

@@ -70,4 +70,31 @@ const deleteShowcase = async (req, res, next) => {
   }
 };
 
-module.exports = { addShowcase, editShowcase, getAllShowcase, deleteShowcase };
+const deleteMultipleShowcase = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid or empty IDs array");
+    }
+
+    const showcases = await Showcase.find({ _id: { $in: ids } });
+    if (showcases.length !== ids.length) {
+      return queryErrorRelatedResponse(res, 404, "One or more showcases not found");
+    }
+
+    showcases.forEach((showcase) => {
+      if (showcase.image) {
+        deleteFiles(process.env.SHOWCASE_PATH + showcase.image);
+      }
+    });
+
+    await Showcase.deleteMany({ _id: { $in: ids } });
+
+    successResponse(res, "Multiple showcases deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { addShowcase, editShowcase, getAllShowcase, deleteShowcase, deleteMultipleShowcase };

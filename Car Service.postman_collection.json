@@ -348,6 +348,47 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "deletemultipleaddress",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ids\":[\"681ed3257a085422f9e41454\", \"681ed3187a085422f9e4144e\", \"681ed3057a085422f9e41443\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/address/deletemultipleaddress",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"address",
+										"deletemultipleaddress"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -504,6 +545,47 @@
 										"admin",
 										"cartype",
 										"deletecartype"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletemultiplecartype",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ids\":[\"681ec57b1aed517fb9c329f2\", \"681ec5771aed517fb9c329ed\", \"681ec5741aed517fb9c329e8\", \"681ec5711aed517fb9c329e3\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/cartype/deletemultiplecartype",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"cartype",
+										"deletemultiplecartype"
 									]
 								}
 							},
@@ -671,6 +753,47 @@
 										"admin",
 										"showcase",
 										"deleteshowcase"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletemultipleshowcase",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\n    \"ids\":[\"681ecad5686bf2c8b31146b4\", \"681ecace686bf2c8b31146af\", \"681ecac4686bf2c8b31146aa\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/showcase/deletemultipleshowcase",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"showcase",
+										"deletemultipleshowcase"
 									]
 								}
 							},
@@ -1056,6 +1179,47 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "deletemultipleservice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ids\":[\"681ecbbba7767ac9eadf22d7\", \"681ecbeba7767ac9eadf22e3\", \"681ecc0fa7767ac9eadf22e8\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/service/deletemultipleservice",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"service",
+										"deletemultipleservice"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1285,6 +1449,47 @@
 										"admin",
 										"addons",
 										"deleteaddons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletemultipleaddons",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ids\":[\"681ed1e76f6b83e9177b5596\", \"681ed1dd6f6b83e9177b558e\", \"681ed1c96f6b83e9177b5581\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/addons/deletemultipleaddons",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"addons",
+										"deletemultipleaddons"
 									]
 								}
 							},
@@ -1625,6 +1830,47 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "deletemultiplefaq",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ids\":[\"681eda5d308b7cfef70fcbee\", \"681eda59308b7cfef70fcbe9\", \"681eda55308b7cfef70fcbe4\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/faq/deletemultiplefaq",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"faq",
+										"deletemultiplefaq"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1934,6 +2180,47 @@
 										"admin",
 										"blog",
 										"updateblog"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletemultipleblog",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ids\":[\"681ed01d5d837fe94b8060bc\", \"681ed0025d837fe94b8060b7\", \"681ecfe65d837fe94b8060a4\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/blog/deletemultipleblog",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"blog",
+										"deletemultipleblog"
 									]
 								}
 							},
@@ -2506,6 +2793,47 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "deletemultiplepromoCode",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ids\":[\"681ed650fe628720c8da856d\", \"681ed641fe628720c8da8568\", \"681ed630fe628720c8da8563\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/promocode/deletemultiplepromoCode",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"promocode",
+										"deletemultiplepromoCode"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -2792,6 +3120,47 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "deletemultiplereview",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ids\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/review/deletemultiplereview",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"review",
+										"deletemultiplereview"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -2961,10 +3330,10 @@
 					]
 				},
 				{
-					"name": "Cintectus message",
+					"name": "Contectus message",
 					"item": [
 						{
-							"name": "]getcontent",
+							"name": "getcontent",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -3072,6 +3441,47 @@
 										"admin",
 										"content",
 										"updatecontent"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletemultiplecontent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isd\":[]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5800/api/admin/content/deletemultiplecontent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"admin",
+										"content",
+										"deletemultiplecontent"
 									]
 								}
 							},
@@ -3553,6 +3963,31 @@
 										"user",
 										"auth",
 										"getprofile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getpopupimage",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5800/api/user/auth/getpopupimage",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5800",
+									"path": [
+										"api",
+										"user",
+										"auth",
+										"getpopupimage"
 									]
 								}
 							},

@@ -52,4 +52,24 @@ const deleteCartype = async (req, res, next) => {
   }
 };
 
-module.exports = { addCartype, editCartype, getAllCartype, deleteCartype };
+const deleteMultipleCartype = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid or empty IDs array");
+    }
+
+    const cartypes = await Cartype.find({ _id: { $in: ids } });
+    if (cartypes.length !== ids.length) {
+      return queryErrorRelatedResponse(res, 404, "One or more cartypes not found");
+    }
+
+    await Cartype.deleteMany({ _id: { $in: ids } });
+
+    successResponse(res, "Multiple cartypes deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { addCartype, editCartype, getAllCartype, deleteCartype, deleteMultipleCartype };

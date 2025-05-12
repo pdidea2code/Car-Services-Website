@@ -1,9 +1,6 @@
 // controllers/Admin/promoCode.controller.js
 const PromoCode = require("../../models/Promocode");
-const {
-  successResponse,
-  queryErrorRelatedResponse,
-} = require("../../helper/sendResponse");
+const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
 
 const addPromoCode = async (req, res, next) => {
   try {
@@ -64,14 +61,10 @@ const editPromoCode = async (req, res, next) => {
     promoCode.maxUses = maxUses !== undefined ? maxUses : promoCode.maxUses;
     promoCode.startDate = startDate || promoCode.startDate;
     promoCode.expirationDate = expirationDate || promoCode.expirationDate;
-    promoCode.minimumOrderAmount =
-      minimumOrderAmount !== undefined
-        ? minimumOrderAmount
-        : promoCode.minimumOrderAmount;
+    promoCode.minimumOrderAmount = minimumOrderAmount !== undefined ? minimumOrderAmount : promoCode.minimumOrderAmount;
 
     if (req.body.isActive !== undefined) {
-      promoCode.isActive =
-        req.body.isActive === "true" || req.body.isActive === true;
+      promoCode.isActive = req.body.isActive === "true" || req.body.isActive === true;
     }
 
     await promoCode.save();
@@ -103,10 +96,30 @@ const deletePromoCode = async (req, res, next) => {
     next(error);
   }
 };
+const deleteMultiplePromoCode = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
 
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid or empty IDs array");
+    }
+
+    const promoCodes = await PromoCode.find({ _id: { $in: ids } });
+    if (promoCodes.length !== ids.length) {
+      return queryErrorRelatedResponse(res, 404, "One or more promo codes not found");
+    }
+
+    await PromoCode.deleteMany({ _id: { $in: ids } });
+
+    successResponse(res, "Multiple promo codes deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   addPromoCode,
   editPromoCode,
   getAllPromoCode,
   deletePromoCode,
+  deleteMultiplePromoCode,
 };

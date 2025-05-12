@@ -1,8 +1,5 @@
 const Service = require("../../models/Service");
-const {
-  successResponse,
-  queryErrorRelatedResponse,
-} = require("../../helper/sendResponse");
+const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
 const deleteFiles = require("../../helper/deleteFiles");
 const Addon = require("../../models/Addons");
 const Order = require("../../models/Order");
@@ -37,21 +34,15 @@ const editService = async (req, res, next) => {
     }
     service.name = req.body.name ? req.body.name : service.name;
     service.title = req.body.title ? req.body.title : service.title;
-    service.description = req.body.description
-      ? req.body.description
-      : service.description;
+    service.description = req.body.description ? req.body.description : service.description;
     service.price = req.body.price ? req.body.price : service.price;
     service.time = req.body.time ? req.body.time : service.time;
     service.include = req.body.include ? req.body.include : service.include;
-    service.whyChooseqTitle = req.body.whyChooseqTitle
-      ? req.body.whyChooseqTitle
-      : service.whyChooseqTitle;
+    service.whyChooseqTitle = req.body.whyChooseqTitle ? req.body.whyChooseqTitle : service.whyChooseqTitle;
     service.whyChooseqDescription = req.body.whyChooseqDescription
       ? req.body.whyChooseqDescription
       : service.whyChooseqDescription;
-    service.whyChooseqinclude = req.body.whyChooseqinclude
-      ? req.body.whyChooseqinclude
-      : service.whyChooseqinclude;
+    service.whyChooseqinclude = req.body.whyChooseqinclude ? req.body.whyChooseqinclude : service.whyChooseqinclude;
     if (req.files?.image && req.files?.image[0]?.filename) {
       if (service.image) {
         deleteFiles(process.env.SERVICE_PATH + service.image);
@@ -82,15 +73,12 @@ const editService = async (req, res, next) => {
 const getAllService = async (req, res, next) => {
   try {
     const service = await Service.find();
-    const baseUrl =
-      req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
     const serviceData = service.map((item) => {
       return {
         ...item.toObject(),
         image: item.image ? baseUrl + item.image : null,
-        whyChooseqImage: item.whyChooseqImage
-          ? baseUrl + item.whyChooseqImage
-          : null,
+        whyChooseqImage: item.whyChooseqImage ? baseUrl + item.whyChooseqImage : null,
         iconimage: item.iconimage ? baseUrl + item.iconimage : null,
       };
     });
@@ -127,18 +115,14 @@ const servicebyid = async (req, res, next) => {
     if (!service) {
       return queryErrorRelatedResponse(res, "Service not found");
     }
-    const baseUrl =
-      req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
     const serviceData = {
       ...service.toObject(),
       iconimage: service.iconimage ? baseUrl + service.iconimage : null,
       image: service.image ? baseUrl + service.image : null,
-      whyChooseqImage: service.whyChooseqImage
-        ? baseUrl + service.whyChooseqImage
-        : null,
+      whyChooseqImage: service.whyChooseqImage ? baseUrl + service.whyChooseqImage : null,
     };
-    const addonBaseUrl =
-      req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
+    const addonBaseUrl = req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
 
     const addon = await Addon.find({ serviceid: service._id });
     const addonData = addon.map((item) => {
@@ -159,10 +143,47 @@ const servicebyid = async (req, res, next) => {
     next(error);
   }
 };
+
+const deleteMultipleService = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid or empty IDs array");
+    }
+
+    const services = await Service.find({ _id: { $in: ids } });
+    if (services.length !== ids.length) {
+      return queryErrorRelatedResponse(res, 404, "One or more services not found");
+    }
+
+    for (const service of services) {
+      if (service.image) {
+        deleteFiles(process.env.SERVICE_PATH + service.image);
+      }
+      if (service.whyChooseqImage) {
+        deleteFiles(process.env.SERVICE_PATH + service.whyChooseqImage);
+      }
+      if (service.iconimage) {
+        deleteFiles(process.env.SERVICE_PATH + service.iconimage);
+      }
+
+      // await Addon.deleteMany({ serviceid: service._id });
+    }
+
+    await Service.deleteMany({ _id: { $in: ids } });
+
+    successResponse(res, "Multiple services deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   addService,
   editService,
   getAllService,
   softDeleteService,
   servicebyid,
+  deleteMultipleService,
 };

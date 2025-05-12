@@ -3,11 +3,18 @@ import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MUIDataTable from 'mui-datatables'
-import { Button, Checkbox } from '@mui/material'
+import { Button, Checkbox, IconButton } from '@mui/material'
 import * as Icons from '@mui/icons-material'
 import { CSpinner } from '@coreui/react'
 import swal from 'sweetalert'
-import { getAllContentApi, updateContentApi, deleteContentApi } from '../../../redux/api/api'
+import {
+  getAllContentApi,
+  updateContentApi,
+  deleteContentApi,
+  deleteMultipleContentApi,
+} from '../../../redux/api/api'
+import PropTypes from 'prop-types' // Import PropTypes
+
 const Content = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [content, setContent] = useState([])
@@ -20,10 +27,10 @@ const Content = () => {
       if (response.status === 200) {
         setContent(response.data.info)
       }
-      setIsLoading(false)
     } catch (error) {
       console.error(error)
       toast.error(error?.response?.data?.message || 'Something went wrong')
+    } finally {
       setIsLoading(false)
     }
   }
@@ -31,7 +38,6 @@ const Content = () => {
   const handleChangeStatus = async (data) => {
     try {
       const { id, seen } = data
-
       const request = {
         id: id,
         status: seen,
@@ -62,6 +68,47 @@ const Content = () => {
       console.error(error)
       toast.error(error?.response?.data?.message || 'Something went wrong')
     }
+  }
+
+  const deleteMultipleContent = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => content[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected content entries?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        setIsLoading(true)
+        const response = await deleteMultipleContentApi({ ids })
+        if (response.status === 200) {
+          toast.success('Content entries deleted successfully!')
+          setContent((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Something went wrong!')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultipleContent(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
   }
 
   useEffect(() => {
@@ -142,7 +189,9 @@ const Content = () => {
   ]
 
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
 
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Switch } from '@mui/material'
+import { Button, Switch, IconButton } from '@mui/material'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { CSpinner } from '@coreui/react'
@@ -8,7 +8,13 @@ import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import swal from 'sweetalert'
 import { useState, useEffect } from 'react'
-import { getAllCarTypeApi, deleteCarTypeApi, editCarTypeApi } from 'src/redux/api/api'
+import PropTypes from 'prop-types'
+import {
+  getAllCarTypeApi,
+  deleteCarTypeApi,
+  editCarTypeApi,
+  deleteMultipleCarTypeApi,
+} from 'src/redux/api/api'
 
 const CarType = () => {
   const navigate = useNavigate()
@@ -67,6 +73,47 @@ const CarType = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const deleteMultipleCarType = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => carType[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected car types?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        // setIsLoading(true)
+        const response = await deleteMultipleCarTypeApi({ ids })
+        if (response.status === 200) {
+          toast.success('Car Types deleted successfully!')
+          setCarType((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Something went wrong!')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultipleCarType(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
   }
 
   useEffect(() => {
@@ -128,16 +175,6 @@ const CarType = () => {
                 <Icons.EditRounded />
               </Button>
             </div>
-            // <div>
-            //   <p>test</p>
-            //   <p>test</p>
-            //   <p>test</p>
-            //   <p>test</p>
-            //   <p>test</p>
-            //   <p>test</p>
-            //   <p>test</p>
-            //   <p>test</p>
-            // </div>
           )
         },
       },
@@ -145,8 +182,11 @@ const CarType = () => {
   ]
 
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
+
   return (
     <>
       {isLoading ? (

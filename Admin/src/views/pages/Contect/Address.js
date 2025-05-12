@@ -1,18 +1,25 @@
-import { getAllAddressApi, editAddressApi, deleteAddressApi } from 'src/redux/api/api'
+import {
+  getAllAddressApi,
+  editAddressApi,
+  deleteAddressApi,
+  deleteMultipleAddressApi,
+} from 'src/redux/api/api'
 import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MUIDataTable from 'mui-datatables'
-import { Button, Switch, Tooltip } from '@mui/material'
+import { Button, Switch, IconButton } from '@mui/material'
 import * as Icons from '@mui/icons-material'
 import { useState, useEffect } from 'react'
 import { CSpinner } from '@coreui/react'
 import swal from 'sweetalert'
+import PropTypes from 'prop-types' // Import PropTypes
 
 const Address = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [address, setAddress] = useState([])
   const navigate = useNavigate()
+
   const fetchAddress = async () => {
     try {
       setIsLoading(true)
@@ -20,7 +27,6 @@ const Address = () => {
       if (response.status === 200) {
         setAddress(response.data.info)
       }
-      setIsLoading(false)
     } catch (error) {
       console.error(error)
       toast.error(error?.response?.data?.message || 'Something went wrong')
@@ -28,6 +34,7 @@ const Address = () => {
       setIsLoading(false)
     }
   }
+
   const handleChangeStatus = async (data) => {
     try {
       const { id, status } = data
@@ -45,6 +52,7 @@ const Address = () => {
       toast.error(error?.response?.data?.message || 'Something went wrong')
     }
   }
+
   const handleDeleteAddress = async (id) => {
     try {
       const requestData = {
@@ -60,40 +68,83 @@ const Address = () => {
       toast.error(error?.response?.data?.message || 'Something went wrong')
     }
   }
+
+  const deleteMultipleAddress = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => address[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected addresses?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        setIsLoading(true)
+        const response = await deleteMultipleAddressApi({ ids })
+        if (response.status === 200) {
+          toast.success('Addresses deleted successfully!')
+          setAddress((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Something went wrong!')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultipleAddress(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
+  }
+
   useEffect(() => {
     fetchAddress()
   }, [])
+
   const columns = [
     {
       name: 'city',
-      label: 'city',
+      label: 'City',
     },
     {
       name: 'address',
-      label: 'address',
+      label: 'Address',
     },
     {
       name: 'country',
-      label: 'country',
+      label: 'Country',
     },
     {
       name: 'phone',
-      label: 'phone',
+      label: 'Phone',
     },
     {
       name: 'email',
-      label: 'email',
+      label: 'Email',
     },
     {
       name: 'status',
-      label: 'status',
+      label: 'Status',
       options: {
         customBodyRender: (value, { rowIndex }) => {
           const { status, _id } = address[rowIndex]
           return (
             <Switch
               checked={status}
-              onChange={() => handleChangeStatus({ id: _id, status: !status })}
+              // onChange={() => handleChangeStatus({ id: _id, status: !status })}
             />
           )
         },
@@ -101,7 +152,7 @@ const Address = () => {
     },
     {
       name: 'action',
-      label: 'action',
+      label: 'Action',
       options: {
         sort: false,
         customBodyRender: (value, { rowIndex }) => {
@@ -137,8 +188,11 @@ const Address = () => {
       },
     },
   ]
+
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
 
   return (

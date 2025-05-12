@@ -1,8 +1,5 @@
 const Addons = require("../../models/Addons");
-const {
-  successResponse,
-  queryErrorRelatedResponse,
-} = require("../../helper/sendResponse");
+const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
 const deleteFiles = require("../../helper/deleteFiles");
 const Service = require("../../models/Service");
 const addAddons = async (req, res, next) => {
@@ -30,9 +27,7 @@ const editAddons = async (req, res, next) => {
     }
     addons.name = req.body.name ? req.body.name : addons.name;
 
-    addons.serviceid = req.body.serviceid
-      ? req.body.serviceid
-      : addons.serviceid;
+    addons.serviceid = req.body.serviceid ? req.body.serviceid : addons.serviceid;
     addons.price = req.body.price ? req.body.price : addons.price;
     addons.name = req.body.name ? req.body.name : addons.name;
     if (req.file && req.file.filename) {
@@ -41,9 +36,7 @@ const editAddons = async (req, res, next) => {
       }
       addons.image = req.file.filename;
     }
-    addons.serviceid = req.body.serviceid
-      ? req.body.serviceid
-      : addons.serviceid;
+    addons.serviceid = req.body.serviceid ? req.body.serviceid : addons.serviceid;
     addons.price = req.body.price ? req.body.price : addons.price;
     addons.time = req.body.time ? req.body.time : addons.time;
     if (req.body.status !== undefined) {
@@ -60,8 +53,7 @@ const getAllAddons = async (req, res, next) => {
   try {
     const addons = await Addons.find().populate("serviceid");
 
-    const baseUrl =
-      req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
     const addonsData = addons.map((addon) => {
       return {
         ...addon.toObject(),
@@ -95,8 +87,7 @@ const getAddonsbyService = async (req, res, next) => {
     const addons = await Addons.find({
       serviceid: req.body.serviceid,
     }).populate("serviceid");
-    const baseUrl =
-      req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
+    const baseUrl = req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
     const addonsData = addons.map((addon) => {
       return {
         ...addon.toObject(),
@@ -110,10 +101,38 @@ const getAddonsbyService = async (req, res, next) => {
     next(error);
   }
 };
+
+const deleteMultipleAddons = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid or empty IDs array");
+    }
+
+    const addons = await Addons.find({ _id: { $in: ids } });
+    if (addons.length !== ids.length) {
+      return queryErrorRelatedResponse(res, 404, "One or more addons not found");
+    }
+
+    for (const addon of addons) {
+      if (addon.image) {
+        deleteFiles(process.env.ADDONS_PATH + addon.image);
+      }
+    }
+
+    await Addons.deleteMany({ _id: { $in: ids } });
+
+    successResponse(res, "Multiple addons deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   addAddons,
   editAddons,
   getAllAddons,
   deleteAddons,
   getAddonsbyService,
+  deleteMultipleAddons,
 };

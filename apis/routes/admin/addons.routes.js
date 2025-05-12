@@ -6,6 +6,7 @@ const {
   getAllAddons,
   deleteAddons,
   getAddonsbyService,
+  deleteMultipleAddons,
 } = require("../../controllers/Admin/addons.controller");
 const { singleFileUpload } = require("../../helper/imageUpload");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
@@ -15,14 +16,7 @@ router.post(
   verifyAdminToken,
   singleFileUpload(
     "public/addonsimg",
-    [
-      "image/png",
-      "image/jpeg",
-      "image/jpg",
-      "image/webp",
-      "image/svg",
-      "image/svg+xml",
-    ],
+    ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/svg", "image/svg+xml"],
     1024 * 1024,
     "image"
   ),
@@ -33,14 +27,7 @@ router.post(
   verifyAdminToken,
   singleFileUpload(
     "public/addonsimg",
-    [
-      "image/png",
-      "image/jpeg",
-      "image/jpg",
-      "image/webp",
-      "image/svg",
-      "image/svg+xml",
-    ],
+    ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/svg", "image/svg+xml"],
     1024 * 1024,
     "image"
   ),
@@ -49,5 +36,6 @@ router.post(
 router.get("/getalladdons", verifyAdminToken, getAllAddons);
 router.post("/deleteaddons", verifyAdminToken, deleteAddons);
 router.post("/getaddonsbyService", verifyAdminToken, getAddonsbyService);
+router.post("/deletemultipleaddons", verifyAdminToken, deleteMultipleAddons);
 
 module.exports = router;

@@ -40,6 +40,16 @@ const AdminTheme = () => {
     }
   }
 
+  // Handle color change to update CSS variables in real-time
+  const handleColorChange = (colorKey, value) => {
+    const cssVariableMap = {
+      color1: '--color-one',
+      color2: '--color-two',
+      color3: '--color-three',
+    }
+    document.documentElement.style.setProperty(cssVariableMap[colorKey], value)
+  }
+
   const onSubmit = async (data) => {
     try {
       setLoading(true)
@@ -82,6 +92,7 @@ const AdminTheme = () => {
                     type="color"
                     label="Primary Color"
                     {...register('color1', { required: 'Primary Color is required' })}
+                    onChange={(e) => handleColorChange('color1', e.target.value)}
                   />
                 </CCol>
                 <CCol lg={6} md={12} sm={12}>
@@ -90,6 +101,7 @@ const AdminTheme = () => {
                     type="color"
                     label="Secondary Color"
                     {...register('color2', { required: 'Secondary Color is required' })}
+                    onChange={(e) => handleColorChange('color2', e.target.value)}
                   />
                 </CCol>
                 <CCol lg={6} md={12} sm={12}>
@@ -98,6 +110,7 @@ const AdminTheme = () => {
                     type="color"
                     label="Tertiary Color"
                     {...register('color3', { required: 'Tertiary Color is required' })}
+                    onChange={(e) => handleColorChange('color3', e.target.value)}
                   />
                 </CCol>
                 <CCol lg={12} md={12} sm={12} className="text-center">

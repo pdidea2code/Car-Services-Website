@@ -1,15 +1,9 @@
 const Review = require("../../models/Review");
-const {
-  successResponse,
-  queryErrorRelatedResponse,
-} = require("../../helper/sendResponse");
+const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
 
 const getAllReviews = async (req, res, next) => {
   try {
-    const reviews = await Review.find({})
-      .populate("user_id")
-      .populate("order_id")
-      .sort({ createdAt: -1 });
+    const reviews = await Review.find({}).populate("user_id").populate("order_id").sort({ createdAt: -1 });
     const baseUrl = req.protocol + "://" + req.get("host") + "/userprofileimg/";
     const data = reviews.map((review) => ({
       _id: review._id,
@@ -61,4 +55,25 @@ const deleteReview = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllReviews, changeReviewStatus, deleteReview };
+const deleteMultipleReview = async (req, res, next) => {
+  try {
+    const { review_ids } = req.body;
+
+    if (!Array.isArray(review_ids) || review_ids.length === 0) {
+      return queryErrorRelatedResponse(res, 400, "Invalid or empty review IDs array");
+    }
+
+    const reviews = await Review.find({ _id: { $in: review_ids } });
+    if (reviews.length !== review_ids.length) {
+      return queryErrorRelatedResponse(res, 404, "One or more reviews not found");
+    }
+
+    await Review.deleteMany({ _id: { $in: review_ids } });
+
+    successResponse(res, "Multiple reviews deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getAllReviews, changeReviewStatus, deleteReview, deleteMultipleReview };

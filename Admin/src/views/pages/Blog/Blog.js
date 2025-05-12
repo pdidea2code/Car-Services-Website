@@ -1,18 +1,25 @@
-import { getAllBlogApi, updateBlogStatusApi, deleteBlogApi } from '../../../redux/api/api'
+import {
+  getAllBlogApi,
+  updateBlogStatusApi,
+  deleteBlogApi,
+  deleteMultipleBlogApi,
+} from '../../../redux/api/api'
 import { useState, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MUIDataTable from 'mui-datatables'
-import { Button, Switch, Tooltip } from '@mui/material'
+import { Button, Switch, IconButton } from '@mui/material'
 import * as Icons from '@mui/icons-material'
 import swal from 'sweetalert'
 import { CSpinner } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types' // Import PropTypes
 
 const Blog = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [blog, setBlog] = useState([])
   const navigate = useNavigate()
+
   const fetchBlog = async () => {
     try {
       setIsLoading(true)
@@ -27,6 +34,7 @@ const Blog = () => {
       setIsLoading(false)
     }
   }
+
   const handleDeleteBlog = async (data) => {
     try {
       setIsLoading(true)
@@ -45,6 +53,7 @@ const Blog = () => {
       setIsLoading(false)
     }
   }
+
   const handleChangeStatus = async (data) => {
     try {
       const request = {
@@ -65,9 +74,52 @@ const Blog = () => {
       setIsLoading(false)
     }
   }
+
+  const deleteMultipleBlog = async (selectedRows) => {
+    const ids = selectedRows.data.map((row) => blog[row.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete the selected blogs?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      try {
+        setIsLoading(true)
+        const response = await deleteMultipleBlogApi({ ids })
+        if (response.status === 200) {
+          toast.success('Blogs deleted successfully!')
+          setBlog((prevState) => prevState.filter((item) => !ids.includes(item._id)))
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Something went wrong!')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultipleBlog(selectedRows)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
+  SelectedRowsToolbar.propTypes = {
+    selectedRows: PropTypes.object.isRequired,
+  }
+
   useEffect(() => {
     fetchBlog()
   }, [])
+
   const columns = [
     {
       name: 'title',
@@ -151,7 +203,9 @@ const Blog = () => {
   ]
 
   const options = {
-    selectableRows: 'none',
+    selectableRows: 'multiple', // Enable multiple row selection
+    selectableRowsHeader: true, // Show checkbox in header
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
 
   return (
