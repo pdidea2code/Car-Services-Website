@@ -78,11 +78,7 @@ const Services = () => {
                 text="Explore Our Wide Range Of Professional Services, Thoughtfully Designed To Ensure Your Car Remains In Peak Condition, Delivering Both Performance And Style You Can Reliance On!"
               />
             </Col>
-            <Col
-              lg={12}
-              className="all-services-btn-container "
-              style={{ maxWidth: "272px" }}
-            >
+            <Col lg={12} className="all-services-btn-container " style={{ maxWidth: "272px" }}>
               <button
                 data-aos="fade-up"
                 data-aos-duration="300"
@@ -95,7 +91,7 @@ const Services = () => {
             </Col>
           </Row>
           <Row className="services-row2">
-            {allService.map((item, index) => (
+            {allService.slice(-10).map((item, index) => (
               <>
                 <Col lg={12} className="services-row2-title-container-row">
                   <div className="services-row2-title-container">
@@ -107,16 +103,10 @@ const Services = () => {
                           maskImage: `url("${item.iconimage}")`,
                         }}
                       ></div>
-                      <span className="services-row2-title-container-title zen-dots">
-                        {item.name}
-                      </span>
+                      <span className="services-row2-title-container-title zen-dots">{item.name}</span>
                     </div>
                     <div className="services-row2-title-container2">
-                      <img
-                        src={item.image}
-                        alt="interior"
-                        className="services-container2-img"
-                      />
+                      <img src={item.image} alt="interior" className="services-container2-img" />
                       <div
                         className="services-row2-title-container2-title"
                         onClick={() => {
@@ -131,11 +121,7 @@ const Services = () => {
                     </div>
                   </div>
                   <div className="services-row2-title-container4">
-                    <img
-                      src={item.image}
-                      alt="icon"
-                      className="services-row2-title-container4-img"
-                    />
+                    <img src={item.image} alt="icon" className="services-row2-title-container4-img" />
                     <div
                       className="services-row2-title-container4-title zen-dots"
                       onClick={() => {
@@ -162,10 +148,7 @@ const Services = () => {
               </>
             ))}
             <Col lg={12} className="services-row2-title-container5">
-              <button
-                className="view-all-services-btn btn-4 zen-dots no-select"
-                onClick={() => navigate("/services")}
-              >
+              <button className="view-all-services-btn btn-4 zen-dots no-select" onClick={() => navigate("/services")}>
                 View All Services
               </button>
             </Col>

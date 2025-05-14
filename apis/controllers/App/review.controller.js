@@ -1,8 +1,5 @@
 const Review = require("../../models/Review");
-const {
-  successResponse,
-  queryErrorRelatedResponse,
-} = require("../../helper/sendResponse");
+const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
 
 const addReview = async (req, res, next) => {
   try {
@@ -27,7 +24,7 @@ const displayReview = async (req, res, next) => {
     const reviews = await Review.find({
       status: true,
     }).populate("user_id");
-    const baseUrl = req.protocol + "://" + req.get("host") + "/userprofileimg/";
+    const baseUrl = process.env.BASE_URL + "/userprofileimg/";
     const data = reviews.map((review) => ({
       _id: review._id,
       name: review.name,

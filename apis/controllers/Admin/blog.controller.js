@@ -28,7 +28,7 @@ const createBlog = async (req, res, next) => {
   try {
     const { title, description, content } = req.body;
 
-    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
+    const baseUrl = `${process.env.BASE_URL}${process.env.BLOG_IMAGE_PATH}`;
 
     // Get uploaded image filenames
     const imageUrls = req?.files?.images?.map((file) => `${file.filename}`) || [];
@@ -76,7 +76,7 @@ const updateBlog = async (req, res, next) => {
       blog.image = req?.files?.mainimage[0]?.filename;
     }
 
-    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
+    const baseUrl = `${process.env.BASE_URL}${process.env.BLOG_IMAGE_PATH}`;
 
     // Extract all images from the existing blog content and the new content
     const extractImages = (html) => {
@@ -183,7 +183,7 @@ const deleteBlog = async (req, res, next) => {
 
 const getAllBlog = async (req, res, next) => {
   try {
-    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
+    const baseUrl = `${process.env.BASE_URL}${process.env.BLOG_IMAGE_PATH}`;
     const blogs = await Blog.find();
     const updatedBlogs = blogs.map((blog) => {
       let updatedContent = blog.content;
@@ -243,7 +243,9 @@ const getAllBlog = async (req, res, next) => {
 const getBlogById = async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.body.id);
-    const baseUrl = `${req.protocol}://${req.get("host")}${process.env.BLOG_IMAGE_PATH}`;
+   
+
+    const baseUrl = `${process.env.BASE_URL}${process.env.BLOG_IMAGE_PATH}`;
     const imageUrl = `${baseUrl}${blog.image}`;
     let updatedContent = blog.content;
     if (blog.content) {

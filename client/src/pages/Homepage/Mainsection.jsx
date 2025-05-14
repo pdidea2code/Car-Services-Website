@@ -1,7 +1,7 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import SplitText from "../../components/SplitText";
-import { useSpring, animated } from "@react-spring/web";
+// import SplitText from "../../components/SplitText";
+// import { useSpring, animated } from "@react-spring/web";
 import "./mainsection.css";
 import Fade from "../../components/animation";
 import { useNavigate } from "react-router-dom";
@@ -10,15 +10,14 @@ const Mainsection = () => {
   const appSetting = useSelector((state) => state.theme.theme);
 
   return (
-    <div
-      className="mainsection"
-      style={{ backgroundImage: `url(${appSetting?.mainimage})` }}
-    >
-      <Container>
+    <div className="mainsection">
+      <img alt="main" loading="eager" src={appSetting?.mainimage} className="mainsection1"></img>
+      <div className="mainsection2"></div>
+      <Container className="mainsection3">
         <div className="mainsection-contain">
-          {/* <span className="mainse-description zen-dots">Premium Care for Your Ride</span> */}
-          {/* <span className="mainse-title zen-dots">Your Car Deserves the Best Care!</span> */}
-          <SplitText
+          <span className="mainse-description zen-dots">Premium Care for Your Ride</span>
+          <span className="mainse-title zen-dots">Your Car Deserves the Best Care!</span>
+          {/* <SplitText
             text="Premium Care for Your Ride"
             className="mainse-description zen-dots"
             delay={0}
@@ -39,7 +38,7 @@ const Mainsection = () => {
             threshold={0.2}
             rootMargin="-50px"
             //   onLetterAnimationComplete={handleAnimationComplete}
-          />
+          /> */}
         </div>
         <div className="mainsection-button">
           <Fade>

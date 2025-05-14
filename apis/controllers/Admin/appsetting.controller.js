@@ -99,9 +99,8 @@ const getAppSetting = async (req, res, next) => {
     if (!appSetting) {
       return queryErrorRelatedResponse(res, 404, "App setting not found");
     }
-    const protocol = req.headers["x-forwarded-proto"] || req.protocol;
 
-    const baseUrl = protocol + "://" + req.get("host") + process.env.APPSETTING_IMAGE_URL;
+    const baseUrl = process.env.BASE_URL + process.env.APPSETTING_IMAGE_URL;
     appSetting.logo = baseUrl + "/" + appSetting.logo;
     appSetting.footerlogo = baseUrl + "/" + appSetting.footerlogo;
     appSetting.favicon = baseUrl + "/" + appSetting.favicon;

@@ -81,6 +81,7 @@ const ChangePassword = () => {
                       <CFormInput
                         type="password"
                         placeholder="Current Password"
+                        autoComplete="off"
                         {...register('password', { required: 'Current password is required' })}
                         invalid={!!errors.password}
                         className="p-2 rounded-end-3"
@@ -95,6 +96,7 @@ const ChangePassword = () => {
                       <CFormInput
                         type="password"
                         placeholder="New Password"
+                        autoComplete="off"
                         {...register('newPassword', { required: 'New password is required' })}
                         invalid={!!errors.newPassword}
                         className="p-2 rounded-end-3"
@@ -109,6 +111,7 @@ const ChangePassword = () => {
                       <CFormInput
                         type="password"
                         placeholder="Confirm New Password"
+                        autoComplete="off"
                         {...register('confirmPassword', {
                           required: 'Confirm password is required',
                           validate: (value) =>

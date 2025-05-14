@@ -53,7 +53,7 @@ const getAllAddons = async (req, res, next) => {
   try {
     const addons = await Addons.find().populate("serviceid");
 
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
+    const baseUrl = process.env.BASE_URL + process.env.ADDONS_PATH;
     const addonsData = addons.map((addon) => {
       return {
         ...addon.toObject(),
@@ -87,7 +87,9 @@ const getAddonsbyService = async (req, res, next) => {
     const addons = await Addons.find({
       serviceid: req.body.serviceid,
     }).populate("serviceid");
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
+   
+
+    const baseUrl = process.env.BASE_URL + process.env.ADDONS_PATH;
     const addonsData = addons.map((addon) => {
       return {
         ...addon.toObject(),

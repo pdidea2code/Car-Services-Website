@@ -73,7 +73,8 @@ const editService = async (req, res, next) => {
 const getAllService = async (req, res, next) => {
   try {
     const service = await Service.find();
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
+
+    const baseUrl = process.env.BASE_URL + process.env.SERVICE_PATH;
     const serviceData = service.map((item) => {
       return {
         ...item.toObject(),
@@ -115,14 +116,15 @@ const servicebyid = async (req, res, next) => {
     if (!service) {
       return queryErrorRelatedResponse(res, "Service not found");
     }
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.SERVICE_PATH;
+
+    const baseUrl = process.env.BASE_URL + process.env.SERVICE_PATH;
     const serviceData = {
       ...service.toObject(),
       iconimage: service.iconimage ? baseUrl + service.iconimage : null,
       image: service.image ? baseUrl + service.image : null,
       whyChooseqImage: service.whyChooseqImage ? baseUrl + service.whyChooseqImage : null,
     };
-    const addonBaseUrl = req.protocol + "://" + req.get("host") + process.env.ADDONS_PATH;
+    const addonBaseUrl = process.env.BASE_URL + process.env.ADDONS_PATH;
 
     const addon = await Addon.find({ serviceid: service._id });
     const addonData = addon.map((item) => {

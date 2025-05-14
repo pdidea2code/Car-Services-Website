@@ -103,7 +103,8 @@ const verifyEmail = async (req, res, next) => {
       email: user.email,
       name: user.name,
     });
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
+
+    const baseUrl = process.env.BASE_URL + process.env.USER_PROFILE_PATH;
     user.token = token;
     const data = {
       token: token,
@@ -146,7 +147,7 @@ const login = async (req, res, next) => {
     });
     user.token = token;
     await user.save();
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
+    const baseUrl = process.env.BASE_URL + process.env.USER_PROFILE_PATH;
     const data = {
       token: token,
       refreshToken: refreshToken,
@@ -228,7 +229,7 @@ const socialLogin = async (req, res, next) => {
       email: user.email,
       name: user.name,
     });
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.USER_PROFILE_PATH;
+    const baseUrl = process.env.BASE_URL + process.env.USER_PROFILE_PATH;
     const data = {
       token: token,
       refreshToken: refreshToken,
@@ -342,7 +343,7 @@ const editProfile = async (req, res, next) => {
     });
     user.token = token;
     await user.save();
-    const baseUrl = req.protocol + "://" + req.get("host") + "/userprofileimg/";
+    const baseUrl = process.env.BASE_URL + "/userprofileimg/";
     const data = {
       token: token,
       refreshToken: refreshToken,
@@ -365,7 +366,7 @@ const getProfile = async (req, res, next) => {
     const user = await User.findOne({ _id: req.user._id });
     if (!user) return queryErrorRelatedResponse(res, 401, "Invalid User");
     if (user.status === false) return queryErrorRelatedResponse(res, 401, "User is blocked please contact admin");
-    const baseUrl = req.protocol + "://" + req.get("host") + "/userprofileimg/";
+    const baseUrl = process.env.BASE_URL + "/userprofileimg/";
     const data = {
       user: {
         email: user.email,
@@ -387,7 +388,7 @@ const popupImage = async (req, res, next) => {
     if (!popupimage) {
       return queryErrorRelatedResponse(res, 400, "No popup image found");
     }
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.POPUP_IMAGE;
+    const baseUrl = process.env.BASE_URL + process.env.POPUP_IMAGE;
     popupimage.image = baseUrl + popupimage.image;
     popupimage.mobileimage = baseUrl + popupimage.mobileimage;
     successResponse(res, popupimage);

@@ -4,7 +4,8 @@ const { successResponse, queryErrorRelatedResponse } = require("../../helper/sen
 const getAllReviews = async (req, res, next) => {
   try {
     const reviews = await Review.find({}).populate("user_id").populate("order_id").sort({ createdAt: -1 });
-    const baseUrl = req.protocol + "://" + req.get("host") + "/userprofileimg/";
+
+    const baseUrl = process.env.BASE_URL + "/userprofileimg/";
     const data = reviews.map((review) => ({
       _id: review._id,
       name: review.name,

@@ -1,19 +1,8 @@
 import "./managecard.css";
 import { Row, Col, Form, Spinner, Modal, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import {
-  useStripe,
-  useElements,
-  CardNumberElement,
-  CardExpiryElement,
-  CardCvcElement,
-} from "@stripe/react-stripe-js";
-import {
-  VisaCardIcon,
-  MasterCardIcon,
-  DeleteIcon,
-  CardIcon,
-} from "../../../assets/icon/icons";
+import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
+import { VisaCardIcon, MasterCardIcon, DeleteIcon, CardIcon } from "../../../assets/icon/icons";
 import { saveCard, addCard, getCard, deleteCard } from "../../../API/Api";
 
 const Managecard = () => {
@@ -88,14 +77,13 @@ const Managecard = () => {
     try {
       const { data } = await addCard();
       const cardNumberElement = elements.getElement(CardNumberElement);
-      const { paymentMethod, error: pmError } =
-        await stripe.createPaymentMethod({
-          type: "card",
-          card: cardNumberElement,
-          billing_details: {
-            name: cardholderName,
-          },
-        });
+      const { paymentMethod, error: pmError } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardNumberElement,
+        billing_details: {
+          name: cardholderName,
+        },
+      });
 
       if (pmError) {
         console.error(pmError);
@@ -104,12 +92,9 @@ const Managecard = () => {
         return;
       }
 
-      const { setupIntent, error: setupError } = await stripe.confirmCardSetup(
-        data.info.client_secret,
-        {
-          payment_method: paymentMethod.id,
-        }
-      );
+      const { setupIntent, error: setupError } = await stripe.confirmCardSetup(data.info.client_secret, {
+        payment_method: paymentMethod.id,
+      });
 
       if (setupError) {
         console.error(setupError);
@@ -139,7 +124,7 @@ const Managecard = () => {
         elements.getElement(CardExpiryElement).clear();
         elements.getElement(CardCvcElement).clear();
         setCardholderName("");
-        setCardType("");
+        // setCardType("");
         fetchCard();
       } else {
         setErrorMessage("Failed to save card");
@@ -185,37 +170,20 @@ const Managecard = () => {
           <span className="managecard-title zen-dots">Manage Card</span>
           <Row>
             {cardList.length === 0 ? (
-              <Col
-                xl={12}
-                lg={12}
-                md={12}
-                className="managecard-card-container"
-              >
+              <Col xl={12} lg={12} md={12} className="managecard-card-container">
                 <div className="managecard-card-right">
-                  <span className="managecard-card-title k2d">
-                    No card found
-                  </span>
+                  <span className="managecard-card-title k2d">No card found</span>
                 </div>
               </Col>
             ) : (
               cardList.map((card) => (
-                <Col
-                  xl={12}
-                  lg={12}
-                  md={12}
-                  className="managecard-card-container"
-                >
+                <Col xl={12} lg={12} md={12} className="managecard-card-container">
                   <div className="managecard-card-right">
                     {card.cardType === "visa" && <VisaCardIcon />}
                     {card.cardType === "mastercard" && <MasterCardIcon />}
-                    {card.cardType !== "visa" &&
-                      card.cardType !== "mastercard" && (
-                        <CardIcon className="CardIcon" />
-                      )}
+                    {card.cardType !== "visa" && card.cardType !== "mastercard" && <CardIcon className="CardIcon" />}
                     <div className="d-flex flex-column ps-3">
-                      <span className="managecard-card-title k2d">
-                        xxxx xxxx xxxx {card.last4}
-                      </span>
+                      <span className="managecard-card-title k2d">xxxx xxxx xxxx {card.last4}</span>
                       <span className="managecard-card-title k2d">
                         Exp. date {card.expiryMonth}/{card.expiryYear}
                       </span>
@@ -237,10 +205,7 @@ const Managecard = () => {
               <Form className="row" onSubmit={handleSubmit}>
                 {/* Form fields remain the same */}
                 <Col xl={12} lg={12} md={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Control
                       required
                       type="text"
@@ -251,10 +216,7 @@ const Managecard = () => {
                   </Form.Group>
                 </Col>
                 <Col xl={12} lg={12} md={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <CardNumberElement
                       className="payment-page-form-input k2d"
                       options={{
@@ -266,10 +228,7 @@ const Managecard = () => {
                   </Form.Group>
                 </Col>
                 <Col xl={6} lg={6} md={6}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <CardExpiryElement
                       options={{ style: elementStyles, placeholder: "Expire" }}
                       className="payment-page-form-input"
@@ -277,26 +236,15 @@ const Managecard = () => {
                   </Form.Group>
                 </Col>
                 <Col xl={6} lg={6} md={6}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <CardCvcElement
                       options={{ style: elementStyles, placeholder: "CVV" }}
                       className="payment-page-form-input"
                     />
                   </Form.Group>
                 </Col>
-                <Col
-                  xl={12}
-                  lg={12}
-                  md={12}
-                  className="d-flex justify-content-center"
-                >
-                  <button
-                    className="payment-page-btn btn-4 zen-dots"
-                    disabled={issubmitloading}
-                  >
+                <Col xl={12} lg={12} md={12} className="d-flex justify-content-center">
+                  <button className="payment-page-btn btn-4 zen-dots" disabled={issubmitloading}>
                     {issubmitloading ? "Saving..." : "Save"}
                   </button>
                 </Col>

@@ -1,15 +1,5 @@
 import "./Heder.css";
-import {
-  Container,
-  Row,
-  Col,
-  Navbar,
-  Offcanvas,
-  Nav,
-  NavDropdown,
-  Form,
-  Button,
-} from "react-bootstrap";
+import { Container, Row, Col, Navbar, Offcanvas, Nav, NavDropdown, Form, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { getAppSetting } from "../API/Api";
 import { useState, useEffect } from "react";
@@ -31,10 +21,10 @@ const Header = () => {
   return (
     <div className="Header">
       <Container>
-        <Navbar key="lg" expand="lg" className="">
+        <Navbar key="lg" expand="lg">
           <Container fluid>
             <Navbar.Brand href="/">
-              {appSetting && <img src={appSetting.logo} alt="logo" />}
+              {appSetting && <img src={appSetting.logo} alt="logo" className="footerlogo" />}
             </Navbar.Brand>
             <div className="d-flex">
               <div
@@ -66,25 +56,18 @@ const Header = () => {
 
               <Offcanvas.Body>
                 <Nav className="justify-content-center flex-grow-1 navlinks">
-                  <Nav.Link
-                    onClick={() => navigate("/")}
-                    className={activeLink === "/" ? "active" : ""}
-                  >
+                  <Nav.Link onClick={() => navigate("/")} className={activeLink === "/" ? "active" : ""}>
                     Home
                   </Nav.Link>
                   <Nav.Link
                     onClick={() => navigate("/services")}
-                    className={
-                      activeLink.startsWith("/services") ? "active" : ""
-                    }
+                    className={activeLink.startsWith("/services") ? "active" : ""}
                   >
                     Services
                   </Nav.Link>
                   <Nav.Link
                     onClick={() => navigate("/booking/service")}
-                    className={
-                      activeLink.startsWith("/booking") ? "active" : ""
-                    }
+                    className={activeLink.startsWith("/booking") ? "active" : ""}
                   >
                     Booking
                   </Nav.Link>
@@ -96,9 +79,7 @@ const Header = () => {
                   </Nav.Link>
                   <Nav.Link
                     onClick={() => navigate("/contact")}
-                    className={
-                      activeLink.startsWith("/contact") ? "active" : ""
-                    }
+                    className={activeLink.startsWith("/contact") ? "active" : ""}
                   >
                     Contact
                   </Nav.Link>

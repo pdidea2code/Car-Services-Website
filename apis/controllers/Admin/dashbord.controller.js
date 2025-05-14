@@ -4,102 +4,60 @@ const Service = require("../../models/Service");
 const PromoCode = require("../../models/Promocode");
 const Review = require("../../models/Review");
 const Content = require("../../models/Contect");
-const {
-  successResponse,
-  queryErrorRelatedResponse,
-} = require("../../helper/sendResponse");
+const { successResponse, queryErrorRelatedResponse } = require("../../helper/sendResponse");
 
+// Get KPI Metrics (Total Orders, Revenue, Users, Services, Promo Usage)
 const getKPIMetrics = async (req, res, next) => {
   try {
-    // 1. Total Orders and Breakdown by Status
-    const orderStats = await Order.aggregate([
-      {
-        $match: {
+    // 1. Fetch Orders with Specific Conditions
+    const orders = await Order.find({
+      $or: [
+        { order_status: { $in: ["COMPLETED", "CANCELLED"] } },
+        {
+          order_status: "PENDING",
           $or: [
-            // Include all orders for other statuses (COMPLETED, CANCELLED)
-            { order_status: { $in: ["COMPLETED", "CANCELLED"] } },
-            // Include PENDING orders with specific payment conditions
-            {
-              order_status: "PENDING",
-              $or: [
-                { paymentmode: "ONLINE", paymentstatus: "SUCCESS" },
-                { paymentmode: "COD", paymentstatus: "PENDING" },
-              ],
-            },
+            { paymentmode: "ONLINE", paymentstatus: "SUCCESS" },
+            { paymentmode: "COD", paymentstatus: "PENDING" },
           ],
         },
-      },
-      {
-        $group: {
-          _id: "$order_status",
-          count: { $sum: 1 },
-        },
-      },
-    ]);
+      ],
+    })
+      .select("order_status total_amount paymentstatus")
+      .lean(); // Convert to plain JavaScript objects for performance
 
-    // Calculate total orders and breakdown
-    const totalOrders = orderStats.reduce((sum, stat) => sum + stat.count, 0);
+    // Calculate Order Breakdown
     const orderBreakdown = {
-      total: totalOrders,
-      pending: orderStats.find((stat) => stat._id === "PENDING")?.count || 0,
-      completed:
-        orderStats.find((stat) => stat._id === "COMPLETED")?.count || 0,
-      cancelled:
-        orderStats.find((stat) => stat._id === "CANCELLED")?.count || 0,
+      total: orders.length,
+      pending: orders.filter((order) => order.order_status === "PENDING").length,
+      completed: orders.filter((order) => order.order_status === "COMPLETED").length,
+      cancelled: orders.filter((order) => order.order_status === "CANCELLED").length,
     };
 
-    // 2. Total Revenue (Sum of total_amount for SUCCESS payments)
-    const revenueStats = await Order.aggregate([
-      { $match: { paymentstatus: "SUCCESS" } },
-      {
-        $group: {
-          _id: null,
-          totalRevenue: { $sum: "$total_amount" },
-        },
-      },
-    ]);
+    // 2. Calculate Total Revenue (Sum of total_amount for SUCCESS payments)
+    const totalRevenue = orders
+      .filter((order) => order.paymentstatus === "SUCCESS")
+      .reduce((sum, order) => sum + (order.total_amount || 0), 0);
 
-    const totalRevenue = revenueStats[0]?.totalRevenue || 0;
+    // 3. Fetch Users and Calculate Stats
+    const users = await User.find().select("isverified").lean();
+    const totalUsers = users.length;
+    const verifiedUsers = users.filter((user) => user.isverified).length;
 
-    // 3. Total Users and Verified Users
-    const userStats = await User.aggregate([
-      {
-        $group: {
-          _id: "$isverified",
-          count: { $sum: 1 },
-        },
-      },
-    ]);
-
-    const totalUsers = userStats.reduce((sum, stat) => sum + stat.count, 0);
-    const verifiedUsers =
-      userStats.find((stat) => stat._id === true)?.count || 0;
-
-    // 4. Total Active Services
+    // 4. Count Active Services
     const totalServices = await Service.countDocuments({
       status: true,
       isDeleted: false,
     });
 
-    // 5. Promo Code Usage and Total Discount Amount
-    const promoStats = await PromoCode.aggregate([
-      { $match: { isActive: true } },
-      {
-        $group: {
-          _id: null,
-          totalUses: { $sum: "$usesCount" },
-          totalDiscountAmount: { $sum: "$totalDiscountAmount" },
-        },
-      },
-    ]);
+    // 5. Fetch Promo Codes and Calculate Stats
+    const promoCodes = await PromoCode.find({ isActive: true }).select("usesCount totalDiscountAmount").lean();
+    const totalPromoUses = promoCodes.reduce((sum, promo) => sum + (promo.usesCount || 0), 0);
+    const totalPromoDiscount = promoCodes.reduce((sum, promo) => sum + (promo.totalDiscountAmount || 0), 0);
 
-    const totalPromoUses = promoStats[0]?.totalUses || 0;
-    const totalPromoDiscount = promoStats[0]?.totalDiscountAmount || 0;
-
-    // Combine all metrics into response
+    // Combine Metrics into Response
     const kpiMetrics = {
       orders: orderBreakdown,
-      revenue: totalRevenue.toFixed(2),
+      revenue: totalRevenue.toFixed(2), // Format to 2 decimal places
       users: {
         total: totalUsers,
         verified: verifiedUsers,
@@ -113,18 +71,20 @@ const getKPIMetrics = async (req, res, next) => {
 
     successResponse(res, kpiMetrics);
   } catch (error) {
-    next(error);
+    next(error); // Pass error to error-handling middleware
   }
 };
 
+// Get Recent Activity (Today's Orders, Recent Orders, New Users)
 const getRecentActivity = async (req, res, next) => {
   try {
+    // Define Today's Time Range
     const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0); // Midnight of today
+    todayStart.setHours(0, 0, 0, 0); // Midnight
     const todayEnd = new Date();
-    todayEnd.setHours(23, 59, 59, 999); // End of today
+    todayEnd.setHours(23, 59, 59, 999); // End of day
 
-    // 1. Fetch Today's Orders (Filtered by PENDING status and payment conditions)
+    // 1. Fetch Today's Orders (PENDING with specific payment conditions)
     const todayOrders = await Order.find({
       createdAt: { $gte: todayStart, $lte: todayEnd },
       order_status: "PENDING",
@@ -134,25 +94,25 @@ const getRecentActivity = async (req, res, next) => {
       ],
     })
       .select("order_id name total_amount order_status paymentstatus date time")
-      .sort({ createdAt: -1 }) // Sort by newest first
-      .limit(10) // Limit to 10 orders
-      .lean(); //
+      .sort({ createdAt: -1 }) // Newest first
+      .limit(10) // Limit to 10
+      .lean();
 
-    // 1. Fetch Recent Orders (Latest 10)
+    // 2. Fetch Recent Orders (Latest 10)
     const recentOrders = await Order.find()
       .select("order_id name total_amount order_status paymentstatus createdAt")
       .sort({ createdAt: -1 })
       .limit(10)
       .lean();
 
-    // 2. Fetch New Users (Latest 10)
+    // 3. Fetch New Users (Latest 10)
     const newUsers = await User.find()
       .select("name email isverified createdAt")
       .sort({ createdAt: -1 })
       .limit(10)
       .lean();
 
-    // Combine into response
+    // Combine into Response
     const recentActivity = {
       orders: recentOrders,
       todayOrders: todayOrders,
@@ -165,209 +125,111 @@ const getRecentActivity = async (req, res, next) => {
   }
 };
 
+// Get Order Status, Payment Status, and Payment Mode Breakdown
 const getOrderStatusBreakdown = async (req, res, next) => {
   try {
-    // 1. Aggregate Order Status Breakdown
-    const orderStatusStats = await Order.aggregate([
-      {
-        $match: {
+    // 1. Fetch Orders with Specific Conditions
+    const orders = await Order.find({
+      $or: [
+        { order_status: { $in: ["COMPLETED", "CANCELLED"] } },
+        {
+          order_status: "PENDING",
           $or: [
-            { order_status: { $in: ["COMPLETED", "CANCELLED"] } },
-            {
-              order_status: "PENDING",
-              $or: [
-                { paymentmode: "ONLINE", paymentstatus: "SUCCESS" },
-                { paymentmode: "COD", paymentstatus: "PENDING" },
-              ],
-            },
+            { paymentmode: "ONLINE", paymentstatus: "SUCCESS" },
+            { paymentmode: "COD", paymentstatus: "PENDING" },
           ],
         },
-      },
-      {
-        $group: {
-          _id: "$order_status",
-          count: { $sum: 1 },
-        },
-      },
-    ]);
+      ],
+    })
+      .select("order_status paymentstatus paymentmode")
+      .lean();
 
-    const totalOrders = orderStatusStats.reduce(
-      (sum, stat) => sum + stat.count,
-      0
-    );
+    const totalOrders = orders.length;
+
+    // 2. Calculate Order Status Breakdown
     const orderStatusBreakdown = {
       pending: {
-        count:
-          orderStatusStats.find((stat) => stat._id === "PENDING")?.count || 0,
+        count: orders.filter((order) => order.order_status === "PENDING").length,
         percentage: totalOrders
-          ? parseFloat(
-              (
-                ((orderStatusStats.find((stat) => stat._id === "PENDING")
-                  ?.count || 0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
+          ? parseFloat((orders.filter((order) => order.order_status === "PENDING").length / totalOrders) * 100).toFixed(
+              2
             )
           : 0,
       },
       completed: {
-        count:
-          orderStatusStats.find((stat) => stat._id === "COMPLETED")?.count || 0,
+        count: orders.filter((order) => order.order_status === "COMPLETED").length,
         percentage: totalOrders
           ? parseFloat(
-              (
-                ((orderStatusStats.find((stat) => stat._id === "COMPLETED")
-                  ?.count || 0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
-            )
+              (orders.filter((order) => order.order_status === "COMPLETED").length / totalOrders) * 100
+            ).toFixed(2)
           : 0,
       },
       cancelled: {
-        count:
-          orderStatusStats.find((stat) => stat._id === "CANCELLED")?.count || 0,
+        count: orders.filter((order) => order.order_status === "CANCELLED").length,
         percentage: totalOrders
           ? parseFloat(
-              (
-                ((orderStatusStats.find((stat) => stat._id === "CANCELLED")
-                  ?.count || 0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
-            )
+              (orders.filter((order) => order.order_status === "CANCELLED").length / totalOrders) * 100
+            ).toFixed(2)
           : 0,
       },
       total: totalOrders,
     };
 
-    // 2. Aggregate Payment Status Breakdown
-    const paymentStatusStats = await Order.aggregate([
-      {
-        $group: {
-          _id: "$paymentstatus",
-          count: { $sum: 1 },
-        },
-      },
-    ]);
-
+    // 3. Calculate Payment Status Breakdown
     const paymentStatusBreakdown = {
       pending: {
-        count:
-          paymentStatusStats.find((stat) => stat._id === "PENDING")?.count || 0,
+        count: orders.filter((order) => order.paymentstatus === "PENDING").length,
         percentage: totalOrders
           ? parseFloat(
-              (
-                ((paymentStatusStats.find((stat) => stat._id === "PENDING")
-                  ?.count || 0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
-            )
+              (orders.filter((order) => order.paymentstatus === "PENDING").length / totalOrders) * 100
+            ).toFixed(2)
           : 0,
       },
       success: {
-        count:
-          paymentStatusStats.find((stat) => stat._id === "SUCCESS")?.count || 0,
+        count: orders.filter((order) => order.paymentstatus === "SUCCESS").length,
         percentage: totalOrders
           ? parseFloat(
-              (
-                ((paymentStatusStats.find((stat) => stat._id === "SUCCESS")
-                  ?.count || 0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
-            )
+              (orders.filter((order) => order.paymentstatus === "SUCCESS").length / totalOrders) * 100
+            ).toFixed(2)
           : 0,
       },
       failed: {
-        count:
-          paymentStatusStats.find((stat) => stat._id === "FAILED")?.count || 0,
+        count: orders.filter((order) => order.paymentstatus === "FAILED").length,
         percentage: totalOrders
-          ? parseFloat(
-              (
-                ((paymentStatusStats.find((stat) => stat._id === "FAILED")
-                  ?.count || 0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
+          ? parseFloat((orders.filter((order) => order.paymentstatus === "FAILED").length / totalOrders) * 100).toFixed(
+              2
             )
           : 0,
       },
       refunded: {
-        count:
-          paymentStatusStats.find((stat) => stat._id === "REFUNDED")?.count ||
-          0,
+        count: orders.filter((order) => order.paymentstatus === "REFUNDED").length,
         percentage: totalOrders
           ? parseFloat(
-              (
-                ((paymentStatusStats.find((stat) => stat._id === "REFUNDED")
-                  ?.count || 0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
-            )
+              (orders.filter((order) => order.paymentstatus === "REFUNDED").length / totalOrders) * 100
+            ).toFixed(2)
           : 0,
       },
       total: totalOrders,
     };
 
-    // 3. Aggregate Payment Mode Breakdown (Using the same filtered dataset as orderStatus)
-    const paymentModeStats = await Order.aggregate([
-      {
-        $match: {
-          $or: [
-            { order_status: { $in: ["COMPLETED", "CANCELLED"] } },
-            {
-              order_status: "PENDING",
-              $or: [
-                { paymentmode: "ONLINE", paymentstatus: "SUCCESS" },
-                { paymentmode: "COD", paymentstatus: "PENDING" },
-              ],
-            },
-          ],
-        },
-      },
-      {
-        $group: {
-          _id: "$paymentmode",
-          count: { $sum: 1 },
-        },
-      },
-    ]);
-
+    // 4. Calculate Payment Mode Breakdown
     const paymentModeBreakdown = {
       online: {
-        count:
-          paymentModeStats.find((stat) => stat._id === "ONLINE")?.count || 0,
+        count: orders.filter((order) => order.paymentmode === "ONLINE").length,
         percentage: totalOrders
-          ? parseFloat(
-              (
-                ((paymentModeStats.find((stat) => stat._id === "ONLINE")
-                  ?.count || 0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
-            )
+          ? parseFloat((orders.filter((order) => order.paymentmode === "ONLINE").length / totalOrders) * 100).toFixed(2)
           : 0,
       },
       cod: {
-        count: paymentModeStats.find((stat) => stat._id === "COD")?.count || 0,
+        count: orders.filter((order) => order.paymentmode === "COD").length,
         percentage: totalOrders
-          ? parseFloat(
-              (
-                ((paymentModeStats.find((stat) => stat._id === "COD")?.count ||
-                  0) /
-                  totalOrders) *
-                100
-              ).toFixed(2)
-            )
+          ? parseFloat((orders.filter((order) => order.paymentmode === "COD").length / totalOrders) * 100).toFixed(2)
           : 0,
       },
       total: totalOrders,
     };
 
-    // Combine into response
+    // Combine into Response
     const breakdown = {
       orderStatus: orderStatusBreakdown,
       paymentStatus: paymentStatusBreakdown,
@@ -379,58 +241,66 @@ const getOrderStatusBreakdown = async (req, res, next) => {
     next(error);
   }
 };
+
+// Get Top Services and Addons
 const getTopServicesAndAddons = async (req, res, next) => {
   try {
-    // 1. Aggregate Top 5 Services
-    const topServicesStats = await Order.aggregate([
-      { $group: { _id: "$service_id", count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 5 },
-      {
-        $lookup: {
-          from: "services",
-          localField: "_id",
-          foreignField: "_id",
-          as: "service_info",
-        },
-      },
-      { $unwind: "$service_info" },
-      {
-        $project: {
-          service_id: "$_id",
-          name: "$service_info.name",
-          price: "$service_info.price",
-          count: 1,
-        },
-      },
-    ]);
+    // 1. Fetch Orders for Service and Addon Counts
+    const orders = await Order.find().select("service_id addons_id").lean();
 
-    // 2. Aggregate Top 5 Addons (assuming addons_id is an array in Order)
-    const topAddonsStats = await Order.aggregate([
-      { $unwind: "$addons_id" },
-      { $group: { _id: "$addons_id", count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 5 },
-      {
-        $lookup: {
-          from: "addons",
-          localField: "_id",
-          foreignField: "_id",
-          as: "addon_info",
-        },
-      },
-      { $unwind: "$addon_info" },
-      {
-        $project: {
-          addons_id: "$_id",
-          name: "$addon_info.name",
-          price: "$addon_info.price",
-          count: 1,
-        },
-      },
-    ]);
+    // 2. Count Services
+    const serviceCounts = {};
+    orders.forEach((order) => {
+      if (order.service_id) {
+        serviceCounts[order.service_id] = (serviceCounts[order.service_id] || 0) + 1;
+      }
+    });
 
-    // Combine into response
+    // Get Top 5 Service IDs
+    const topServiceIds = Object.entries(serviceCounts)
+      .sort((a, b) => b[1] - a[1]) // Sort by count descending
+      .slice(0, 5)
+      .map(([id]) => id);
+
+    // Fetch Service Details
+    const topServices = await Service.find({ _id: { $in: topServiceIds } })
+      .select("name price")
+      .lean();
+    const topServicesStats = topServices.map((service) => ({
+      service_id: service._id,
+      name: service.name,
+      price: service.price,
+      count: serviceCounts[service._id] || 0,
+    }));
+
+    // 3. Count Addons
+    const addonCounts = {};
+    orders.forEach((order) => {
+      if (order.addons_id && Array.isArray(order.addons_id)) {
+        order.addons_id.forEach((addonId) => {
+          addonCounts[addonId] = (addonCounts[addonId] || 0) + 1;
+        });
+      }
+    });
+
+    // Get Top 5 Addon IDs
+    const topAddonIds = Object.entries(addonCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([id]) => id);
+
+    // Fetch Addon Details (Assuming addons are in a collection named 'addons')
+    const topAddons = await Service.find({ _id: { $in: topAddonIds } })
+      .select("name price")
+      .lean();
+    const topAddonsStats = topAddons.map((addon) => ({
+      addons_id: addon._id,
+      name: addon.name,
+      price: addon.price,
+      count: addonCounts[addon._id] || 0,
+    }));
+
+    // Combine into Response
     const breakdown = {
       topServices: topServicesStats,
       topAddons: topAddonsStats,
@@ -442,29 +312,27 @@ const getTopServicesAndAddons = async (req, res, next) => {
   }
 };
 
+// Get System Health Alerts (Pending Reviews, Inactive Services, Expired Promos, Unseen Content)
 const getSystemHealthAlerts = async (req, res, next) => {
   try {
-    // 1. Count Pending Reviews (is_approved: false)
-    const pendingReviewsCount = await Review.countDocuments({
-      status: false,
-    });
+    // 1. Count Pending Reviews
+    const pendingReviewsCount = await Review.countDocuments({ status: false });
 
-    // 2. Count Inactive Services (status: false or isDeleted: true)
+    // 2. Count Inactive Services
     const inactiveServicesCount = await Service.countDocuments({
       $or: [{ status: false }, { isDeleted: true }],
     });
 
-    // 3. Count Expired Promo Codes (expirationDate < current date)
-    const currentDate = new Date(); // April 11, 2025
+    // 3. Count Expired Promo Codes
+    const currentDate = new Date();
     const expiredPromoCodesCount = await PromoCode.countDocuments({
       expirationDate: { $lt: currentDate },
     });
 
-    const unseenContent = await Content.find({
-      seen: false,
-    });
+    // 4. Count Unseen Content
+    const unseenContent = await Content.find({ seen: false }).lean();
 
-    // Combine into response
+    // Combine into Response
     const alerts = {
       pendingReviews: {
         count: pendingReviewsCount,
@@ -489,6 +357,8 @@ const getSystemHealthAlerts = async (req, res, next) => {
     next(error);
   }
 };
+
+// Export All Functions
 module.exports = {
   getKPIMetrics,
   getRecentActivity,

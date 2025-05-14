@@ -2,12 +2,7 @@ import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react"; // Add useState
 import { useDispatch, useSelector } from "react-redux";
-import {
-  SET_LOADING,
-  SET_LOADING_FALSE,
-  SET_THEME,
-  SET_APP_SETTING,
-} from "./redux/action/action";
+import { SET_LOADING, SET_LOADING_FALSE, SET_THEME, SET_APP_SETTING } from "./redux/action/action";
 import { Spinner } from "react-bootstrap";
 import { getAppSetting, getThemeSetting } from "./API/Api";
 import AppRoutes from "./routes/AppRoutes";
@@ -74,13 +69,10 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div></div>}>
         <div>
           {loading || !isAppSettingLoaded ? ( // Wait for both loading and app setting
-            <div
-              className="d-flex justify-content-center align-items-center"
-              style={{ height: "100vh" }}
-            >
+            <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
               <Spinner animation="border" role="status" />
             </div>
           ) : (

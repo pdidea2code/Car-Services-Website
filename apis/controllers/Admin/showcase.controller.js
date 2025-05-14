@@ -40,7 +40,8 @@ const editShowcase = async (req, res, next) => {
 const getAllShowcase = async (req, res, next) => {
   try {
     const showcase = await Showcase.find();
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.SHOWCASE_PATH;
+
+    const baseUrl = process.env.BASE_URL + process.env.SHOWCASE_PATH;
     const showcaseData = showcase.map((item) => {
       return {
         ...item.toObject(),

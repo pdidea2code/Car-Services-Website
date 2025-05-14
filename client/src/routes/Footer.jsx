@@ -1,13 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap";
 import "./Footer.css";
 import { useSelector } from "react-redux";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  TwitterIcon,
-  YoutubeIcon,
-  DeshlineIcon,
-} from "../assets/icon/icons";
+import { FacebookIcon, InstagramIcon, TwitterIcon, YoutubeIcon, DeshlineIcon } from "../assets/icon/icons";
 import { getBusinessHour } from "../API/Api";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -37,44 +31,23 @@ const Footer = () => {
       <Container>
         <Row className="footer-row">
           <Col className="footer-col1" xs={12} md={6} lg={5}>
-            <div>
-              {appSetting && (
-                <img
-                  src={appSetting?.footerlogo}
-                  alt="logo"
-                  style={{ width: "auto", height: "auto" }}
-                />
-              )}
-            </div>
+            <div>{appSetting && <img src={appSetting?.footerlogo} alt="logo" className="footerlogo" />}</div>
             <div className="footer-text-div">
               <span className="footer-text">
-                Thank you for visiting us. We are committed to providing
-                exceptional service and value to our customers.
+                Thank you for visiting us. We are committed to providing exceptional service and value to our customers.
               </span>
             </div>
             <div className="footer-social-icons-div">
-              <div
-                className="footer-social-icon-item"
-                onClick={() => window.open(appSetting?.facebook, "_blank")}
-              >
+              <div className="footer-social-icon-item" onClick={() => window.open(appSetting?.facebook, "_blank")}>
                 <FacebookIcon className="social-icon" />
               </div>
-              <div
-                className="footer-social-icon-item"
-                onClick={() => window.open(appSetting?.instagram, "_blank")}
-              >
+              <div className="footer-social-icon-item" onClick={() => window.open(appSetting?.instagram, "_blank")}>
                 <InstagramIcon className="social-icon" />
               </div>
-              <div
-                className="footer-social-icon-item"
-                onClick={() => window.open(appSetting?.twitter, "_blank")}
-              >
+              <div className="footer-social-icon-item" onClick={() => window.open(appSetting?.twitter, "_blank")}>
                 <TwitterIcon className="social-icon" />
               </div>
-              <div
-                className="footer-social-icon-item"
-                onClick={() => window.open(appSetting?.youtube, "_blank")}
-              >
+              <div className="footer-social-icon-item" onClick={() => window.open(appSetting?.youtube, "_blank")}>
                 <YoutubeIcon className="social-icon" />
               </div>
             </div>
@@ -85,8 +58,7 @@ const Footer = () => {
               <div className="footer-col2-text-div d-flex flex-column gap-2">
                 {businessHour.map((item, index) => (
                   <div className="d-flex gap-2 align-items-center">
-                    <DeshlineIcon className="deshline-icon" />{" "}
-                    <span className="footer-text-hour">{item.day}</span>
+                    <DeshlineIcon className="deshline-icon" /> <span className="footer-text-hour">{item.day}</span>
                   </div>
                 ))}
               </div>
@@ -96,8 +68,7 @@ const Footer = () => {
                     <span className="footer-text-hour">Closed</span>
                   ) : (
                     <span className="footer-text-hour">
-                      {dayjs("09:00", "HH:mm").format("h:mm A")} -{" "}
-                      {dayjs(item.close, "HH:mm").format("h:mm A")}
+                      {dayjs("09:00", "HH:mm").format("h:mm A")} - {dayjs(item.close, "HH:mm").format("h:mm A")}
                     </span>
                   )
                 )}
@@ -113,46 +84,31 @@ const Footer = () => {
               <div className="footer-col3-links-div">
                 <div className="d-flex gap-2 align-items-center">
                   <DeshlineIcon className="deshline-icon" />{" "}
-                  <span
-                    className="footer-col3-link no-select"
-                    onClick={() => navigate("/")}
-                  >
+                  <span className="footer-col3-link no-select" onClick={() => navigate("/")}>
                     Home
                   </span>
                 </div>
                 <div className="d-flex gap-2 align-items-center">
                   <DeshlineIcon className="deshline-icon" />{" "}
-                  <span
-                    className="footer-col3-link no-select"
-                    onClick={() => navigate("/services")}
-                  >
+                  <span className="footer-col3-link no-select" onClick={() => navigate("/services")}>
                     Services
                   </span>
                 </div>
                 <div className="d-flex gap-2 align-items-center">
                   <DeshlineIcon className="deshline-icon" />{" "}
-                  <span
-                    className="footer-col3-link no-select"
-                    onClick={() => navigate("/booking/service")}
-                  >
+                  <span className="footer-col3-link no-select" onClick={() => navigate("/booking/service")}>
                     Booking
                   </span>
                 </div>
                 <div className="d-flex gap-2 align-items-center">
                   <DeshlineIcon className="deshline-icon" />{" "}
-                  <span
-                    className="footer-col3-link no-select"
-                    onClick={() => navigate("/blog")}
-                  >
+                  <span className="footer-col3-link no-select" onClick={() => navigate("/blog")}>
                     Blog
                   </span>
                 </div>
                 <div className="d-flex gap-2 align-items-center">
                   <DeshlineIcon className="deshline-icon" />{" "}
-                  <span
-                    className="footer-col3-link no-select"
-                    onClick={() => navigate("/contact")}
-                  >
+                  <span className="footer-col3-link no-select" onClick={() => navigate("/contact")}>
                     Contact Us
                   </span>
                 </div>
@@ -164,9 +120,7 @@ const Footer = () => {
 
       <Row className="footer-brack-div w-100 m-0">
         <Col className="d-flex justify-content-center align-items-center p-0">
-          <span className="footer-copyright text-center">
-            {appSetting?.copyright}
-          </span>
+          <span className="footer-copyright text-center">{appSetting?.copyright}</span>
         </Col>
       </Row>
     </div>

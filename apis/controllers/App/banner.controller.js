@@ -3,8 +3,8 @@ const { successResponse, queryErrorRelatedResponse } = require("../../helper/sen
 
 const getAllBanner = async (req, res, next) => {
   try {
-    const banner = await Banner.find({status: true});
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.BANNER_PATH;
+    const banner = await Banner.find({ status: true });
+    const baseUrl = process.env.BASE_URL + process.env.BANNER_PATH;
     const bannerData = banner.map((item) => {
       return {
         ...item.toObject(),

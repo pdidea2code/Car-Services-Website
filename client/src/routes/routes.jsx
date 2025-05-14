@@ -1,55 +1,50 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "../pages/Homepage/Home";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
 import { useSelector } from "react-redux";
-import Services from "../pages/Services";
-import Servicedetail from "../pages/Services/Servicedetail";
-import Register from "../pages/Auth/Register";
 import Cookies from "js-cookie";
-import Account from "../pages/Account/Account";
-import Login from "../pages/Auth/Login";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import ForgotPassword from "../pages/Auth/ForgotPassword";
-import Profile from "../pages/Account/Profile/Profile";
-import Servicehistory from "../pages/Account/Servicehistory/Servicehistory";
-import NotFound from "./404";
-import Blog from "../pages/Blog/Blogindex";
-import Blogdetail from "../pages/Blog/Blogdetail";
-import Contect from "../pages/Contect/Contect";
-import Booking from "../pages/Booking/Booking";
-import BookServce from "../pages/Booking/Service/BookServce";
-import Addons from "../pages/Booking/Addons/Addons";
-import Dateandtime from "../pages/Booking/Dateandtime/Dateandtime";
-import Cartype from "../pages/Booking/Cartype/Cartype";
-import Payment from "../pages/Booking/Payment/Payment";
-import Upcoming from "../pages/Account/Servicehistory/Upcoming";
-import Managecard from "../pages/Account/Managecard/Managecard";
-import Invoice from "../pages/Account/Servicehistory/Invoice";
-import Review from "../pages/Account/review/Review";
+
+// Lazy-loaded components
+const Home = lazy(() => import("../pages/Homepage/Home"));
+const Services = lazy(() => import("../pages/Services"));
+const Servicedetail = lazy(() => import("../pages/Services/Servicedetail"));
+const Register = lazy(() => import("../pages/Auth/Register"));
+const Login = lazy(() => import("../pages/Auth/Login"));
+const ForgotPassword = lazy(() => import("../pages/Auth/ForgotPassword"));
+const Account = lazy(() => import("../pages/Account/Account"));
+const Profile = lazy(() => import("../pages/Account/Profile/Profile"));
+const Servicehistory = lazy(() => import("../pages/Account/Servicehistory/Servicehistory"));
+const Upcoming = lazy(() => import("../pages/Account/Servicehistory/Upcoming"));
+const Managecard = lazy(() => import("../pages/Account/Managecard/Managecard"));
+const Invoice = lazy(() => import("../pages/Account/Servicehistory/Invoice"));
+const Review = lazy(() => import("../pages/Account/review/Review"));
+const Blog = lazy(() => import("../pages/Blog/Blogindex"));
+const Blogdetail = lazy(() => import("../pages/Blog/Blogdetail"));
+const Contect = lazy(() => import("../pages/Contect/Contect"));
+const Booking = lazy(() => import("../pages/Booking/Booking"));
+const BookServce = lazy(() => import("../pages/Booking/Service/BookServce"));
+const Addons = lazy(() => import("../pages/Booking/Addons/Addons"));
+const Dateandtime = lazy(() => import("../pages/Booking/Dateandtime/Dateandtime"));
+const Cartype = lazy(() => import("../pages/Booking/Cartype/Cartype"));
+const Payment = lazy(() => import("../pages/Booking/Payment/Payment"));
+const NotFound = lazy(() => import("./404"));
+
+// Private route logic
 const PrivateRoute = ({ children }) => {
   const auth = Cookies.get("isLoggedIn") || Cookies.get("token");
-
-  if (!auth) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+  return auth ? children : <Navigate to="/login" replace />;
 };
 
+// Public route logic
 const PublicRoute = ({ children }) => {
   const auth = Cookies.get("isLoggedIn") || Cookies.get("token");
-
-  if (auth) {
-    return <Navigate to="/" replace />;
-  }
-
-  return children;
+  return auth ? <Navigate to="/" replace /> : children;
 };
 
 const RouteList = () => {
   const appSetting = useSelector((state) => state.appSetting.appSetting);
   const location = useLocation();
+
   useEffect(() => {
     const routeTitles = {
       "/": `Home - ${appSetting?.name}`,
@@ -65,13 +60,14 @@ const RouteList = () => {
 
     if (!title) {
       if (location.pathname.startsWith("/services/")) {
-        title = `Service  - ${appSetting?.name}`;
+        title = `Service - ${appSetting?.name}`;
       } else if (location.pathname.startsWith("/booking")) {
         title = `Booking - ${appSetting?.name}`;
       } else {
         title = appSetting?.name;
       }
     }
+
     document.title = title;
   }, [location.pathname, appSetting]);
 
@@ -88,7 +84,6 @@ const RouteList = () => {
           </PublicRoute>
         }
       />
-
       <Route
         path="/login"
         element={
@@ -115,11 +110,10 @@ const RouteList = () => {
           </PrivateRoute>
         }
       >
-        {/* <Route path="" element={<Profile />}></Route> */}
-        <Route path="profile" element={<Profile />}></Route>
-        <Route path="servicehistory" element={<Servicehistory />}></Route>
-        <Route path="upcomingservice" element={<Upcoming />}></Route>
-        <Route path="managecard" element={<Managecard />}></Route>
+        <Route path="profile" element={<Profile />} />
+        <Route path="servicehistory" element={<Servicehistory />} />
+        <Route path="upcomingservice" element={<Upcoming />} />
+        <Route path="managecard" element={<Managecard />} />
       </Route>
       <Route
         path="/account/servicehistory/review"

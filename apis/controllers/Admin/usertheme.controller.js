@@ -5,7 +5,8 @@ const deleteFiles = require("../../helper/deleteFiles");
 const getAllUserTheme = async (req, res, next) => {
   try {
     const userTheme = await UserTheme.find();
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.USER_THEME_PATH;
+
+    const baseUrl = process.env.BASE_URL + process.env.USER_THEME_PATH;
     const userThemeData = userTheme.map((item) => {
       return {
         ...item.toObject(),
@@ -23,34 +24,38 @@ const getAllUserTheme = async (req, res, next) => {
 
 const addUserTheme = async (req, res, next) => {
   try {
-    const { name, color1, color2, color3, is_active } = req.body; 
-    const userTheme = await UserTheme.create(
-        { name, color1, color2, color3, is_active ,
-            mainimage: req?.files?.mainimage[0]?.filename,
-            headerimage: req?.files?.headerimage[0]?.filename,
-            workingimage: req?.files?.workingimage[0]?.filename,
-            springimage: req?.files?.springimage[0]?.filename,
+    const { name, color1, color2, color3, is_active } = req.body;
+    const userTheme = await UserTheme.create({
+      name,
+      color1,
+      color2,
+      color3,
+      is_active,
+      mainimage: req?.files?.mainimage[0]?.filename,
+      headerimage: req?.files?.headerimage[0]?.filename,
+      workingimage: req?.files?.workingimage[0]?.filename,
+      springimage: req?.files?.springimage[0]?.filename,
     });
-    
+
     await userTheme.save();
-    successResponse(res, userTheme);    
+    successResponse(res, userTheme);
   } catch (error) {
     next(error);
   }
 };
 
-const updateUserTheme = async (req, res, next) => { 
+const updateUserTheme = async (req, res, next) => {
   try {
     const { id, name, color1, color2, color3, is_active } = req.body;
-    const userTheme = await UserTheme.findOne({_id: id});
+    const userTheme = await UserTheme.findOne({ _id: id });
     if (!userTheme) {
       return queryErrorRelatedResponse(res, 404, "User theme not found");
     }
-    
-    userTheme.name = name?name:userTheme.name;
-    userTheme.color1 = color1?color1:userTheme.color1;
-    userTheme.color2 = color2?color2:userTheme.color2;
-    userTheme.color3 = color3?color3:userTheme.color3;
+
+    userTheme.name = name ? name : userTheme.name;
+    userTheme.color1 = color1 ? color1 : userTheme.color1;
+    userTheme.color2 = color2 ? color2 : userTheme.color2;
+    userTheme.color3 = color3 ? color3 : userTheme.color3;
     if (is_active !== undefined) {
       userTheme.is_active = is_active === "true" || is_active === true;
     }
@@ -61,7 +66,7 @@ const updateUserTheme = async (req, res, next) => {
       }
       userTheme.mainimage = mainimage.filename;
     }
-     if (req?.files?.headerimage && req?.files?.headerimage[0]) {
+    if (req?.files?.headerimage && req?.files?.headerimage[0]) {
       const headerimage = req?.files?.headerimage[0];
       if (userTheme.headerimage) {
         deleteFiles(process.env.USER_THEME_PATH + userTheme.headerimage);
@@ -81,10 +86,8 @@ const updateUserTheme = async (req, res, next) => {
         deleteFiles(process.env.USER_THEME_PATH + userTheme.springimage);
       }
       userTheme.springimage = springimage.filename;
-    }       
-        
-         
-    
+    }
+
     await userTheme.save();
     successResponse(res, userTheme);
   } catch (error) {
@@ -95,7 +98,7 @@ const updateUserTheme = async (req, res, next) => {
 const deleteUserTheme = async (req, res, next) => {
   try {
     const { id } = req.body;
-    const userTheme = await UserTheme.findOne({_id: id});
+    const userTheme = await UserTheme.findOne({ _id: id });
     if (!userTheme) {
       return queryErrorRelatedResponse(res, 404, "User theme not found");
     }
@@ -111,7 +114,7 @@ const deleteUserTheme = async (req, res, next) => {
     if (userTheme.springimage) {
       deleteFiles(process.env.USER_THEME_PATH + userTheme.springimage);
     }
-    await userTheme.deleteOne();        
+    await userTheme.deleteOne();
     successResponse(res, "User theme deleted successfully");
   } catch (error) {
     next(error);
@@ -121,7 +124,7 @@ const deleteUserTheme = async (req, res, next) => {
 const setActiveUserTheme = async (req, res, next) => {
   try {
     const { id } = req.body;
-    const userTheme = await UserTheme.findOne({_id: id});
+    const userTheme = await UserTheme.findOne({ _id: id });
     if (!userTheme) {
       return queryErrorRelatedResponse(res, 404, "User theme not found");
     }
@@ -139,4 +142,4 @@ const setActiveUserTheme = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { getAllUserTheme, addUserTheme, updateUserTheme, deleteUserTheme, setActiveUserTheme };   
+module.exports = { getAllUserTheme, addUserTheme, updateUserTheme, deleteUserTheme, setActiveUserTheme };

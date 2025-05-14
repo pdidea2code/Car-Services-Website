@@ -4,7 +4,8 @@ const { successResponse, queryErrorRelatedResponse } = require("../../helper/sen
 const getalluser = async (req, res, next) => {
   try {
     const users = await User.find();
-    const baseUrl = req.protocol + "://" + req.get("host") + "/userprofileimg/";
+
+    const baseUrl = process.env.BASE_URL + "/userprofileimg/";
     const userData = users.map((user) => {
       return {
         ...user.toObject(),

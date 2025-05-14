@@ -16,7 +16,8 @@ const addPopupImage = async (req, res, next) => {
 const getPopupImage = async (req, res, next) => {
   try {
     const popupimage = await Popimage.findOne({});
-    const baseUrl = req.protocol + "://" + req.get("host") + process.env.POPUP_IMAGE;
+
+    const baseUrl = process.env.BASE_URL + process.env.POPUP_IMAGE;
     popupimage.image = baseUrl + popupimage.image;
     popupimage.mobileimage = baseUrl + popupimage.mobileimage;
 
